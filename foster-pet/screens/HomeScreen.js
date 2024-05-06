@@ -39,6 +39,12 @@ const HomeScreen = ({ navigation }) => {
 
   };
 
+  const handleTakeMeToFosterProfile = () => {
+    // Implement  "Take Me To Home" functionality here
+    navigation.navigate('FosterProfile');
+
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Foster Pet</Text>
@@ -50,6 +56,9 @@ const HomeScreen = ({ navigation }) => {
       </TouchableOpacity>
       <TouchableOpacity style={styles.button} onPress={handleTakeMeToNotification}>
         <Text style={styles.buttonText}>Notifications</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={handleTakeMeToFosterProfile}>
+        <Text style={styles.buttonText}>Foster Profile</Text>
       </TouchableOpacity>
       <TextInput
         style={styles.input}

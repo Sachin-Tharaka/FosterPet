@@ -15,8 +15,9 @@ const BookingHouseScreen = ({ navigation }) => {
     
   ];
 
-  const changeLocation = () => {
-    // Implement  "Change location" functionality here
+  const goToChangeLocation = () => {
+    //navigate to booking screen
+    navigation.navigate('LocationSetterScreen');
   };
 
   return (
@@ -32,7 +33,7 @@ const BookingHouseScreen = ({ navigation }) => {
           <Text style={styles.address}>Home</Text>
           <Text style={styles.addressDetails}>Kandy Road, Kelaniya</Text>
         </View>
-        <TouchableOpacity style={styles.change_button} onPress={changeLocation}>
+        <TouchableOpacity style={styles.change_button} onPress={goToChangeLocation}>
           <Text style={styles.change_button}>Change</Text>
         </TouchableOpacity>
       </View>
