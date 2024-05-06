@@ -10,6 +10,7 @@ import LandingScreen from './screens/LandingScreen';
 import EmailVerificationScreen from './screens/EmailVerificationScreen';
 import BookingCardScreen from './screens/BookingCardScreen';
 import BookingHouseScreen from './screens/BookingHouseScreen';
+import NotificationScreen from './screens/NotificationScreen'
 
 const Stack = createNativeStackNavigator();
 
@@ -80,6 +81,13 @@ export default function App() {
       <Stack.Screen
           name="BookingHouse"
           component={BookingHouseScreen}
+          options={{
+            headerShown: false
+          }}
+        /> 
+        <Stack.Screen
+          name="NotificationScreen"
+          component={NotificationScreen}
           options={{
             headerShown: false
           }}

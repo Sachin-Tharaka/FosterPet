@@ -32,6 +32,13 @@ const HomeScreen = ({ navigation }) => {
 
   };
 
+  // Handle take me to a home
+  const handleTakeMeToNotification = () => {
+    // Implement  "Take Me To Home" functionality here
+    navigation.navigate('NotificationScreen');
+
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Foster Pet</Text>
@@ -40,6 +47,9 @@ const HomeScreen = ({ navigation }) => {
       </TouchableOpacity>
       <TouchableOpacity style={styles.button} onPress={handleTakeMeToHome}>
         <Text style={styles.buttonText}>Take Me To Home</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={handleTakeMeToNotification}>
+        <Text style={styles.buttonText}>Notifications</Text>
       </TouchableOpacity>
       <TextInput
         style={styles.input}
