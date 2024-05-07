@@ -33,18 +33,7 @@ const getAllKennelNear = async(longitude, latitude, maxDistance, token) => {
   
   
 
-  const entries = [
-    { name: "Doo Keepers (Kandy)", rating: "★★★★", id: 1 },
-    { name: "Doo Keep (Kiribathgoda)", rating: "★★★★", id: 2 },
-    { name: "Doo Keepers (Kelaniya)", rating: "★★★★", id: 3 },
-    { name: "Doo Keepers (Kandy)", rating: "★★★★", id: 4 },
-    { name: "Doo Keep (Kiribathgoda)", rating: "★★★★", id: 5 },
-    { name: "Doo Keepers (Kelaniya)", rating: "★★★★", id: 6 },
-    { name: "Doo Keepers (Kandy)", rating: "★★★★", id: 7 },
-    { name: "Doo Keep (Kiribathgoda)", rating: "★★★★", id: 8 },
-    { name: "Doo Keepers (Kelaniya)", rating: "★★★★", id: 9 }
-    
-  ];
+  
 
   const goToChangeLocation = () => {
     //navigate to booking screen
