@@ -1,7 +1,15 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
 
+
+
+
 const UserAccount = ({ navigation }) => {
+
+  const goToBecomeAgent = () => {
+    navigation.navigate('BecomeAgent');
+  
+  };
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
@@ -15,7 +23,7 @@ const UserAccount = ({ navigation }) => {
         <TouchableOpacity style={styles.button}>
           <Text style={styles.buttonText}>Change Details</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={goToBecomeAgent}>
           <Text style={styles.buttonText}>Become an Agent</Text>
         </TouchableOpacity>
       </View>

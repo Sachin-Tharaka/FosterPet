@@ -18,6 +18,7 @@ import AdminOrders from './screens/AdminOrders';
 import AdminComplaints from './screens/AdminComplaints';
 import AdminUserManagement from './screens/AdminUserManagement';
 import UserAccount from './screens/UserAccount';
+import BecomeAgent from './screens/BecomeAgent';
 
 const Stack = createNativeStackNavigator();
 
@@ -152,6 +153,13 @@ export default function App() {
       headerShown: false
     }}
   /> 
+  <Stack.Screen
+  name="BecomeAgent"
+  component={BecomeAgent}
+  options={{
+    headerShown: false
+  }}
+/> 
  
         
       </Stack.Navigator>
