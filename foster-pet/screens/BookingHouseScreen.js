@@ -1,54 +1,94 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
+import KennelService from '../services/KennelService';
 
-const BookingHouseScreen = ({ navigation, route }) => {
-  const [location, setLocation] = useState('Unknown');
-  const [filter, setFilter] = useState('All');
-  const [availableHouses, setAvailableHouses] = useState([]);
+const BookingHouseScreen = ({ navigation }) => {
+  const token =  sessionStorage.getItem('token');
+  useEffect(() => {
+    console.warn("token ",token);
+    // Use KennelService to fetch all kennels
+   // getAllKennelNear(79.8,6.9,50000,token)
+    
+  }, []);
+  
+//get all kennel near
+// const getAllKennelNear = async(longitude, latitude, maxDistance, token) => {
 
-  // Mock data for available houses
-  const housesData = [
-    { id: '1', name: 'House 1', type: 'Professional', location: 'Location 1' },
-    { id: '2', name: 'House 2', type: 'Volunteer', location: 'Location 2' },
-    { id: '3', name: 'House 3', type: 'Professional', location: 'Location 3' },
+//   // call get all kennel near function
+//   try {
+//     const data = await KennelService.getAllKennelNear(longitude, latitude, maxDistance, token);
+    
+//     console.log('kennel data:', data);
+    
+    
+//   } catch (error) {
+//     // Handle  error 
+//     console.error('Error:', error.message);
+    
+//   }
+
+  
+// };
+  
+  
+
+  const entries = [
+    { name: "Doo Keepers (Kandy)", rating: "★★★★", id: 1 },
+    { name: "Doo Keep (Kiribathgoda)", rating: "★★★★", id: 2 },
+    { name: "Doo Keepers (Kelaniya)", rating: "★★★★", id: 3 },
+    { name: "Doo Keepers (Kandy)", rating: "★★★★", id: 4 },
+    { name: "Doo Keep (Kiribathgoda)", rating: "★★★★", id: 5 },
+    { name: "Doo Keepers (Kelaniya)", rating: "★★★★", id: 6 },
+    { name: "Doo Keepers (Kandy)", rating: "★★★★", id: 7 },
+    { name: "Doo Keep (Kiribathgoda)", rating: "★★★★", id: 8 },
+    { name: "Doo Keepers (Kelaniya)", rating: "★★★★", id: 9 }
+    
   ];
 
-  useEffect(() => {
-    // Set the user's location (you can use a real location service here)
-    setLocation('Your Location');
-    // Filter available houses based on the selected filter
-    const filteredHouses = housesData.filter(house => filter === 'All' || house.type === filter);
-    setAvailableHouses(filteredHouses);
-  }, [filter]);
-
-  const renderHouseCard = ({ item }) => (
-    <View style={styles.houseCard}>
-      <Text>Name: {item.name}</Text>
-      <Text>Type: {item.type}</Text>
-      <Text>Location: {item.location}</Text>
-    </View>
-  );
+  const goToChangeLocation = () => {
+    //navigate to booking screen
+    navigation.navigate('LocationSetterScreen');
+  };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.locationText}>Location: {location}</Text>
-      <View style={styles.filterContainer}>
-        <TouchableOpacity onPress={() => setFilter('All')} style={[styles.filterButton, filter === 'All' && styles.activeFilter]}>
+      <Text style={styles.header}>Welcome, the_jane</Text> 
+      {/* // Add current user name here  */}
+
+      <View style={styles.location_container}>
+        <View style={styles.location_container_logo}>
+          <Text style={styles.logo}>Logo</Text>
+        </View>
+        <View style={styles.location_container_text}>
+          <Text style={styles.address}>Home</Text>
+          <Text style={styles.addressDetails}>Kandy Road, Kelaniya</Text>
+        </View>
+        <TouchableOpacity style={styles.change_button} onPress={goToChangeLocation}>
+          <Text style={styles.change_button}>Change</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.button}>
           <Text>All</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => setFilter('Professional')} style={[styles.filterButton, filter === 'Professional' && styles.activeFilter]}>
+        <TouchableOpacity style={styles.button}>
           <Text>Professional</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => setFilter('Volunteer')} style={[styles.filterButton, filter === 'Volunteer' && styles.activeFilter]}>
+        <TouchableOpacity style={styles.button}>
           <Text>Volunteer</Text>
         </TouchableOpacity>
       </View>
-      <FlatList
-        data={availableHouses}
-        keyExtractor={item => item.id}
-        renderItem={renderHouseCard}
-        style={styles.flatList}
-      />
+      <ScrollView style={styles.list}>
+        {entries.map(entry => (
+          <View key={entry.id} style={styles.entry}>
+            <Image source={{ uri: 'https://picsum.photos/400/600?image=1' }} style={styles.image} />
+            <View style={styles.infoContainer}>
+              <Text style={styles.name}>{entry.name}</Text>
+              <Text style={styles.rating}>{entry.rating}</Text>
+            </View>
+          </View>
+        ))}
+      </ScrollView>
     </View>
   );
 };
@@ -57,35 +97,91 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
+    backgroundColor: '#ffffff',
+    marginTop:100
   },
-  locationText: {
-    fontSize: 18,
+  header: {
+    fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 10,
   },
-  filterContainer: {
+  address: {
+    fontSize: 20,
+    fontWeight: '600',
+    textAlign:'left'
+    
+  },
+  addressDetails: {
+    fontSize: 16,
+    color: '#666666',
+    textAlign:'left'
+
+
+  },
+  buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginBottom: 10,
+    marginBottom: 20,
   },
-  filterButton: {
-    padding: 10,
-    backgroundColor: '#ccc',
-    borderRadius: 5,
+  location_container: {
+    backgroundColor: 'skyblue',
+    borderRadius: 50,
+    display: 'flex',
+    flexDirection:'row',
+    alignItems: 'center',
+    justifyContent: "space-around",
+    marginBottom: 20,
+    paddingTop:5,
+    paddingBottom:10
   },
-  activeFilter: {
-    backgroundColor: 'lightblue',
+  
+  button: {
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    backgroundColor: '#007BFF',
+    borderRadius: 20,
+    elevation: 3,
   },
-  flatList: {
+
+  change_button: {
+    color:'blue',
+    fontWeight: 'bold',
+    textDecorationLine: 'underline'
+  },
+
+  list: {
     flex: 1,
   },
-  houseCard: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    padding: 10,
+  entry: {
+    flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 10,
-    borderRadius: 5,
+    padding: 10,
+    backgroundColor: '#F0F0F0',
+    borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
   },
+  image: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    marginRight: 15,
+  },
+  infoContainer: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  name: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  rating: {
+    fontSize: 16,
+    color: '#888888',
+  }
 });
 
 export default BookingHouseScreen;

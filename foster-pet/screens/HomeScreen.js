@@ -21,12 +21,28 @@ const HomeScreen = ({ navigation }) => {
 
   // Handle book a foster house
   const handleBookFosterHouse = () => {
-    // Implement booking functionality here
+    //navigate to booking screen
+    navigation.navigate('Booking');
   };
 
   // Handle take me to a home
   const handleTakeMeToHome = () => {
     // Implement  "Take Me To Home" functionality here
+    navigation.navigate('BookingHouse');
+
+  };
+
+  // Handle take me to a home
+  const handleTakeMeToNotification = () => {
+    // Implement  "Take Me To Home" functionality here
+    navigation.navigate('NotificationScreen');
+
+  };
+
+  const handleTakeMeToFosterProfile = () => {
+    // Implement  "Take Me To Home" functionality here
+    navigation.navigate('FosterProfile');
+
   };
 
   return (
@@ -37,6 +53,12 @@ const HomeScreen = ({ navigation }) => {
       </TouchableOpacity>
       <TouchableOpacity style={styles.button} onPress={handleTakeMeToHome}>
         <Text style={styles.buttonText}>Take Me To Home</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={handleTakeMeToNotification}>
+        <Text style={styles.buttonText}>Notifications</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={handleTakeMeToFosterProfile}>
+        <Text style={styles.buttonText}>Foster Profile</Text>
       </TouchableOpacity>
       <TextInput
         style={styles.input}
