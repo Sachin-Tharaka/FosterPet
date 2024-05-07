@@ -13,6 +13,10 @@ import BookingHouseScreen from './screens/BookingHouseScreen';
 import NotificationScreen from './screens/NotificationScreen'
 import FosterProfile from './screens/FosterProfile'
 import LocationSetterScreen from './screens/LocationSetterScreen';
+import AdminOverView from './screens/AdminOverView';
+import AdminOrders from './screens/AdminOrders';
+import AdminComplaints from './screens/AdminComplaints';
+import AdminUserManagement from './screens/AdminUserManagement';
 
 const Stack = createNativeStackNavigator();
 
@@ -109,6 +113,37 @@ export default function App() {
           headerShown: false
         }}
       /> 
+      <Stack.Screen
+        name="AdminUserManagement"
+        component={AdminUserManagement}
+        options={{
+          headerShown: false
+        }}
+      /> 
+      
+      <Stack.Screen
+      name="AdminComplaints"
+      component={AdminComplaints}
+      options={{
+        headerShown: false
+      }}
+    /> 
+    
+    <Stack.Screen
+    name="AdminOrders"
+    component={AdminOrders}
+    options={{
+      headerShown: false
+    }}
+  /> 
+  
+  <Stack.Screen
+  name="AdminOverView"
+  component={AdminOverView}
+  options={{
+    headerShown: false
+  }}
+/> 
  
         
       </Stack.Navigator>
