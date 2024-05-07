@@ -10,6 +10,11 @@ const UserAccount = ({ navigation }) => {
     navigation.navigate('BecomeAgent');
   
   };
+
+  const goToUserHome = () => {
+    navigation.navigate('AgentHome');
+  
+  };
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
@@ -26,6 +31,13 @@ const UserAccount = ({ navigation }) => {
         <TouchableOpacity style={styles.button} onPress={goToBecomeAgent}>
           <Text style={styles.buttonText}>Become an Agent</Text>
         </TouchableOpacity>
+        <View>
+        <Text>Other Agent UIs</Text>
+        </View>
+        <TouchableOpacity style={styles.button} onPress={goToUserHome}>
+          <Text style={styles.buttonText}>User Home</Text>
+        </TouchableOpacity>
+    
       </View>
 
      

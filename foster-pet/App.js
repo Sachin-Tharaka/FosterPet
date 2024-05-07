@@ -19,6 +19,10 @@ import AdminComplaints from './screens/AdminComplaints';
 import AdminUserManagement from './screens/AdminUserManagement';
 import UserAccount from './screens/UserAccount';
 import BecomeAgent from './screens/BecomeAgent';
+import AgentHome from './screens/AgentHome';
+import AgentChat from './screens/AgentChat';
+import AgentApprovals from './screens/AgentApprovals';
+import AgentWallet from './screens/AgentWallet';
 
 const Stack = createNativeStackNavigator();
 
@@ -160,7 +164,38 @@ export default function App() {
     headerShown: false
   }}
 /> 
+
+<Stack.Screen
+name="AgentHome"
+component={AgentHome}
+options={{
+  headerShown: false
+}}
+/>  
+
+<Stack.Screen
+name="AgentChat"
+component={AgentChat}
+options={{
+  headerShown: false
+}}
+/> 
  
+<Stack.Screen
+name="AgentWallet"
+component={AgentWallet}
+options={{
+  headerShown: false
+}}
+/> 
+
+<Stack.Screen
+name="AgentApprovals"
+component={AgentApprovals}
+options={{
+  headerShown: false
+}}
+/> 
         
       </Stack.Navigator>
     </NavigationContainer>
