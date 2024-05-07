@@ -13,6 +13,7 @@ const LoginScreen = ({ navigation }) => {
   const [error,setError]=useState('');
 
   const handleLogin = async() => {
+    console.warn('Loging...');
     setEmailError('');
     setPasswordError('');
     setError('');

@@ -17,6 +17,7 @@ const RegisterScreen = ({ navigation }) => {
   const [error,setError]=useState('');
 
   const handleRegister = async() => {
+    console.warn('Register...');
     setFirstNameError('');
     setLastNameError('');
     setEmailError('');

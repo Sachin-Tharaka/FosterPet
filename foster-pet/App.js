@@ -8,6 +8,11 @@ import RegisterScreen from './screens/RegisterScreen';
 import HomeScreen from './screens/HomeScreen';
 import LandingScreen from './screens/LandingScreen';
 import EmailVerificationScreen from './screens/EmailVerificationScreen';
+import BookingCardScreen from './screens/BookingCardScreen';
+import BookingHouseScreen from './screens/BookingHouseScreen';
+import NotificationScreen from './screens/NotificationScreen'
+import FosterProfile from './screens/FosterProfile'
+import LocationSetterScreen from './screens/LocationSetterScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -68,7 +73,42 @@ export default function App() {
             headerShown: false
           }}
         />  
-
+        <Stack.Screen
+          name="Booking"
+          component={BookingCardScreen}
+          options={{
+            headerShown: false
+          }}
+        />  
+      <Stack.Screen
+          name="BookingHouse"
+          component={BookingHouseScreen}
+          options={{
+            headerShown: false
+          }}
+        /> 
+        <Stack.Screen
+          name="NotificationScreen"
+          component={NotificationScreen}
+          options={{
+            headerShown: false
+          }}
+        /> 
+        
+        <Stack.Screen
+          name="FosterProfile"
+          component={FosterProfile}
+          options={{
+            headerShown: false
+          }}
+        /> 
+        <Stack.Screen
+        name="LocationSetterScreen"
+        component={LocationSetterScreen}
+        options={{
+          headerShown: false
+        }}
+      /> 
  
         
       </Stack.Navigator>
