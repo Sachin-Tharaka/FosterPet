@@ -1,36 +1,26 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
 
-const FosterProfile = ({ navigation }) => {
+const UserAccount = ({ navigation }) => {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
       <Image source={{ uri: 'https://picsum.photos/400/600?image=1' }} style={styles.logo} />
 
-        <Text style={styles.title}>Doo Keepers</Text>
-        <Text style={styles.location}>KANDY ROAD, KELANIYA</Text>
+        <Text style={styles.title}>Nipuni Perera</Text>
+        <Text style={styles.location}>Kotikawaththa</Text>
       </View>
 
       <View style={styles.buttonsContainer}>
         <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>VIEW HISTORY</Text>
+          <Text style={styles.buttonText}>Change Details</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>MESSAGE</Text>
+          <Text style={styles.buttonText}>Become an Agent</Text>
         </TouchableOpacity>
       </View>
 
-      <View style={styles.petsContainer}>
-      <Image source={{ uri: 'https://picsum.photos/400/600?image=1' }} style={styles.petImage} />
-
-      <Image source={{ uri: 'https://picsum.photos/400/600?image=1' }} style={styles.petImage} />
-
-      <Image source={{ uri: 'https://picsum.photos/400/600?image=1' }} style={styles.petImage} />
-
-      </View>
-
-      <Image source={{ uri: 'https://picsum.photos/400/600?image=1' }} style={styles.largeImage} />
-
+     
     </ScrollView>
   );
 };
@@ -95,4 +85,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default FosterProfile;
+export default UserAccount;

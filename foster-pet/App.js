@@ -17,6 +17,7 @@ import AdminOverView from './screens/AdminOverView';
 import AdminOrders from './screens/AdminOrders';
 import AdminComplaints from './screens/AdminComplaints';
 import AdminUserManagement from './screens/AdminUserManagement';
+import UserAccount from './screens/UserAccount';
 
 const Stack = createNativeStackNavigator();
 
@@ -144,6 +145,13 @@ export default function App() {
     headerShown: false
   }}
 /> 
+  <Stack.Screen
+    name="UserAccount"
+    component={UserAccount}
+    options={{
+      headerShown: false
+    }}
+  /> 
  
         
       </Stack.Navigator>
