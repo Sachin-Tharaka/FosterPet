@@ -4,31 +4,32 @@ import KennelService from '../services/KennelService';
 
 const BookingHouseScreen = ({ navigation }) => {
   const token =  sessionStorage.getItem('token');
+  const [kennels, setKennels] = useState([]);
   useEffect(() => {
     console.warn("token ",token);
     // Use KennelService to fetch all kennels
-   // getAllKennelNear(79.8,6.9,50000,token)
+    getAllKennelNear(79.8,6.9,50000,token)
     
   }, []);
   
 //get all kennel near
-// const getAllKennelNear = async(longitude, latitude, maxDistance, token) => {
+const getAllKennelNear = async(longitude, latitude, maxDistance, token) => {
 
-//   // call get all kennel near function
-//   try {
-//     const data = await KennelService.getAllKennelNear(longitude, latitude, maxDistance, token);
+  // call get all kennel near function
+  try {
+    const data = await KennelService.getAllKennelNear(longitude, latitude, maxDistance, token);
     
-//     console.log('kennel data:', data);
+    console.log('kennel data:', data);
+    setKennels(data);
     
+  } catch (error) {
+    // Handle  error 
+    console.error('Error:', error.message);
     
-//   } catch (error) {
-//     // Handle  error 
-//     console.error('Error:', error.message);
-    
-//   }
+  }
 
   
-// };
+};
   
   
 
@@ -79,12 +80,13 @@ const BookingHouseScreen = ({ navigation }) => {
         </TouchableOpacity>
       </View>
       <ScrollView style={styles.list}>
-        {entries.map(entry => (
-          <View key={entry.id} style={styles.entry}>
-            <Image source={{ uri: 'https://picsum.photos/400/600?image=1' }} style={styles.image} />
+        {kennels.map(kennel => (
+          <View key={kennel.kennelId} style={styles.entry}>
+           <Image source={ { uri: `data:${kennel.image}`} } style={styles.image} />
             <View style={styles.infoContainer}>
-              <Text style={styles.name}>{entry.name}</Text>
-              <Text style={styles.rating}>{entry.rating}</Text>
+              <Text style={styles.name}>{kennel.kennelName}</Text>
+              <Text style={styles.name}>{kennel.kennelAddress.city}</Text>
+              <Text style={styles.rating}>★★★★</Text>
             </View>
           </View>
         ))}

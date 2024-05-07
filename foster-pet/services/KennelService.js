@@ -33,7 +33,7 @@ async getAllKennelNear(longitude, latitude, maxDistance, token) {
       const response = await fetch(`${this.baseUrl}/api/kennel/near?longitude=${longitude}&latitude=${latitude}&maxDistance=${maxDistance}`, {
         method: 'GET',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json;charset=utf-8',
           'Authorization': `Bearer ${token}`,
         },
         //mode: 'no-cors'
