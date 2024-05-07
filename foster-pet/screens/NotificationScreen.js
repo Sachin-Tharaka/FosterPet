@@ -29,8 +29,17 @@ const NotificationScreen = ({ navigation }) => {
     return stars;
   };
 
+  const goToChangeAdminOverView = () => {
+    // Implement  "Take Me To Home" functionality here
+    navigation.navigate('AdminOverView');
+
+  };
+
   return (
     <View style={styles.container}>
+    <TouchableOpacity style={styles.button} onPress={goToChangeAdminOverView}>
+    <Text style={styles.buttonText}>Admin UIs</Text>
+  </TouchableOpacity>
       <Text style={styles.header}>Notifications</Text>
       <ScrollView style={styles.list}>
         {notifications.map(notification => (
@@ -98,6 +107,17 @@ const styles = StyleSheet.create({
   review: {
     fontSize: 14,
     color: '#666',
+  },
+  button: {
+    backgroundColor: 'blue',
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 10,
+  },
+  buttonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 });
 
