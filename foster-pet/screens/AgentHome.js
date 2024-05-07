@@ -82,6 +82,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginTop: 10,
   },
+  logo: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+  },
   location: {
     fontSize: 16,
     color: 'gray',
