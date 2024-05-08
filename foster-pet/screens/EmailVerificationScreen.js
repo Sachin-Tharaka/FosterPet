@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import CustomOTPInput from '../components/CustomOTPInput';
-import UserService from '../services/UserService';
+import AuthenticationService from '../services/AuthenticationService';
 
 const EmailVerificationScreen = ({ navigation,route }) => {
   const [verificationCode, setVerificationCode] = useState('');
@@ -23,7 +23,7 @@ const EmailVerificationScreen = ({ navigation,route }) => {
     }else{
 // call register function
 try {
-  const verificationData = await UserService.emailVerification(email,verificationCode);
+  const verificationData = await AuthenticationService.emailVerification(email,verificationCode);
   
   console.log('Verification data:', verificationData);
  if(verificationData.token!==null){

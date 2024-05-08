@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import UserService from '../services/UserService';
+import AuthenticationService from '../services/AuthenticationService';
 import Navbar from '../components/Navbar';
 
 const LoginScreen = ({ navigation }) => {
@@ -33,7 +33,7 @@ const LoginScreen = ({ navigation }) => {
 
     // Call the login function
     try {
-      const userData = await UserService.login(email, password);
+      const userData = await AuthenticationService.login(email, password);
       console.log('Logged in:', userData);
       sessionStorage.setItem('token',userData.token);
 

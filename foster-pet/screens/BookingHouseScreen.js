@@ -1,15 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
 import KennelService from '../services/KennelService';
+import UserService from '../services/UserService';
 import Navbar from '../components/Navbar';
 
 const BookingHouseScreen = ({ navigation }) => {
   const token =  sessionStorage.getItem('token');
   const [kennels, setKennels] = useState([]);
+  const [userData,setUserData]=useState([]);
+
+  const userId="6639d7c8f9a64015050f0ad9";
   useEffect(() => {
     console.warn("token ",token);
     // Use KennelService to fetch all kennels
     getAllKennelNear(79.8,6.9,50000,token)
+    //get user data
+    getUserById(userId,token);
     
   }, []);
   
@@ -32,7 +38,25 @@ const getAllKennelNear = async(longitude, latitude, maxDistance, token) => {
   
 };
   
+ 
+//get user by id
+const getUserById = async(id,token) => {
+
+  // call get all kennel near function
+  try {
+    const data = await UserService.getUserById(id, token);
+    
+    console.log('user data:', data);
+    setUserData(data);
+    
+  } catch (error) {
+    // Handle  error 
+    console.error('Error:', error.message);
+    
+  }
+
   
+};
 
   
 
@@ -43,7 +67,7 @@ const getAllKennelNear = async(longitude, latitude, maxDistance, token) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Welcome, the_jane</Text> 
+      <Text style={styles.header}>Welcome, {userData.firstName} {userData.lastName}</Text> 
       {/* // Add current user name here  */}
 
       <View style={styles.location_container}>
