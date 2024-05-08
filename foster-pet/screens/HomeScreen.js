@@ -32,13 +32,6 @@ const HomeScreen = ({ navigation }) => {
 
   };
 
-  // Handle take me to a home
-  const handleTakeMeToNotification = () => {
-    // Implement  "Take Me To Home" functionality here
-    navigation.navigate('NotificationScreen');
-
-  };
-
   const handleTakeMeToFosterProfile = () => {
     // Implement  "Take Me To Home" functionality here
     navigation.navigate('FosterProfile');
@@ -47,15 +40,12 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Foster Pet</Text>
+      <Text style={styles.title}>Foster Pet Gallery</Text>
       <TouchableOpacity style={styles.button} onPress={handleBookFosterHouse}>
         <Text style={styles.buttonText}>Book A Foster House</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.button} onPress={handleTakeMeToHome}>
         <Text style={styles.buttonText}>Take Me To Home</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={handleTakeMeToNotification}>
-        <Text style={styles.buttonText}>Notifications</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.button} onPress={handleTakeMeToFosterProfile}>
         <Text style={styles.buttonText}>Foster Profile</Text>
