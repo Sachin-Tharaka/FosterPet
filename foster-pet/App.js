@@ -144,7 +144,23 @@ export default function App() {
     headerShown: false
   }}
 /> 
+
  
+<Stack.Screen
+name="AgentWallet"
+component={AgentWallet}
+options={{
+  headerShown: false
+}}
+/> 
+
+<Stack.Screen
+name="AgentApprovals"
+component={AgentApprovals}
+options={{
+  headerShown: false
+}}
+/> 
         
       </Stack.Navigator>
     </NavigationContainer>

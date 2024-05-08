@@ -35,11 +35,6 @@ const NotificationScreen = ({ navigation }) => {
 
   };
 
-  return (
-    <View style={styles.container}>
-    <TouchableOpacity style={styles.button} onPress={goToChangeAdminOverView}>
-    <Text style={styles.buttonText}>Admin UIs</Text>
-  </TouchableOpacity>
       <Text style={styles.header}>Notifications</Text>
       <ScrollView style={styles.list}>
         {notifications.map(notification => (
