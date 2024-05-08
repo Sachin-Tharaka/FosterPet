@@ -1,12 +1,12 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
+import Navbar from '../components/Navbar';
 
 const FosterProfile = ({ navigation }) => {
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
       <View style={styles.header}>
-      <Image source={{ uri: 'https://picsum.photos/400/600?image=1' }} style={styles.logo} />
-
+        <Image source={{ uri: 'https://picsum.photos/400/600?image=1' }} style={styles.logo} />
         <Text style={styles.title}>Doo Keepers</Text>
         <Text style={styles.location}>KANDY ROAD, KELANIYA</Text>
       </View>
@@ -19,19 +19,29 @@ const FosterProfile = ({ navigation }) => {
           <Text style={styles.buttonText}>MESSAGE</Text>
         </TouchableOpacity>
       </View>
-
-      <View style={styles.petsContainer}>
-      <Image source={{ uri: 'https://picsum.photos/400/600?image=1' }} style={styles.petImage} />
-
-      <Image source={{ uri: 'https://picsum.photos/400/600?image=1' }} style={styles.petImage} />
-
-      <Image source={{ uri: 'https://picsum.photos/400/600?image=1' }} style={styles.petImage} />
-
-      </View>
-
-      <Image source={{ uri: 'https://picsum.photos/400/600?image=1' }} style={styles.largeImage} />
-
-    </ScrollView>
+      <ScrollView>
+        <View style={styles.petsContainer}>
+          <View style={styles.petRow}>
+            <Image source={{ uri: 'https://picsum.photos/400/600?image=1' }} style={styles.petImage} />
+            <Image source={{ uri: 'https://picsum.photos/400/600?image=1' }} style={styles.petImage} />
+          </View>
+          <View style={styles.petRow}>
+            <Image source={{ uri: 'https://picsum.photos/400/600?image=1' }} style={styles.petImage} />
+            <Image source={{ uri: 'https://picsum.photos/400/600?image=1' }} style={styles.petImage} />
+          </View>
+          <View style={styles.petRow}>
+          <Image source={{ uri: 'https://picsum.photos/400/600?image=1' }} style={styles.petImage} />
+          <Image source={{ uri: 'https://picsum.photos/400/600?image=1' }} style={styles.petImage} />
+        </View>
+        <View style={styles.petRow}>
+          <Image source={{ uri: 'https://picsum.photos/400/600?image=1' }} style={styles.petImage} />
+          <Image source={{ uri: 'https://picsum.photos/400/600?image=1' }} style={styles.petImage} />
+        </View>
+          {/* Add more rows as needed */}
+        </View>
+      </ScrollView>
+      <View><Navbar /></View>
+    </View>
   );
 };
 
@@ -61,7 +71,6 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   buttonsContainer: {
-    display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'space-around',
@@ -73,26 +82,24 @@ const styles = StyleSheet.create({
     width: '80%',
     alignItems: 'center',
     borderRadius: 5,
-    marginBottom:10
+    marginBottom: 10
   },
   buttonText: {
     color: 'white',
     fontWeight: 'bold',
   },
   petsContainer: {
+    marginBottom: 20,
+  },
+  petRow: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginBottom: 20,
   },
   petImage: {
-    width: 100,
+    width: '50%',
     height: 150,
+    margin: 5,
   },
-  largeImage: {
-    width: '100%',
-    height: 200,
-    marginBottom: 20,
-  }
 });
 
 export default FosterProfile;

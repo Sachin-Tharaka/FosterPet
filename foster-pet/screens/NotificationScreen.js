@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
+import Navbar from '../components/Navbar';
 
 const NotificationScreen = ({ navigation }) => {
 
@@ -66,6 +67,7 @@ const NotificationScreen = ({ navigation }) => {
           </View>
         ))}
       </ScrollView>
+      <View><Navbar /></View>
     </View>
   );
 

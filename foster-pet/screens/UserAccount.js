@@ -1,55 +1,54 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
-
-
-
+import Navbar from '../components/Navbar';
 
 const UserAccount = ({ navigation }) => {
 
   const goToBecomeAgent = () => {
     navigation.navigate('BecomeAgent');
-  
   };
 
   const goToUserHome = () => {
     navigation.navigate('AgentHome');
-  
   };
+
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.header}>
-      <Image source={{ uri: 'https://picsum.photos/400/600?image=1' }} style={styles.logo} />
-
-        <Text style={styles.title}>Nipuni Perera</Text>
-        <Text style={styles.location}>Kotikawaththa</Text>
-      </View>
-
-      <View style={styles.buttonsContainer}>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Change Details</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={goToBecomeAgent}>
-          <Text style={styles.buttonText}>Become an Agent</Text>
-        </TouchableOpacity>
-        <View>
-        <Text>Other Agent UIs</Text>
+    <View style={styles.outerContainer}>
+      <ScrollView style={styles.container}>
+        <View style={styles.header}>
+          <Image source={{ uri: 'https://picsum.photos/400/600?image=1' }} style={styles.logo} />
+          <Text style={styles.title}>Nipuni Perera</Text>
+          <Text style={styles.location}>Kotikawaththa</Text>
         </View>
-        <TouchableOpacity style={styles.button} onPress={goToUserHome}>
-          <Text style={styles.buttonText}>User Home</Text>
-        </TouchableOpacity>
-    
-      </View>
 
-     
-    </ScrollView>
+        <View style={styles.buttonsContainer}>
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.buttonText}>Change Details</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={goToBecomeAgent}>
+            <Text style={styles.buttonText}>Become an Agent</Text>
+          </TouchableOpacity>
+          <View>
+            <Text>Other Agent UIs</Text>
+          </View>
+          <TouchableOpacity style={styles.button} onPress={goToUserHome}>
+            <Text style={styles.buttonText}>User Home</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+      <Navbar />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  outerContainer: {
     flex: 1,
     backgroundColor: 'white',
-    marginTop: 60
+    paddingTop: 60
+  },
+  container: {
+    flex: 1
   },
   header: {
     alignItems: 'center',
@@ -71,7 +70,6 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   buttonsContainer: {
-    display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'space-around',
@@ -83,26 +81,12 @@ const styles = StyleSheet.create({
     width: '80%',
     alignItems: 'center',
     borderRadius: 5,
-    marginBottom:10
+    marginBottom: 10
   },
   buttonText: {
     color: 'white',
     fontWeight: 'bold',
   },
-  petsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginBottom: 20,
-  },
-  petImage: {
-    width: 100,
-    height: 150,
-  },
-  largeImage: {
-    width: '100%',
-    height: 200,
-    marginBottom: 20,
-  }
 });
 
 export default UserAccount;

@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
+import Navbar from '../components/Navbar';
 
 const BookingHouseScreen = ({ navigation }) => {
   const entries = [
@@ -59,6 +60,9 @@ const BookingHouseScreen = ({ navigation }) => {
           </View>
         ))}
       </ScrollView>
+      <View>
+      <Navbar />
+      </View>
     </View>
   );
 };

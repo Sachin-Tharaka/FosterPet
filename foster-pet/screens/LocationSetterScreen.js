@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, FlatList, TouchableOpacity } from 'react-native';
+import Navbar from '../components/Navbar';
 
 const LocationSetterScreen = ({ navigation }) => {
   const [searchText, setSearchText] = useState('');
@@ -41,6 +42,7 @@ const LocationSetterScreen = ({ navigation }) => {
         renderItem={renderLocation}
         keyExtractor={item => item.key}
       />
+      <View> <Navbar /></View>
     </View>
   );
 };
