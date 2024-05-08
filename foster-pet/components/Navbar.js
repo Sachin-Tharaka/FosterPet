@@ -7,35 +7,35 @@ const Navbar = () => {
 
     const navigation = useNavigation();
 
-    const handleSearch = () => {
+    const handleHome = () => {
          navigation.navigate('Home');
       };
       
-      const handleSave = () => {
-        // Implement the save action here
+      const handleNotifications = () => {
+        navigation.navigate('NotificationScreen');
       };
       
-      const handleBooking = () => {
-        // Implement the booking action here
+      const handleAccount = () => {
+        navigation.navigate('UserAccount');
       };
       
       const handleSignIn = () => {
-       navigation.navigate('Login');
+      //  implement the function
       };
       
       return (
         <View style={styles.navBar}>
-      <TouchableOpacity onPress={handleSearch} style={styles.iconContainer}>
+      <TouchableOpacity onPress={handleHome} style={styles.iconContainer}>
         <Icon name="home" size={24} color="#333" />
       </TouchableOpacity>
-      <TouchableOpacity onPress={handleSave} style={styles.iconContainer}>
-        <Icon name="save" size={24} color="#333" />
+      <TouchableOpacity onPress={handleNotifications} style={styles.iconContainer}>
+        <Icon name="bell" size={24} color="#333" />
       </TouchableOpacity>
-      <TouchableOpacity onPress={handleBooking} style={styles.iconContainer}>
-        <Icon name="calendar" size={24} color="#333" />
+      <TouchableOpacity onPress={handleAccount} style={styles.iconContainer}>
+        <Icon name="user-circle" size={24} color="#333" />
       </TouchableOpacity>
       <TouchableOpacity onPress={handleSignIn} style={styles.iconContainer}>
-        <Icon name="user-circle" size={24} color="#333" />
+        <Icon name="navicon" size={24} color="#333" />
       </TouchableOpacity>
     </View>
       );

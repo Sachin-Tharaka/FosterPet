@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
 import KennelService from '../services/KennelService';
+import Navbar from '../components/Navbar';
 
 const BookingHouseScreen = ({ navigation }) => {
   const token =  sessionStorage.getItem('token');
@@ -80,6 +81,9 @@ const getAllKennelNear = async(longitude, latitude, maxDistance, token) => {
           </View>
         ))}
       </ScrollView>
+      <View>
+      <Navbar />
+      </View>
     </View>
   );
 };
