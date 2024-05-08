@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import UserService from '../services/UserService';
+import AuthenticationService from '../services/AuthenticationService';
 
 const RegisterScreen = ({ navigation }) => {
   const [firstName, setFirstName] = useState('');
@@ -56,7 +56,7 @@ const RegisterScreen = ({ navigation }) => {
 
     // call register function
     try {
-      const userData = await UserService.register(firstName,lastName, email, password);
+      const userData = await AuthenticationService.register(firstName,lastName, email, password);
       
       console.log('response:', userData);
       //sessionStorage.setItem('token',userData.token);
