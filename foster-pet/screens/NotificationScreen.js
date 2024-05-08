@@ -30,10 +30,23 @@ const NotificationScreen = ({ navigation }) => {
   };
 
   const goToChangeAdminOverView = () => {
-    // Implement  "Take Me To Home" functionality here
     navigation.navigate('AdminOverView');
 
   };
+
+  const handleTakeMeToUserAccount = () => {
+    navigation.navigate('UserAccount');
+
+  };
+
+  return (
+    <View style={styles.container}>
+    <TouchableOpacity style={styles.button} onPress={goToChangeAdminOverView}>
+    <Text style={styles.buttonText}>Admin UIs</Text>
+  </TouchableOpacity>
+  <TouchableOpacity style={styles.button} onPress={handleTakeMeToUserAccount}>
+    <Text style={styles.buttonText}>User Account UIs</Text>
+  </TouchableOpacity>
 
       <Text style={styles.header}>Notifications</Text>
       <ScrollView style={styles.list}>
@@ -55,6 +68,7 @@ const NotificationScreen = ({ navigation }) => {
       </ScrollView>
     </View>
   );
+
 };
 
 const styles = StyleSheet.create({
