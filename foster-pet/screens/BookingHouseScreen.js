@@ -91,22 +91,23 @@ const BookingHouseScreen = ({ navigation }) => {
       <TouchableOpacity style={styles.nav_button} onPress={handleTakeMeToFosterProfile}>
         <Text style={styles.buttonText}>Foster Profile</Text>
       </TouchableOpacity>
-      <Text style={styles.header}>Welcome, {userData.firstName} {userData.lastName}</Text>
-      {/* // Add current user name here  */}
+      <Text style={styles.header}>Welcome, {userData.firstName}</Text>
 
       <View style={styles.location_container}>
-        <View style={styles.location_container_logo}>
-        <Icon name="map-marker" size={24} color="#333" />
-
-        </View>
-        <View style={styles.location_container_text}>
-          <Text style={styles.address}>Home</Text>
-          <Text style={styles.addressDetails}>Kandy Road, Kelaniya</Text>
+        <View style={styles.location_container_details}>
+          <View style={styles.location_container_icon}>
+            <Icon name="map-marker" size={32} color="#333" />
+          </View>
+          <View style={styles.location_container_text}>
+            <Text style={styles.address}>Home</Text>
+            <Text style={styles.addressDetails}>Kandy Road, Kelaniya</Text>
+          </View>
         </View>
         <TouchableOpacity style={styles.change_button} onPress={goToChangeLocation}>
           <Text style={styles.change_button}>Change</Text>
         </TouchableOpacity>
       </View>
+
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.button}>
           <Text>All</Text>
@@ -147,40 +148,57 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginBottom: 20,
   },
   address: {
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: '600',
-    textAlign: 'left'
+    textAlign: 'left',
+    padding:0
 
   },
   addressDetails: {
-    fontSize: 16,
+    fontSize: 14,
     color: '#666666',
-    textAlign: 'left'
+    textAlign: 'left',
+
   },
   buttonContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    width: '70%',
+    justifyContent: 'space-between',
     marginBottom: 20,
+    marginTop: 20,
+
   },
   location_container: {
-    backgroundColor: 'skyblue',
+    backgroundColor: '#F2F2F2',
     borderRadius: 50,
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: "space-around",
+    justifyContent: "space-between",
     marginBottom: 20,
-    paddingTop: 5,
+    padding:30,
+    paddingTop: 10,
     paddingBottom: 10
+ 
+  },
+  location_container_details:{
+ display:'flex',
+ flexDirection: 'row',
+ justifyContent: 'space-around',
+ alignItems:'center',
+  },
+
+  location_container_icon: {
+marginRight: 12
   },
 
   button: {
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    backgroundColor: '#007BFF',
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    backgroundColor: '#D9D9D9',
     borderRadius: 20,
     elevation: 3,
   },
@@ -203,7 +221,6 @@ const styles = StyleSheet.create({
   change_button: {
     color: 'blue',
     fontWeight: 'bold',
-    textDecorationLine: 'underline'
   },
 
   list: {
@@ -214,7 +231,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 10,
     padding: 10,
-    backgroundColor: '#F0F0F0',
+    backgroundColor: '#F2F2F2',
     borderRadius: 10,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
