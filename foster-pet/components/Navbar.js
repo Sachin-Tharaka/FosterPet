@@ -8,7 +8,7 @@ const Navbar = () => {
     const navigation = useNavigation();
 
     const handleHome = () => {
-         navigation.navigate('Home');
+         navigation.navigate('BookingHouse');
       };
       
       const handleNotifications = () => {
@@ -19,8 +19,8 @@ const Navbar = () => {
         navigation.navigate('UserAccount');
       };
       
-      const handleSignIn = () => {
-      //  implement the function
+      const handleGallery = () => {
+        navigation.navigate('Home');
       };
       
       return (
@@ -34,7 +34,7 @@ const Navbar = () => {
       <TouchableOpacity onPress={handleAccount} style={styles.iconContainer}>
         <Icon name="user-circle" size={24} color="#333" />
       </TouchableOpacity>
-      <TouchableOpacity onPress={handleSignIn} style={styles.iconContainer}>
+      <TouchableOpacity onPress={handleGallery} style={styles.iconContainer}>
         <Icon name="navicon" size={24} color="#333" />
       </TouchableOpacity>
     </View>
