@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import AuthenticationService from '../services/AuthenticationService';
 import Navbar from '../components/Navbar';
 
@@ -35,10 +36,10 @@ const LoginScreen = ({ navigation }) => {
     try {
       const userData = await AuthenticationService.login(email, password);
       console.log('Logged in:', userData);
-      sessionStorage.setItem('token',userData.token);
+      await AsyncStorage.setItem('token', userData.token);
 
       //navigate to home
-    navigation.navigate('Home');
+      navigation.navigate('Home');
     } catch (error) {
       // Handle login error 
       console.error('Login failed:', error.message);
@@ -69,25 +70,25 @@ const LoginScreen = ({ navigation }) => {
       {passwordError && <Text style={styles.error}>{passwordError}</Text>}
 
       <Text>
- Forgot Password?{' '}
-  <Text style={styles.forgotPassword} onPress={() => navigation.navigate('Reset')}>
-    Reset Password
-  </Text>
-</Text>
+        Forgot Password?{' '}
+        <Text style={styles.forgotPassword} onPress={() => navigation.navigate('Reset')}>
+          Reset Password
+        </Text>
+      </Text>
 
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
       
       <Text>
-  You don't have an account?{' '}
-  <Text style={styles.register} onPress={() => navigation.navigate('Signup')}>
-    Register
-  </Text>
-</Text>
-</View>
-<Navbar/>
+        You don't have an account?{' '}
+        <Text style={styles.register} onPress={() => navigation.navigate('Signup')}>
+          Register
+        </Text>
+      </Text>
     </View>
+    <Navbar/>
+  </View>
   );
 };
 

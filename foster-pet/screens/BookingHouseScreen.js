@@ -1,64 +1,55 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import KennelService from '../services/KennelService';
 import UserService from '../services/UserService';
 import Navbar from '../components/Navbar';
 
 const BookingHouseScreen = ({ navigation }) => {
-  const token =  sessionStorage.getItem('token');
   const [kennels, setKennels] = useState([]);
-  const [userData,setUserData]=useState([]);
+  const [userData, setUserData] = useState([]);
 
-  const userId="6639d7c8f9a64015050f0ad9";
+  const userId = "6639d7c8f9a64015050f0ad9";
   useEffect(() => {
-    console.warn("token ",token);
-    // Use KennelService to fetch all kennels
-    getAllKennelNear(79.8,6.9,50000,token)
-    //get user data
-    getUserById(userId,token);
-    
+    const getToken = async () => {
+      const token = await AsyncStorage.getItem('token');
+      if (token) {
+        // Token exists, fetch kennels and user data
+        getAllKennelNear(79.8, 6.9, 50000, token);
+        getUserById(userId, token);
+      } else {
+        // Token doesn't exist, navigate to Login screen
+        navigation.navigate('Login');
+      }
+    };
+    getToken();
   }, []);
-  
-//get all kennel near
-const getAllKennelNear = async(longitude, latitude, maxDistance, token) => {
 
-  // call get all kennel near function
-  try {
-    const data = await KennelService.getAllKennelNear(longitude, latitude, maxDistance, token);
-    
-    console.log('kennel data:', data);
-    setKennels(data);
-    
-  } catch (error) {
-    // Handle  error 
-    console.error('Error:', error.message);
-    
-  }
+  //get all kennel near
+  const getAllKennelNear = async (longitude, latitude, maxDistance, token) => {
+    // call get all kennel near function
+    try {
+      const data = await KennelService.getAllKennelNear(longitude, latitude, maxDistance, token);
+      console.log('kennel data:', data);
+      setKennels(data);
+    } catch (error) {
+      // Handle error 
+      console.error('Error:', error.message);
+    }
+  };
 
-  
-};
-  
- 
-//get user by id
-const getUserById = async(id,token) => {
-
-  // call get all kennel near function
-  try {
-    const data = await UserService.getUserById(id, token);
-    
-    console.log('user data:', data);
-    setUserData(data);
-    
-  } catch (error) {
-    // Handle  error 
-    console.error('Error:', error.message);
-    
-  }
-
-  
-};
-
-  
+  //get user by id
+  const getUserById = async (id, token) => {
+    // call get user by id function
+    try {
+      const data = await UserService.getUserById(id, token);
+      console.log('user data:', data);
+      setUserData(data);
+    } catch (error) {
+      // Handle error 
+      console.error('Error:', error.message);
+    }
+  };
 
   const goToChangeLocation = () => {
     //navigate to booking screen
@@ -67,7 +58,7 @@ const getUserById = async(id,token) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Welcome, {userData.firstName} {userData.lastName}</Text> 
+      <Text style={styles.header}>Welcome, {userData.firstName} {userData.lastName}</Text>
       {/* // Add current user name here  */}
 
       <View style={styles.location_container}>
@@ -96,7 +87,7 @@ const getUserById = async(id,token) => {
       <ScrollView style={styles.list}>
         {kennels.map(kennel => (
           <View key={kennel.kennelId} style={styles.entry}>
-           <Image source={ { uri: `data:${kennel.image}`} } style={styles.image} />
+            <Image source={{ uri: `data:${kennel.image}` }} style={styles.image} />
             <View style={styles.infoContainer}>
               <Text style={styles.name}>{kennel.kennelName}</Text>
               <Text style={styles.name}>{kennel.kennelAddress.city}</Text>
@@ -106,7 +97,7 @@ const getUserById = async(id,token) => {
         ))}
       </ScrollView>
       <View>
-      <Navbar />
+        <Navbar />
       </View>
     </View>
   );
@@ -117,7 +108,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
     backgroundColor: '#ffffff',
-    marginTop:100
+    marginTop: 100
   },
   header: {
     fontSize: 24,
@@ -127,15 +118,13 @@ const styles = StyleSheet.create({
   address: {
     fontSize: 20,
     fontWeight: '600',
-    textAlign:'left'
-    
+    textAlign: 'left'
+
   },
   addressDetails: {
     fontSize: 16,
     color: '#666666',
-    textAlign:'left'
-
-
+    textAlign: 'left'
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -146,14 +135,14 @@ const styles = StyleSheet.create({
     backgroundColor: 'skyblue',
     borderRadius: 50,
     display: 'flex',
-    flexDirection:'row',
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: "space-around",
     marginBottom: 20,
-    paddingTop:5,
-    paddingBottom:10
+    paddingTop: 5,
+    paddingBottom: 10
   },
-  
+
   button: {
     paddingVertical: 12,
     paddingHorizontal: 20,
@@ -163,7 +152,7 @@ const styles = StyleSheet.create({
   },
 
   change_button: {
-    color:'blue',
+    color: 'blue',
     fontWeight: 'bold',
     textDecorationLine: 'underline'
   },
