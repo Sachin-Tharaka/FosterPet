@@ -70,12 +70,6 @@ const BookingHouseScreen = ({ navigation }) => {
       navigation.navigate('Home');
   
     };
-  
-    const handleTakeMeToFosterProfile = () => {
-      // Implement  "Take Me To Home" functionality here
-      navigation.navigate('FosterProfile');
-  
-    };
 
     return (
     
@@ -88,9 +82,6 @@ const BookingHouseScreen = ({ navigation }) => {
         </TouchableOpacity>
         <TouchableOpacity style={styles.nav_button} onPress={handleTakeMeToHome}>
           <Text style={styles.buttonText}>Take Me To Gallery</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.nav_button} onPress={handleTakeMeToFosterProfile}>
-          <Text style={styles.buttonText}>Foster Profile</Text>
         </TouchableOpacity>
         <Text style={styles.header}>Welcome, {userData.firstName}</Text>
   
