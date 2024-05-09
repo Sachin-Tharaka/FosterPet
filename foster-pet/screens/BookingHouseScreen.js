@@ -19,6 +19,7 @@ const BookingHouseScreen = ({ navigation }) => {
         getUserById(userId, token);
       } else {
         // Token doesn't exist, navigate to Login screen
+        console.log("Please login");
         navigation.navigate('Login');
       }
     };
@@ -86,14 +87,19 @@ const BookingHouseScreen = ({ navigation }) => {
       </View>
       <ScrollView style={styles.list}>
         {kennels.map(kennel => (
-          <View key={kennel.kennelId} style={styles.entry}>
-            <Image source={{ uri: `data:${kennel.image}` }} style={styles.image} />
+          <TouchableOpacity
+          key={kennel.kennelId}
+          style={styles.entry}
+          onPress={() => navigation.navigate('FosterProfile', { kennelId: kennel.kennelId })}
+        >
+            {/* <Image source={{ uri: `data:${kennel.image}` }} style={styles.image} /> */}
+            <Image source={{ uri: kennel.images[0] }} style={styles.image} />
             <View style={styles.infoContainer}>
               <Text style={styles.name}>{kennel.kennelName}</Text>
               <Text style={styles.name}>{kennel.kennelAddress.city}</Text>
               <Text style={styles.rating}>★★★★</Text>
             </View>
-          </View>
+            </TouchableOpacity>
         ))}
       </ScrollView>
       <View>

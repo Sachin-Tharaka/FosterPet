@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import ImageGallery from '../components/ImageGallery';
 import Navbar from '../components/Navbar';
 
@@ -26,9 +27,19 @@ const HomeScreen = ({ navigation }) => {
   };
 
   // Handle take me to a home
-  const handleTakeMeToHome = () => {
+  const handleTakeMeToHome = async() => {
     // Implement  "Take Me To Home" functionality here
-    navigation.navigate('BookingHouse');
+    
+    const token = await AsyncStorage.getItem('token');
+    console.log("token: ",token);
+      if (token) {
+        // Token exists, navigate to booking house screen
+        navigation.navigate('BookingHouse');
+      } else {
+        // Token doesn't exist, navigate to Login screen
+        console.log("Please login");
+        navigation.navigate('Login');
+      }
 
   };
 

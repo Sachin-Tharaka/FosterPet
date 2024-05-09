@@ -1,8 +1,41 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
 import Navbar from '../components/Navbar';
+import KennelService from '../services/KennelService';
 
-const FosterProfile = ({ navigation }) => {
+const FosterProfile = ({ route, navigation } ) => {
+  const { kennelId } = route.params;
+  const [kennelData, setKennelData] = useState([]);
+
+  useEffect(() => {
+    const getToken = async () => {
+      const token = await AsyncStorage.getItem('token');
+      if (token) {
+        // Token exists, fetch kennels and user data
+        getKennelById(kennelId, token);
+      } else {
+        // Token doesn't exist, navigate to Login screen
+        console.log("Please login");
+        navigation.navigate('Login');
+      }
+    };
+    getToken();
+  }, []);
+
+
+  //get kennel by id
+  const getKennelById = async (id, token) => {
+    // call get kennel by id function
+    try {
+      const data = await KennelService.getKennelById(id, token);
+      console.log('kennel data:', data);
+      setKennelData(data);
+    } catch (error) {
+      // Handle error 
+      console.error('Error:', error.message);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
