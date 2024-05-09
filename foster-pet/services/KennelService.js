@@ -52,6 +52,31 @@ async getAllKennelNear(longitude, latitude, maxDistance, token) {
     }
   }
 
+  //get kennel by id
+async getKennelById(id,token) {
+  try {
+    const response = await fetch(`${this.baseUrl}/api/kennel/id?kennelId=${id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to get user data');
+    }
+
+    const data = await response.json();
+    console.warn(data);
+    return data; 
+  } catch (error) {
+    throw error;
+  }
+}
+
+
   }
   
   export default new KennelService();
