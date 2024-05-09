@@ -77,13 +77,17 @@ const styles = StyleSheet.create({
     marginBottom: 0,
     marginTop: 20,
     padding: 10,
+    borderRadius: 4,
+
   },
   button: {
     backgroundColor: 'blue',
     padding: 10,
-    borderRadius: 5,
-    marginTop: 20,
-    width: 150,
+    width: '80%',
+    marginTop: 30,
+    marginBottom: 10,
+    borderRadius: 20
+
   },
   buttonText: {
     color: 'white',
@@ -98,9 +102,7 @@ const styles = StyleSheet.create({
   },
   
   resend: {
-    marginTop: 10,
     color: 'blue',
-    textDecorationLine: 'underline',
   },
 });
 

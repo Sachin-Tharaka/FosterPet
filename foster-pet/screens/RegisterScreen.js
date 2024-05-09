@@ -119,16 +119,16 @@ const RegisterScreen = ({ navigation }) => {
       />
       {confirmPasswordError && <Text style={styles.error}>{confirmPasswordError}</Text>}
 
-      <Text>
- Already have an account?{' '}
-  <Text style={styles.login} onPress={() => navigation.navigate('Login')}>
-    Login
-  </Text>
-</Text>
-
       <TouchableOpacity style={styles.button} onPress={handleRegister}>
         <Text style={styles.buttonText}>Register</Text>
       </TouchableOpacity>
+
+      <Text>
+      Already have an account?{' '}
+       <Text style={styles.login} onPress={() => navigation.navigate('Login')}>
+         Login
+       </Text>
+     </Text>
       
       
     </View>
@@ -151,16 +151,19 @@ const styles = StyleSheet.create({
     height: 40,
     borderColor: 'gray',
     borderWidth: 1,
-    marginBottom: 0,
     marginTop: 20,
     padding: 10,
+    borderRadius:4,
+
   },
   button: {
     backgroundColor: 'blue',
     padding: 10,
-    borderRadius: 5,
-    marginTop: 20,
-    width: 100,
+    borderRadius: 20,
+    marginTop: 40,
+    width: '80%',
+    marginBottom: 10
+
   },
   buttonText: {
     color: 'white',
@@ -176,7 +179,7 @@ const styles = StyleSheet.create({
   login: {
     marginTop: 10,
     color: 'blue',
-    textDecorationLine: 'underline',
+    fontWeight: 'bold',
   },
 });
 

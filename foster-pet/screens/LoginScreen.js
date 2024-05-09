@@ -39,7 +39,7 @@ const LoginScreen = ({ navigation }) => {
       await AsyncStorage.setItem('token', userData.token);
 
       //navigate to home
-      navigation.navigate('Home');
+      navigation.navigate('BookingHouse');
     } catch (error) {
       // Handle login error 
       console.error('Login failed:', error.message);
@@ -51,7 +51,7 @@ const LoginScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.content}>
-      <Text style={styles.title}>Login Page</Text>
+      <Text style={styles.title}>Login</Text>
       {error && <Text style={styles.error}>{error}</Text>}
       <TextInput
         style={styles.input}
@@ -69,19 +69,17 @@ const LoginScreen = ({ navigation }) => {
       />
       {passwordError && <Text style={styles.error}>{passwordError}</Text>}
 
-      <Text>
-        Forgot Password?{' '}
-        <Text style={styles.forgotPassword} onPress={() => navigation.navigate('Reset')}>
-          Reset Password
-        </Text>
-      </Text>
+      <View style={styles.forgot_container}><Text  style={[styles.forgotPassword, {alignSelf: 'flex-end'}]}  onPress={() => navigation.navigate('Reset')}>
+        Forgot Password?
+      </Text></View>
+      
 
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
       
       <Text>
-        You don't have an account?{' '}
+        Don't have an account?{' '}
         <Text style={styles.register} onPress={() => navigation.navigate('Signup')}>
           Register
         </Text>
@@ -102,7 +100,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    width:'100%'
+    width:'100%',
+
+  },
+  forgot_container: {
+    width: '80%'
+
   },
 
   title: {
@@ -118,13 +121,15 @@ const styles = StyleSheet.create({
     marginBottom: 0,
     marginTop: 20,
     padding: 10,
+    borderRadius: 4
   },
   button: {
     backgroundColor: 'blue',
     padding: 10,
-    borderRadius: 5,
-    marginTop: 20,
-    width: 100,
+    borderRadius: 20,
+    marginTop: 30,
+    width: '80%',
+    marginBottom: 10
   },
   buttonText: {
     color: 'white',
@@ -140,12 +145,15 @@ const styles = StyleSheet.create({
   forgotPassword: {
     marginTop: 10,
     color: 'blue',
-    textDecorationLine: 'underline',
-  },
+    fontWeight :'600', 
+    textAlign: 'right',
+    fontSize:14
+},
+
   register: {
     marginTop: 10,
     color: 'blue',
-    textDecorationLine: 'underline',
+    fontWeight:'bold'
   },
 });
 
