@@ -37,6 +37,12 @@ const FosterProfile = ({ route, navigation } ) => {
     }
   };
 
+    // Handle book a foster house
+    const handleBookFosterHouse = () => {
+      //navigate to booking screen
+      navigation.navigate('Booking');
+    };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -50,6 +56,9 @@ const FosterProfile = ({ route, navigation } ) => {
       </View>
 
       <View style={styles.buttonsContainer}>
+      <TouchableOpacity style={styles.button} onPress={handleBookFosterHouse}>
+      <Text style={styles.buttonText}>Book A Fostering</Text>
+    </TouchableOpacity>
         <TouchableOpacity style={styles.button}>
           <Text style={styles.buttonText}>VIEW HISTORY</Text>
         </TouchableOpacity>

@@ -58,31 +58,9 @@ const BookingHouseScreen = ({ navigation }) => {
     navigation.navigate('LocationSetterScreen');
   };
 
-    // Handle book a foster house
-    const handleBookFosterHouse = () => {
-      //navigate to booking screen
-      navigation.navigate('Booking');
-    };
-  
-    // Handle take me to a home
-    const handleTakeMeToHome = () => {
-      // Implement  "Take Me To Home" functionality here
-      navigation.navigate('Home');
-  
-    };
-
     return (
     
       <View style={styles.container}>
-        <View>
-          <Text>Following buttons will remove later</Text>
-        </View>
-      <TouchableOpacity style={styles.nav_button} onPress={handleBookFosterHouse}>
-          <Text style={styles.buttonText}>Book A Foster House</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.nav_button} onPress={handleTakeMeToHome}>
-          <Text style={styles.buttonText}>Take Me To Gallery</Text>
-        </TouchableOpacity>
         <Text style={styles.header}>Welcome, {userData.firstName}</Text>
   
         <View style={styles.location_container}>
