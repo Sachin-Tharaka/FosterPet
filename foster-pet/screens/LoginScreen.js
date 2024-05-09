@@ -39,7 +39,7 @@ const LoginScreen = ({ navigation }) => {
       await AsyncStorage.setItem('token', userData.token);
 
       //navigate to home
-      navigation.navigate('Home');
+      navigation.navigate('BookingHouse');
     } catch (error) {
       // Handle login error 
       console.error('Login failed:', error.message);

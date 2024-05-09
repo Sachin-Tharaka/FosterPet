@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import KennelService from '../services/KennelService';
 import UserService from '../services/UserService';
@@ -56,14 +57,47 @@ const BookingHouseScreen = ({ navigation }) => {
     navigation.navigate('LocationSetterScreen');
   };
 
+    // Handle book a foster house
+    const handleBookFosterHouse = () => {
+      //navigate to booking screen
+      navigation.navigate('Booking');
+    };
+  
+    // Handle take me to a home
+    const handleTakeMeToHome = () => {
+      // Implement  "Take Me To Home" functionality here
+      navigation.navigate('Home');
+  
+    };
+  
+    const handleTakeMeToFosterProfile = () => {
+      // Implement  "Take Me To Home" functionality here
+      navigation.navigate('FosterProfile');
+  
+    };
+
   return (
+    
     <View style={styles.container}>
+      <View>
+        <Text>Following buttons will remove later</Text>
+      </View>
+    <TouchableOpacity style={styles.nav_button} onPress={handleBookFosterHouse}>
+        <Text style={styles.buttonText}>Book A Foster House</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.nav_button} onPress={handleTakeMeToHome}>
+        <Text style={styles.buttonText}>Take Me To Gallery</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.nav_button} onPress={handleTakeMeToFosterProfile}>
+        <Text style={styles.buttonText}>Foster Profile</Text>
+      </TouchableOpacity>
       <Text style={styles.header}>Welcome, {userData.firstName} {userData.lastName}</Text>
       {/* // Add current user name here  */}
 
       <View style={styles.location_container}>
         <View style={styles.location_container_logo}>
-          <Text style={styles.logo}>Logo</Text>
+        <Icon name="map-marker" size={24} color="#333" />
+
         </View>
         <View style={styles.location_container_text}>
           <Text style={styles.address}>Home</Text>
@@ -149,6 +183,21 @@ const styles = StyleSheet.create({
     backgroundColor: '#007BFF',
     borderRadius: 20,
     elevation: 3,
+  },
+
+    
+  nav_button: {
+    backgroundColor: 'blue',
+    padding: 10,
+    borderRadius: 5,
+    margin: 'auto',
+    marginTop: 5,
+    width:200
+  },
+  buttonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 
   change_button: {

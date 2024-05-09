@@ -19,37 +19,10 @@ const HomeScreen = ({ navigation }) => {
     // Implement search functionality here
   };
 
-  // Handle book a foster house
-  const handleBookFosterHouse = () => {
-    //navigate to booking screen
-    navigation.navigate('Booking');
-  };
-
-  // Handle take me to a home
-  const handleTakeMeToHome = () => {
-    // Implement  "Take Me To Home" functionality here
-    navigation.navigate('BookingHouse');
-
-  };
-
-  const handleTakeMeToFosterProfile = () => {
-    // Implement  "Take Me To Home" functionality here
-    navigation.navigate('FosterProfile');
-
-  };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Foster Pet Gallery</Text>
-      <TouchableOpacity style={styles.button} onPress={handleBookFosterHouse}>
-        <Text style={styles.buttonText}>Book A Foster House</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={handleTakeMeToHome}>
-        <Text style={styles.buttonText}>Take Me To Home</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={handleTakeMeToFosterProfile}>
-        <Text style={styles.buttonText}>Foster Profile</Text>
-      </TouchableOpacity>
       <TextInput
         style={styles.input}
         placeholder="Search..."
@@ -96,19 +69,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     marginTop:10
   },
-  
-  button: {
-    backgroundColor: 'blue',
-    padding: 10,
-    borderRadius: 5,
-    marginTop: 10,
-    width:200
-  },
-  buttonText: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
+
   
 });
 
