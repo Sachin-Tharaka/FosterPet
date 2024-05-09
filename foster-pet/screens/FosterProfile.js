@@ -1,14 +1,52 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Navbar from '../components/Navbar';
+import KennelService from '../services/KennelService';
 
-const FosterProfile = ({ navigation }) => {
+const FosterProfile = ({ route, navigation } ) => {
+  const { kennelId } = route.params;
+  const [kennelData, setKennelData] = useState({ images: [] });
+
+  useEffect(() => {
+    const getToken = async () => {
+      const token = await AsyncStorage.getItem('token');
+      if (token) {
+        // Token exists, fetch kennels and user data
+        getKennelById(kennelId, token);
+      } else {
+        // Token doesn't exist, navigate to Login screen
+        console.log("Please login");
+        navigation.navigate('Login');
+      }
+    };
+    getToken();
+  }, []);
+
+
+  //get kennel by id
+  const getKennelById = async (id, token) => {
+    // call get kennel by id function
+    try {
+      const data = await KennelService.getKennelById(id, token);
+      console.log('kennel data:', data);
+      setKennelData(data);
+    } catch (error) {
+      // Handle error 
+      console.error('Error:', error.message);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Image source={{ uri: 'https://picsum.photos/400/600?image=1' }} style={styles.logo} />
-        <Text style={styles.title}>Doo Keepers</Text>
-        <Text style={styles.location}>KANDY ROAD, KELANIYA</Text>
+      <Image source={{ uri: kennelData.images && kennelData.images.length > 0 ? kennelData.images[0] : '' }} style={styles.logo} />
+        <Text style={styles.title}>{kennelData.kennelName}</Text>
+        <Text style={styles.location}>
+  {kennelData.kennelAddress ? 
+    `${kennelData.kennelAddress.address1}, ${kennelData.kennelAddress.address2}, ${kennelData.kennelAddress.city}.` 
+    : 'Address not available'}
+</Text>
       </View>
 
       <View style={styles.buttonsContainer}>
@@ -20,25 +58,19 @@ const FosterProfile = ({ navigation }) => {
         </TouchableOpacity>
       </View>
       <ScrollView>
-        <View style={styles.petsContainer}>
-          <View style={styles.petRow}>
-            <Image source={{ uri: 'https://picsum.photos/400/600?image=1' }} style={styles.petImage} />
-            <Image source={{ uri: 'https://picsum.photos/400/600?image=1' }} style={styles.petImage} />
-          </View>
-          <View style={styles.petRow}>
-            <Image source={{ uri: 'https://picsum.photos/400/600?image=1' }} style={styles.petImage} />
-            <Image source={{ uri: 'https://picsum.photos/400/600?image=1' }} style={styles.petImage} />
-          </View>
-          <View style={styles.petRow}>
-          <Image source={{ uri: 'https://picsum.photos/400/600?image=1' }} style={styles.petImage} />
-          <Image source={{ uri: 'https://picsum.photos/400/600?image=1' }} style={styles.petImage} />
-        </View>
-        <View style={styles.petRow}>
-          <Image source={{ uri: 'https://picsum.photos/400/600?image=1' }} style={styles.petImage} />
-          <Image source={{ uri: 'https://picsum.photos/400/600?image=1' }} style={styles.petImage} />
-        </View>
-          {/* Add more rows as needed */}
-        </View>
+      <View style={styles.petsContainer}>
+  {kennelData.images.map((image, index) => (
+    index % 2 === 0 && (
+      <View key={index} style={styles.petRow}>
+        <Image source={{ uri: image }} style={styles.petImage} />
+        {index + 1 < kennelData.images.length && (
+          <Image source={{ uri: kennelData.images[index + 1] }} style={styles.petImage} />
+        )}
+      </View>
+    )
+  ))}
+</View>
+        
       </ScrollView>
       <View><Navbar /></View>
     </View>

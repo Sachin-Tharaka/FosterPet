@@ -20,6 +20,7 @@ const BookingHouseScreen = ({ navigation }) => {
         getUserById(userId, token);
       } else {
         // Token doesn't exist, navigate to Login screen
+        console.log("Please login");
         navigation.navigate('Login');
       }
     };
@@ -76,169 +77,192 @@ const BookingHouseScreen = ({ navigation }) => {
   
     };
 
-  return (
+    return (
     
-    <View style={styles.container}>
-      <View>
-        <Text>Following buttons will remove later</Text>
-      </View>
-    <TouchableOpacity style={styles.nav_button} onPress={handleBookFosterHouse}>
-        <Text style={styles.buttonText}>Book A Foster House</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.nav_button} onPress={handleTakeMeToHome}>
-        <Text style={styles.buttonText}>Take Me To Gallery</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.nav_button} onPress={handleTakeMeToFosterProfile}>
-        <Text style={styles.buttonText}>Foster Profile</Text>
-      </TouchableOpacity>
-      <Text style={styles.header}>Welcome, {userData.firstName} {userData.lastName}</Text>
-      {/* // Add current user name here  */}
-
-      <View style={styles.location_container}>
-        <View style={styles.location_container_logo}>
-        <Icon name="map-marker" size={24} color="#333" />
-
+      <View style={styles.container}>
+        <View>
+          <Text>Following buttons will remove later</Text>
         </View>
-        <View style={styles.location_container_text}>
-          <Text style={styles.address}>Home</Text>
-          <Text style={styles.addressDetails}>Kandy Road, Kelaniya</Text>
+      <TouchableOpacity style={styles.nav_button} onPress={handleBookFosterHouse}>
+          <Text style={styles.buttonText}>Book A Foster House</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.nav_button} onPress={handleTakeMeToHome}>
+          <Text style={styles.buttonText}>Take Me To Gallery</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.nav_button} onPress={handleTakeMeToFosterProfile}>
+          <Text style={styles.buttonText}>Foster Profile</Text>
+        </TouchableOpacity>
+        <Text style={styles.header}>Welcome, {userData.firstName}</Text>
+  
+        <View style={styles.location_container}>
+          <View style={styles.location_container_details}>
+            <View style={styles.location_container_icon}>
+              <Icon name="map-marker" size={32} color="#333" />
+            </View>
+            <View style={styles.location_container_text}>
+              <Text style={styles.address}>Home</Text>
+              <Text style={styles.addressDetails}>Kandy Road, Kelaniya</Text>
+            </View>
+          </View>
+          <TouchableOpacity style={styles.change_button} onPress={goToChangeLocation}>
+            <Text style={styles.change_button}>Change</Text>
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity style={styles.change_button} onPress={goToChangeLocation}>
-          <Text style={styles.change_button}>Change</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button}>
-          <Text>All</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
-          <Text>Professional</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
-          <Text>Volunteer</Text>
-        </TouchableOpacity>
-      </View>
-      <ScrollView style={styles.list}>
+  
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.button}>
+            <Text>All</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button}>
+            <Text>Professional</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button}>
+            <Text>Volunteer</Text>
+          </TouchableOpacity>
+        </View>
+        <ScrollView style={styles.list}>
         {kennels.map(kennel => (
-          <View key={kennel.kennelId} style={styles.entry}>
-            <Image source={{ uri: `data:${kennel.image}` }} style={styles.image} />
+            <TouchableOpacity
+            key={kennel.kennelId}
+            style={styles.entry}
+            onPress={() => navigation.navigate('FosterProfile', { kennelId: kennel.kennelId })}
+          >
+             <Image source={{ uri: kennel.images[0] }} style={styles.image} />
             <View style={styles.infoContainer}>
               <Text style={styles.name}>{kennel.kennelName}</Text>
               <Text style={styles.name}>{kennel.kennelAddress.city}</Text>
               <Text style={styles.rating}>★★★★</Text>
             </View>
-          </View>
+            </TouchableOpacity>
         ))}
       </ScrollView>
-      <View>
-        <Navbar />
+        <View>
+          <Navbar />
+        </View>
       </View>
-    </View>
-  );
-};
+    );
+  };
+  
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      padding: 10,
+      backgroundColor: '#ffffff',
+      marginTop: 100
+    },
+    header: {
+      fontSize: 24,
+      fontWeight: 'bold',
+      marginBottom: 20,
+    },
+    address: {
+      fontSize: 16,
+      fontWeight: '600',
+      textAlign: 'left',
+      padding:0
+  
+    },
+    addressDetails: {
+      fontSize: 14,
+      color: '#666666',
+      textAlign: 'left',
+  
+    },
+    buttonContainer: {
+      flexDirection: 'row',
+      width: '70%',
+      justifyContent: 'space-between',
+      marginBottom: 20,
+      marginTop: 20,
+  
+    },
+    location_container: {
+      backgroundColor: '#F2F2F2',
+      borderRadius: 50,
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: "space-between",
+      marginBottom: 20,
+      padding:30,
+      paddingTop: 10,
+      paddingBottom: 10
+   
+    },
+    location_container_details:{
+   display:'flex',
+   flexDirection: 'row',
+   justifyContent: 'space-around',
+   alignItems:'center',
+    },
+  
+    location_container_icon: {
+  marginRight: 12
+    },
+  
+    button: {
+      paddingVertical: 8,
+      paddingHorizontal: 16,
+      backgroundColor: '#D9D9D9',
+      borderRadius: 20,
+      elevation: 3,
+    },
+  
+      
+    nav_button: {
+      backgroundColor: 'blue',
+      padding: 10,
+      borderRadius: 5,
+      margin: 'auto',
+      marginTop: 5,
+      width:200
+    },
+    buttonText: {
+      color: 'white',
+      fontWeight: 'bold',
+      textAlign: 'center',
+    },
+  
+    change_button: {
+      color: 'blue',
+      fontWeight: 'bold',
+    },
+  
+    list: {
+      flex: 1,
+    },
+    entry: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 10,
+      padding: 10,
+      backgroundColor: '#F2F2F2',
+      borderRadius: 10,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 2,
+    },
+    image: {
+      width: 100,
+      height: 100,
+      borderRadius: 50,
+      marginRight: 15,
+    },
+    infoContainer: {
+      flex: 1,
+      justifyContent: 'center',
+    },
+    name: {
+      fontSize: 18,
+      fontWeight: 'bold',
+    },
+    rating: {
+      fontSize: 16,
+      color: '#888888',
+    }
+  });
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 10,
-    backgroundColor: '#ffffff',
-    marginTop: 100
-  },
-  header: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  address: {
-    fontSize: 20,
-    fontWeight: '600',
-    textAlign: 'left'
 
-  },
-  addressDetails: {
-    fontSize: 16,
-    color: '#666666',
-    textAlign: 'left'
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginBottom: 20,
-  },
-  location_container: {
-    backgroundColor: 'skyblue',
-    borderRadius: 50,
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: "space-around",
-    marginBottom: 20,
-    paddingTop: 5,
-    paddingBottom: 10
-  },
-
-  button: {
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    backgroundColor: '#007BFF',
-    borderRadius: 20,
-    elevation: 3,
-  },
-
-    
-  nav_button: {
-    backgroundColor: 'blue',
-    padding: 10,
-    borderRadius: 5,
-    margin: 'auto',
-    marginTop: 5,
-    width:200
-  },
-  buttonText: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-
-  change_button: {
-    color: 'blue',
-    fontWeight: 'bold',
-    textDecorationLine: 'underline'
-  },
-
-  list: {
-    flex: 1,
-  },
-  entry: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-    padding: 10,
-    backgroundColor: '#F0F0F0',
-    borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-  },
-  image: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    marginRight: 15,
-  },
-  infoContainer: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  name: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  rating: {
-    fontSize: 16,
-    color: '#888888',
-  }
-});
 
 export default BookingHouseScreen;
