@@ -10,10 +10,10 @@ const BookingHouseScreen = ({ navigation }) => {
   const [kennels, setKennels] = useState([]);
   const [userData, setUserData] = useState([]);
 
-  const userId = "6639d7c8f9a64015050f0ad9";
   useEffect(() => {
     const getToken = async () => {
       const token = await AsyncStorage.getItem('token');
+      const userId = await AsyncStorage.getItem('userId');
       if (token) {
         // Token exists, fetch kennels and user data
         getAllKennelNear(79.8, 6.9, 50000, token);
