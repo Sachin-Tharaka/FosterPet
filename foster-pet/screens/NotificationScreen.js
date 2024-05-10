@@ -1,23 +1,57 @@
-import React from 'react';
+import React, {useState,useEffect} from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Navbar from '../components/Navbar';
+import NotificationService from '../services/NotificationService';
 
 const NotificationScreen = ({ navigation }) => {
 
-  // Mock data for demonstration
-  const notifications = [
-    { id: 1, name: "Someone just reviewed", review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In lorem nam purus vulputate quis.", stars: 4 },
-    { id: 2, name: "Someone just reviewed", review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In lorem nam purus vulputate quis.", stars: 5 },
-    { id: 3, name: "Someone just reviewed", review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In lorem nam purus vulputate quis.", stars: 3 },
-    { id: 4, name: "Someone just reviewed", review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In lorem nam purus vulputate quis.", stars: 4 },
-    { id: 5, name: "Someone just reviewed", review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In lorem nam purus vulputate quis.", stars: 5 },
-    { id: 6, name: "Someone just reviewed", review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In lorem nam purus vulputate quis.", stars: 3 },
-    { id: 7, name: "Someone just reviewed", review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In lorem nam purus vulputate quis.", stars: 4 },
-    { id: 8, name: "Someone just reviewed", review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In lorem nam purus vulputate quis.", stars: 5 },
-    { id: 9, name: "Someone just reviewed", review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In lorem nam purus vulputate quis.", stars: 3 },
+  const [notifications, setNotifications] = useState([]);
 
-    // Add more notifications here
-  ];
+  const userId = "6639b6f9f9a64015050f0ad0";
+  useEffect(() => {
+    const getToken = async () => {
+      const token = await AsyncStorage.getItem('token');
+      if (token) {
+        // Token exists, fetch notifications
+        getNotificationsByUserId(userId, token);
+      } else {
+        // Token doesn't exist, navigate to Login screen
+        console.log("Please login");
+        navigation.navigate('Login');
+      }
+    };
+    getToken();
+  }, []);
+
+  // Mock data for demonstration
+  // const notifications = [
+  //   { id: 1, name: "Someone just reviewed", review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In lorem nam purus vulputate quis.", stars: 4 },
+  //   { id: 2, name: "Someone just reviewed", review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In lorem nam purus vulputate quis.", stars: 5 },
+  //   { id: 3, name: "Someone just reviewed", review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In lorem nam purus vulputate quis.", stars: 3 },
+  //   { id: 4, name: "Someone just reviewed", review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In lorem nam purus vulputate quis.", stars: 4 },
+  //   { id: 5, name: "Someone just reviewed", review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In lorem nam purus vulputate quis.", stars: 5 },
+  //   { id: 6, name: "Someone just reviewed", review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In lorem nam purus vulputate quis.", stars: 3 },
+  //   { id: 7, name: "Someone just reviewed", review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In lorem nam purus vulputate quis.", stars: 4 },
+  //   { id: 8, name: "Someone just reviewed", review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In lorem nam purus vulputate quis.", stars: 5 },
+  //   { id: 9, name: "Someone just reviewed", review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In lorem nam purus vulputate quis.", stars: 3 },
+
+  //   // Add more notifications here
+  // ];
+
+  //get notifications by user id
+  const getNotificationsByUserId = async (id, token) => {
+    // call notifications by user id function
+    try {
+      const data = await NotificationService.getNotificationsByUserId(id, token);
+      console.log('user data:', data);
+      setNotifications(data);
+    } catch (error) {
+      // Handle error 
+      console.error('Error:', error.message);
+    }
+  };
+
 
   // Function to render stars based on rating
   const renderStars = (count) => {
@@ -55,10 +89,11 @@ const NotificationScreen = ({ navigation }) => {
           <View key={notification.id} style={styles.entry}>
           <Image source={{ uri: 'https://picsum.photos/400/600?image=1' }} style={styles.image} />
           <View style={styles.infoContainer}>
-              <Text style={styles.name}>{notification.name}</Text>
-              <Text style={styles.review}>{notification.review}</Text>
+              <Text style={styles.heading}>{notification.heading}</Text>
+              <Text style={styles.message}>{notification.message}</Text>
               <View style={{ flexDirection: 'row' }}>
-                {renderStars(notification.stars)}
+              ★★★★
+                {/* {renderStars(notification.stars)} */}
               </View>
             </View>
             <TouchableOpacity onPress={() => console.log("Close notification")}>
@@ -111,11 +146,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
   },
-  name: {
+  heading: {
     fontSize: 18,
     fontWeight: 'bold',
   },
-  review: {
+  message: {
     fontSize: 14,
     color: '#666',
   },
