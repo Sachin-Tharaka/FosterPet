@@ -1,14 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, FlatList, Image } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
+import AdminNavbar from '../components/AdminNav';
 
 const AdminComplaints = ({ navigation }) => {
-  const [isCollapsed, setIsCollapsed] = useState(true);
-
-  const toggleNavbar = () => {
-    setIsCollapsed(!isCollapsed);
-  };
-
   // Sample data for the complaints list
   const complaintsData = [
     { id: '1', title: "Didn't get hourly pet update", customer: 'Tom Cruise', date: 'May 26, 2023, 6:30 PM', priority: 'HIGH'},
@@ -34,29 +29,16 @@ const AdminComplaints = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+    <AdminNavbar />
+
       <ScrollView style={styles.content}>
-        <TouchableOpacity style={styles.menuIcon} onPress={toggleNavbar}>
-          <FontAwesome name={isCollapsed ? 'bars' : 'times'} size={24} color="black" />
-        </TouchableOpacity>
-        <Text style={styles.header}>All Complaints</Text>
+            <Text style={styles.header}>All Complaints</Text>
         <FlatList
           data={complaintsData}
           renderItem={renderItem}
           keyExtractor={item => item.id}
         />
       </ScrollView>
-      
-      {!isCollapsed && (
-        <View style={styles.sidebar}>
-          <TouchableOpacity style={styles.closeIcon} onPress={toggleNavbar}>
-            <FontAwesome name="times" size={24} color="white" />
-          </TouchableOpacity>
-          <Text style={styles.navItem} onPress={() => navigation.navigate('AdminOverView')}>Overview</Text>
-          <Text style={styles.navItem} onPress={() => navigation.navigate('AdminOrders')}>Approvals</Text>
-          <Text style={styles.navItem} onPress={() => navigation.navigate('AdminComplaints')}>Complaints</Text>
-          <Text style={styles.navItem} onPress={() => navigation.navigate('AdminUserManagement')}>User Management</Text>
-        </View>
-      )}
     </View>
   );
 };

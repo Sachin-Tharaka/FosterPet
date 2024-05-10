@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, FlatList, Image } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
+import AdminNavbar from '../components/AdminNav';
+
 
 const AdminOrders = ({ navigation }) => {
-  const [isCollapsed, setIsCollapsed] = useState(true);
-
-  const toggleNavbar = () => {
-    setIsCollapsed(!isCollapsed);
-  };
 
   // Mock data similar to what's seen in the screenshot
   const data = [
@@ -41,12 +38,10 @@ const AdminOrders = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <ScrollView style={styles.content}>
-        <TouchableOpacity style={styles.menuIcon} onPress={toggleNavbar}>
-          <FontAwesome name={isCollapsed ? 'bars' : 'times'} size={24} color="black" />
-        </TouchableOpacity>
+    <AdminNavbar />
 
-        <Text style={styles.header}>Requests</Text>
+      <ScrollView style={styles.content}>
+             <Text style={styles.header}>Requests</Text>
 
         <FlatList
           data={data}
@@ -54,18 +49,6 @@ const AdminOrders = ({ navigation }) => {
           keyExtractor={item => item.id}
         />
       </ScrollView>
-      
-      {!isCollapsed && (
-        <View style={styles.sidebar}>
-          <TouchableOpacity style={styles.closeIcon} onPress={toggleNavbar}>
-            <FontAwesome name="times" size={24} color="white" />
-          </TouchableOpacity>
-          <Text style={styles.navItem} onPress={() => navigation.navigate('AdminOverView')}>Overview</Text>
-          <Text style={styles.navItem} onPress={() => navigation.navigate('AdminOrders')}>Approvals</Text>
-          <Text style={styles.navItem} onPress={() => navigation.navigate('AdminComplaints')}>Complaints</Text>
-          <Text style={styles.navItem} onPress={() => navigation.navigate('AdminUserManagement')}>User Management</Text>
-        </View>
-      )}
     </View>
   );
 };

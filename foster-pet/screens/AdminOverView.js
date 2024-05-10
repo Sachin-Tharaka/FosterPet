@@ -2,16 +2,11 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons'; // Ensure you have Expo or change to react-native-vector-icons
 import { LineChart } from 'react-native-chart-kit';
+import AdminNavbar from '../components/AdminNav';
 
 const screenWidth = Dimensions.get('window').width;
 
 const AdminOverView = ({ navigation }) => {
-  const [isCollapsed, setIsCollapsed] = useState(true);
-
-  const toggleNavbar = () => {
-    setIsCollapsed(!isCollapsed);
-  };
-
   const data = {
     labels: ['January', 'February', 'March', 'April', 'May', 'June'],
     datasets: [
@@ -43,66 +38,44 @@ const AdminOverView = ({ navigation }) => {
   const goToComplaints = () => {
     navigation.navigate('AdminComplaints');
   };
-   const goToUserManagement = () => {
+  const goToUserManagement = () => {
     navigation.navigate('AdminUserManagement');
   };
 
   return (
     <View style={styles.container}>
+      <AdminNavbar />
       <ScrollView style={styles.content}>
-        <TouchableOpacity style={styles.menuIcon} onPress={toggleNavbar}>
-          <FontAwesome name={isCollapsed ? 'bars' : 'times'} size={24} color="black" />
-        </TouchableOpacity>
-
         <Text style={styles.header}>Overview</Text>
-      
-
-        <View style={styles.container}>
+        <View style={styles.cardsContainer}>
           <View style={styles.card}>
             <Text style={styles.cardTitle}>Active Agents</Text>
             <Text style={styles.cardContent}>60</Text>
           </View>
-    
           <View style={styles.card}>
             <Text style={styles.cardTitle}>Ongoing Fosterings</Text>
             <Text style={styles.cardContent}>16</Text>
           </View>
-    
           <View style={styles.card}>
             <Text style={styles.cardTitle}>Active Users</Text>
             <Text style={styles.cardContent}>43</Text>
           </View>
-    
           <View style={styles.card}>
             <Text style={styles.cardTitle}>Completed</Text>
             <Text style={styles.cardContent}>64</Text>
           </View>
-    
-          <LineChart
-            data={data}
-            width={screenWidth}
-            height={220}
-            chartConfig={chartConfig}
-          />
-    
-          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Details')}>
-            <Text style={styles.buttonText}>View Details</Text>
-          </TouchableOpacity>
         </View>
-        {/* Place additional UI components here as per your layout needs */}
+        <LineChart
+          data={data}
+          width={screenWidth * 0.8}
+          height={220}
+          chartConfig={chartConfig}
+          style={styles.chart}
+        />
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Details')}>
+          <Text style={styles.buttonText}>View Details</Text>
+        </TouchableOpacity>
       </ScrollView>
-      
-      {!isCollapsed && (
-        <View style={styles.sidebar}>
-          <TouchableOpacity style={styles.closeIcon} onPress={toggleNavbar}>
-            <FontAwesome name="times" size={24} color="white" />
-          </TouchableOpacity>
-          <Text style={styles.navItem} onPress={goToOverview}>Overview</Text>
-          <Text style={styles.navItem} onPress={goToOrders}>Approvals</Text>
-          <Text style={styles.navItem} onPress={goToComplaints}>Complaints</Text>
-          <Text style={styles.navItem} onPress={goToUserManagement}>User Management</Text>
-        </View>
-      )}
     </View>
   );
 };
@@ -115,61 +88,23 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20
   },
-  sidebar: {
-    position: 'absolute',
-    width: 200,
-    height: '100%',
-    backgroundColor: '#2C3E50',
-    paddingTop: 20,
-    left: 0,
-    top: 0
-  },
-  navItem: {
-    padding: 10,
-    color: 'white',
-    fontWeight: 'bold'
-  },
-  menuIcon: {
-    position: 'absolute',
-    top: 20,
-    left: 20,
-    zIndex: 2
-  },
-  closeIcon: {
-    position: 'absolute',
-    top: 20,
-    right: 20,
-    zIndex: 2
-  },
   header: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 20,
-    marginTop: 50  // Add margin to avoid overlap with the menu icon
+    marginBottom: 20
   },
-  statsRow: {
+  cardsContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-around'
-  },
-  statBox: {
-    alignItems: 'center',
-    padding: 10,
-    backgroundColor: '#ECF0F1',
-    borderRadius: 5,
-    width: '22%'
-  },
-  statNumber: {
-    fontSize: 18,
-    fontWeight: 'bold'
-  },
-  statLabel: {
-    fontSize: 14
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    marginBottom: 20
   },
   card: {
     backgroundColor: '#fff',
     borderRadius: 5,
     padding: 20,
-    marginBottom: 10
+    marginBottom: 20,
+    width: '48%' // Adjust the width for desktop layout
   },
   cardTitle: {
     fontSize: 18,
@@ -179,13 +114,17 @@ const styles = StyleSheet.create({
   cardContent: {
     fontSize: 16
   },
+  chart: {
+    alignSelf: 'center'
+  },
   button: {
     backgroundColor: '#007bff',
     padding: 15,
     borderRadius: 5,
     alignItems: 'center',
     marginTop: 10,
-    marginBottom: 40
+    width: '50%', // Adjust the width for desktop layout
+    alignSelf: 'center'
   },
   buttonText: {
     color: '#fff',
