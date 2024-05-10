@@ -1,106 +1,192 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Picker } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Picker } from '@react-native-picker/picker';
+import PetsService from '../services/PetsService';
+import BookingService from '../services/BookingService';
 
 const BookingCardScreen = ({ navigation }) => {
-  const [petType, setPetType] = useState('');
-  const [petBreed, setPetBreed] = useState('');
+  const [petID, setPetID] = useState('');
+  const [kennelID, setKennelID] = useState('');
+  const [volunteerID, setVolunteerID] = useState('');
   const [startDate, setStartDate] = useState(new Date());
+  const [startTime, setStartTime] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
+  const [endTime, setEndTime] = useState(new Date());
   const [showStartDatePicker, setShowStartDatePicker] = useState(false);
+  const [showStartTimePicker, setShowStartTimePicker] = useState(false);
   const [showEndDatePicker, setShowEndDatePicker] = useState(false);
+  const [showEndTimePicker, setShowEndTimePicker] = useState(false);
   const [numPets, setNumPets] = useState(1);
+  const [pets, setPets] = useState([]);
+  const [error, setError] = useState('');
+  const [formattedStartDateTime, setFormattedStartDateTime] = useState('');
+  const [formattedEndDateTime, setFormattedEndDateTime] = useState('');
 
-  const handleStartDateChange = (event, selectedDate) => {
-    const currentDate = selectedDate || startDate;
-    setShowStartDatePicker(false);
-    setStartDate(currentDate);
-  };
+  const ownerID = "6639d7c8f9a64015050f0ad9";
+  useEffect(() => {
+    const getToken = async () => {
+      try {
+        const token = await AsyncStorage.getItem('token');
+        if (token) {
+          getPetsByOwnerId(ownerID, token);
+        } else {
+          console.log("Please login");
+          navigation.navigate('Login');
+        }
+      } catch (error) {
+        console.error('Error getting token:', error.message);
+      }
+    };
+    getToken();
+  }, []);
 
-  const handleEndDateChange = (event, selectedDate) => {
-    const currentDate = selectedDate || endDate;
-    setShowEndDatePicker(false);
-    setEndDate(currentDate);
-  };
-
-  const decreaseNumPets = () => {
-    if (numPets > 1) {
-      setNumPets(numPets - 1);
+  const getPetsByOwnerId = async (id, token) => {
+    try {
+      const data = await PetsService.getPetsByOwnerId(id, token);
+      setPets(data);
+    } catch (error) {
+      console.error('Error:', error.message);
     }
   };
 
-  const increaseNumPets = () => {
-    setNumPets(numPets + 1);
-  };
+  const handleBooking = async () => {
+    setError(" ");
+    if (!petID) {
+      setError('Pet is required.');
+      return;
+    } else if (!startDate) {
+      setError('Start date is required.');
+      return;
+    }else if (!startTime) {
+      setError('Start time is required.');
+      return;
+    } else if (!endDate) {
+      setError('End date is required.');
+      return;
+    }else if (!endTime) {
+      setError('End time is required.');
+      return;
+    }
 
-  const handleNext =()=>{
-    const bookingData = {
-        petType,
-        petBreed,
-        startDate,
-        endDate,
-        numPets,
-      };
-      navigation.navigate('BookingHouse', { bookingData });
-  }
+    try {
+      const token = await AsyncStorage.getItem('token');
+      const responseData = await BookingService.booking(petID, ownerID, kennelID, volunteerID, startDate, endDate, token);
+      console.log('Booking completed:', responseData);
+     
+    } catch (error) {
+      console.error('Booking failed:', error.message);
+      setError("Booking failed");
+    }
+  };
 
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Booking Card</Text>
+      {error && <Text style={styles.error}>{error}</Text>}
       <Picker
-        selectedValue={petType}
-        onValueChange={(itemValue) => setPetType(itemValue)}
+        selectedValue={petID}
+        onValueChange={(itemValue) => setPetID(itemValue)}
         style={styles.picker}
       >
-        <Picker.Item label="Select Pet Type" value="" />
-        <Picker.Item label="Dog" value="dog" />
-        <Picker.Item label="Cat" value="cat" />
+        <Picker.Item label="Select Pet" value="" />
+        {pets.map(pet => (
+          <Picker.Item key={pet.id} label={pet.name} value={pet.id} />
+        ))}
       </Picker>
-      <Picker
-        selectedValue={petBreed}
-        onValueChange={(itemValue) => setPetBreed(itemValue)}
-        style={styles.picker}
-      >
-        <Picker.Item label="Select Pet Breed" value="" />
-        {/* Add breeds based on the selected pet type */}
-      </Picker>
+
       <TouchableOpacity onPress={() => setShowStartDatePicker(true)} style={styles.button}>
-        <Text>Select Start Date and Time</Text>
+        <Text>Select Start Date</Text>
       </TouchableOpacity>
       {showStartDatePicker && (
         <DateTimePicker
           value={startDate}
-          mode="datetime"
+          mode="date"
           is24Hour={true}
           display="default"
-          onChange={handleStartDateChange}
+          onChange={(event, selectedDate) => {
+            setShowStartDatePicker(false);
+            if (selectedDate) {
+              setStartDate(selectedDate);
+            }
+          }}
         />
       )}
+
+      <TouchableOpacity onPress={() => setShowStartTimePicker(true)} style={styles.button}>
+        <Text>Select Start Time</Text>
+      </TouchableOpacity>
+      {showStartTimePicker && (
+        <DateTimePicker
+          value={startTime}
+          mode="time"
+          is24Hour={true}
+          display="default"
+          onChange={(event, selectedTime) => {
+            setShowStartTimePicker(false);
+            if (selectedTime) {
+              setStartTime(selectedTime);
+            }
+          }}
+        />
+      )}
+
+<Text>Start Date and Time: {`${startDate.toLocaleDateString()} ${startTime.toLocaleTimeString()}`}</Text>
+      
+
       <TouchableOpacity onPress={() => setShowEndDatePicker(true)} style={styles.button}>
-        <Text>Select End Date and Time</Text>
+        <Text>Select End Date</Text>
       </TouchableOpacity>
       {showEndDatePicker && (
         <DateTimePicker
           value={endDate}
-          mode="datetime"
+          mode="date"
           is24Hour={true}
           display="default"
-          onChange={handleEndDateChange}
+          onChange={(event, selectedDate) => {
+            setShowEndDatePicker(false);
+            if (selectedDate) {
+              setEndDate(selectedDate);
+            }
+          }}
         />
       )}
+
+      <TouchableOpacity onPress={() => setShowEndTimePicker(true)} style={styles.button}>
+        <Text>Select End Time</Text>
+      </TouchableOpacity>
+      {showEndTimePicker && (
+        <DateTimePicker
+          value={endTime}
+          mode="time"
+          is24Hour={true}
+          display="default"
+          onChange={(event, selectedTime) => {
+            setShowEndTimePicker(false);
+            if (selectedTime) {
+              setEndTime(selectedTime);
+            }
+          }}
+        />
+      )}
+<Text>End Date and Time: {`${endDate.toLocaleDateString()} ${endTime.toLocaleTimeString()}`}</Text>
       <View style={styles.counterContainer}>
-      <Text>Number of Pets: </Text>
-        <TouchableOpacity onPress={decreaseNumPets} style={styles.counterButton}>
+        <Text>Number of Pets: </Text>
+        <TouchableOpacity onPress={() => setNumPets(Math.max(1, numPets - 1))} style={styles.counterButton}>
           <Text>-</Text>
         </TouchableOpacity>
         <Text> {numPets} </Text>
-        <TouchableOpacity onPress={increaseNumPets} style={styles.counterButton}>
+        <TouchableOpacity onPress={() => setNumPets(numPets + 1)} style={styles.counterButton}>
           <Text>+</Text>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity onPress={handleNext} style={styles.button}>
-        <Text>Next</Text>
+
+      <TouchableOpacity onPress={handleBooking} style={styles.button}>
+        <Text>Book</Text>
       </TouchableOpacity>
+
+      
     </View>
   );
 };
@@ -136,6 +222,11 @@ const styles = StyleSheet.create({
   counterButton: {
     borderWidth: 1,
     padding: 5,
+  },
+  error: {
+    color: 'red',
+    marginTop: 5,
+    marginBottom: 10,
   },
 });
 
