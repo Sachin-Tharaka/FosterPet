@@ -24,12 +24,14 @@ const BookingCardScreen = ({ navigation }) => {
   const [formattedStartDateTime, setFormattedStartDateTime] = useState('');
   const [formattedEndDateTime, setFormattedEndDateTime] = useState('');
 
-  
+
   useEffect(() => {
     const getToken = async () => {
       try {
         const token = await AsyncStorage.getItem('token');
+
         const ownerID = await AsyncStorage.getItem('userId');
+
         if (token) {
           getPetsByOwnerId(ownerID, token);
         } else {

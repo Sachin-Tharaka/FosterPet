@@ -8,11 +8,17 @@ const NotificationScreen = ({ navigation }) => {
 
   const [notifications, setNotifications] = useState([]);
 
+
   
   useEffect(() => {
     const getToken = async () => {
       const token = await AsyncStorage.getItem('token');
       const userId = await AsyncStorage.getItem('userId');
+
+  useEffect(() => {
+    const getToken = async () => {
+      const token = await AsyncStorage.getItem('token');
+
       if (token) {
         // Token exists, fetch notifications
         getNotificationsByUserId(userId, token);
