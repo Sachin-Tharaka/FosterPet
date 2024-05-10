@@ -37,6 +37,7 @@ const LoginScreen = ({ navigation }) => {
       const userData = await AuthenticationService.login(email, password);
       console.log('Logged in:', userData);
       await AsyncStorage.setItem('token', userData.token);
+      await AsyncStorage.setItem('userId', userData.userId);
 
       //navigate to home
       navigation.navigate('BookingHouse');
