@@ -12,6 +12,7 @@ class BookingService {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
           },
+
           body: JSON.stringify({
             petID,
             ownerID,
@@ -20,6 +21,9 @@ class BookingService {
             startDate,
             endDate,
           }),
+
+          body: JSON.stringify(petID,ownerID,kennelID,volunteerID,startDate,endDate),
+
         });
   
         if (!response.ok) {
