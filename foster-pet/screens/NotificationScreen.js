@@ -65,10 +65,6 @@ const NotificationScreen = ({ navigation }) => {
     return stars;
   };
 
-  const goToChangeAdminOverView = () => {
-    navigation.navigate('AdminOverView');
-
-  };
 
   const handleTakeMeToUserAccount = () => {
     navigation.navigate('UserAccount');
@@ -77,9 +73,7 @@ const NotificationScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-    <TouchableOpacity style={styles.button} onPress={goToChangeAdminOverView}>
-    <Text style={styles.buttonText}>Admin UIs</Text>
-  </TouchableOpacity>
+    
   <TouchableOpacity style={styles.button} onPress={handleTakeMeToUserAccount}>
     <Text style={styles.buttonText}>User Account UIs</Text>
   </TouchableOpacity>
