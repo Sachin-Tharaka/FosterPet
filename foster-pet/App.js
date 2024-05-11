@@ -20,6 +20,8 @@ import AgentChat from './screens/AgentChat';
 import AgentApprovals from './screens/AgentApprovals';
 import AgentWallet from './screens/AgentWallet';
 import PetsScreen from './screens/PetsScreen';
+import PetProfileScreen from './screens/PetsProfileScreen';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -117,8 +119,6 @@ export default function App() {
         }}
       /> 
 
-      
-
  
 <Stack.Screen
 name="AgentWallet"
@@ -174,7 +174,15 @@ headerShown: false
           headerShown: false
         }}
       /> 
-        
+
+      <Stack.Screen
+        name="PetProfileScreen"
+        component={PetProfileScreen}
+        options={{
+          headerShown: false
+        }}
+      />      
+
       </Stack.Navigator>
     </NavigationContainer>
   );
