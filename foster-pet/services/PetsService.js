@@ -3,6 +3,7 @@ class PetsService {
     constructor() {
       this.baseUrl = 'https://fosterpet.azurewebsites.net';
     }
+
 //get pets by owner id
 async getPetsByOwnerId(id,token) {
     try {
@@ -16,7 +17,9 @@ async getPetsByOwnerId(id,token) {
       });
 
       if (!response.ok) {
+
         throw new Error('Failed to get pets data');
+
       }
 
       const data = await response.json();
@@ -26,6 +29,7 @@ async getPetsByOwnerId(id,token) {
       throw error;
     }
   }
+
 
   //get pet by id
   async getPetById(id,token) {
@@ -50,6 +54,7 @@ async getPetsByOwnerId(id,token) {
     }
   }
   
+
 }
   
 export default new PetsService();
