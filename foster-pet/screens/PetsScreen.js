@@ -60,7 +60,7 @@ const PetsScreen = ({ navigation }) => {
             <TouchableOpacity
             key={pet.petID}
             style={styles.entry}
-            onPress={() => navigation.navigate('PetProfile', { petID: pet.petID })}
+            onPress={() => navigation.navigate('PetProfileScreen', { petID: pet.petID })}
           >
              <Image source={{ uri: pet.petImages[0] }} style={styles.image} />
             <View style={styles.infoContainer}>
