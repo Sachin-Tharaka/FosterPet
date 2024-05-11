@@ -40,7 +40,7 @@ const FosterProfile = ({ route, navigation } ) => {
     // Handle book a foster house
     const handleBookFosterHouse = () => {
       //navigate to booking screen
-      navigation.navigate('Booking');
+      navigation.navigate('Booking',{ kennelID: kennelId });
     };
 
   return (
