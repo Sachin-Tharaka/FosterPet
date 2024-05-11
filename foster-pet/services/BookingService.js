@@ -1,8 +1,10 @@
 class BookingService {
     constructor() {
+      //base url
       this.baseUrl = 'https://fosterpet.azurewebsites.net';
     }
   
+
     //booking function
     async booking(petID,ownerID,kennelID,volunteerID,startDate,endDate,token) {
       try {

@@ -25,20 +25,8 @@ const NotificationScreen = ({ navigation }) => {
     getToken();
   }, []);
 
-  // Mock data for demonstration
-  // const notifications = [
-  //   { id: 1, name: "Someone just reviewed", review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In lorem nam purus vulputate quis.", stars: 4 },
-  //   { id: 2, name: "Someone just reviewed", review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In lorem nam purus vulputate quis.", stars: 5 },
-  //   { id: 3, name: "Someone just reviewed", review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In lorem nam purus vulputate quis.", stars: 3 },
-  //   { id: 4, name: "Someone just reviewed", review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In lorem nam purus vulputate quis.", stars: 4 },
-  //   { id: 5, name: "Someone just reviewed", review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In lorem nam purus vulputate quis.", stars: 5 },
-  //   { id: 6, name: "Someone just reviewed", review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In lorem nam purus vulputate quis.", stars: 3 },
-  //   { id: 7, name: "Someone just reviewed", review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In lorem nam purus vulputate quis.", stars: 4 },
-  //   { id: 8, name: "Someone just reviewed", review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In lorem nam purus vulputate quis.", stars: 5 },
-  //   { id: 9, name: "Someone just reviewed", review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In lorem nam purus vulputate quis.", stars: 3 },
-
-  //   // Add more notifications here
-  // ];
+  
+ 
 
   //get notifications by user id
   const getNotificationsByUserId = async (id, token) => {

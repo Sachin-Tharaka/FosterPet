@@ -41,6 +41,7 @@ const BookingCardScreen = ({ route, navigation }) => {
     getToken();
   }, []);
 
+  //get pet by owner id
   const getPetsByOwnerId = async (id, token) => {
     try {
       const data = await PetsService.getPetsByOwnerId(id, token);
