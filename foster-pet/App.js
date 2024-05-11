@@ -19,6 +19,7 @@ import AgentHome from './screens/AgentHome';
 import AgentChat from './screens/AgentChat';
 import AgentApprovals from './screens/AgentApprovals';
 import AgentWallet from './screens/AgentWallet';
+import PetsScreen from './screens/PetsScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -111,6 +112,13 @@ export default function App() {
         <Stack.Screen
         name="LocationSetterScreen"
         component={LocationSetterScreen}
+        options={{
+          headerShown: false
+        }}
+      /> 
+      <Stack.Screen
+        name="PetsScreen"
+        component={PetsScreen}
         options={{
           headerShown: false
         }}

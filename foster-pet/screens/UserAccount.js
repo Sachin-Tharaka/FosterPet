@@ -1,8 +1,40 @@
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Navbar from '../components/Navbar';
+import UserService from '../services/UserService';
 
 const UserAccount = ({ navigation }) => {
+
+  const [userData, setUserData] = useState([]);
+
+  useEffect(() => {
+    const getToken = async () => {
+      const token = await AsyncStorage.getItem('token');
+      const userId = await AsyncStorage.getItem('userId');
+      if (token) {
+        // Token exists, fetch  user data
+        getUserById(userId, token);
+      } else {
+        // Token doesn't exist, navigate to Login screen
+        console.log("Please login");
+        navigation.navigate('Login');
+      }
+    };
+    getToken();
+  }, []);
+  //get user by id
+  const getUserById = async (id, token) => {
+    // call get user by id function
+    try {
+      const data = await UserService.getUserById(id, token);
+      console.log('user data:', data);
+      setUserData(data);
+    } catch (error) {
+      // Handle error 
+      console.error('Error:', error.message);
+    }
+  };
 
   const goToBecomeAgent = () => {
     navigation.navigate('BecomeAgent');
@@ -12,18 +44,29 @@ const UserAccount = ({ navigation }) => {
     navigation.navigate('AgentHome');
   };
 
+  const goToPetsUI =()=>{
+    navigation.navigate('PetsScreen');
+  }
+
   return (
     <View style={styles.outerContainer}>
       <ScrollView style={styles.container}>
         <View style={styles.header}>
-          <Image source={{ uri: 'https://picsum.photos/400/600?image=1' }} style={styles.logo} />
-          <Text style={styles.title}>Nipuni Perera</Text>
-          <Text style={styles.location}>Kotikawaththa</Text>
+          <Image source={{ uri: userData.profileImage }} style={styles.logo} />
+          <Text style={styles.title}>{userData.firstName} {userData.lastName}</Text>
+          <Text >{userData.email}</Text>
+          <Text >{userData.phoneNumber} </Text>
+          <Text style={styles.location}>
+  {userData.address && `${userData.address.address1} ${userData.address.address2} ${userData.address.city}`}
+</Text>
         </View>
 
         <View style={styles.buttonsContainer}>
           <TouchableOpacity style={styles.button}>
             <Text style={styles.buttonText}>Change Details</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={goToPetsUI}>
+            <Text style={styles.buttonText}>Pets</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={goToBecomeAgent}>
             <Text style={styles.buttonText}>Become an Agent</Text>
