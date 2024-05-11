@@ -116,14 +116,8 @@ export default function App() {
           headerShown: false
         }}
       /> 
-      <Stack.Screen
-        name="PetsScreen"
-        component={PetsScreen}
-        options={{
-          headerShown: false
-        }}
-      /> 
-  
+
+      
 
  
 <Stack.Screen
@@ -173,6 +167,13 @@ options={{
 headerShown: false
 }}
 /> 
+<Stack.Screen
+        name="PetsScreen"
+        component={PetsScreen}
+        options={{
+          headerShown: false
+        }}
+      /> 
         
       </Stack.Navigator>
     </NavigationContainer>
