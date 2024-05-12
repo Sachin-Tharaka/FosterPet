@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import {handlePayment} from "../components/Payment";
 
 const LandingScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -24,6 +25,10 @@ const LandingScreen = ({ navigation }) => {
     // Call the reset passowrd function
 
     
+  };
+
+  const onPressHandlePayment = () => {
+    handlePayment(); // Call handlePayment function
   };
 
 //resend email
@@ -64,6 +69,8 @@ const handleSkip =()=>{
     Skip
   </Text>
 </Text>
+
+      <Text style={styles.skip} onPress={onPressHandlePayment}>Payment</Text>
 
     </View>
   );

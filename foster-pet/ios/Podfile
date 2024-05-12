@@ -57,6 +57,9 @@ target 'fosterpet' do
     :flipper_configuration => flipper_config
   )
 
+  pod 'payHereSDK', :git => 'https://github.com/PayHereDevs/payhere-mobilesdk-ios-rb.git'
+  pod 'payhere-mobilesdk-reactnative', :path => '../node_modules/@payhere/payhere-mobilesdk-reactnative'
+
   post_install do |installer|
     react_native_post_install(
       installer,
