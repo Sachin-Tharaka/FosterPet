@@ -10,6 +10,7 @@ import {
 import DateTimePicker from "@react-native-community/datetimepicker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Picker } from "@react-native-picker/picker";
+import Icon from "react-native-vector-icons/FontAwesome";
 import PetsService from "../services/PetsService";
 import BookingService from "../services/BookingService";
 
@@ -127,8 +128,15 @@ const BookingCardScreen = ({ route, navigation }) => {
         .slice(0, 5)}`
     : "";
 
+  const backToHome = () => {
+    navigation.navigate("BookingHouse");
+  };
+
   return (
     <View style={styles.container}>
+      <TouchableOpacity onPress={backToHome} style={styles.iconContainer}>
+        <Icon name="arrow-left" size={24} color="#333" />
+      </TouchableOpacity>
       <Text style={styles.text}>Booking Card</Text>
       {error && <Text style={styles.error}>{error}</Text>}
 
@@ -184,7 +192,7 @@ const BookingCardScreen = ({ route, navigation }) => {
         />
       )}
 
-      <Text>Start Date and Time: {startDate}</Text>
+      <Text style={styles.showerText}>Start Date and Time: {startDate}</Text>
 
       <TouchableOpacity
         onPress={() => setShowEndDatePicker(true)}
@@ -227,7 +235,7 @@ const BookingCardScreen = ({ route, navigation }) => {
           }}
         />
       )}
-      <Text>End Date and Time: {endDate}</Text>
+      <Text style={styles.showerText}>End Date and Time: {endDate}</Text>
       <View style={styles.counterContainer}>
         <Text>Number of Pets: </Text>
         <TouchableOpacity
@@ -246,7 +254,7 @@ const BookingCardScreen = ({ route, navigation }) => {
       </View>
 
       <TouchableOpacity onPress={handleBooking} style={styles.button}>
-        <Text>Book</Text>
+        <Text style={styles.buttonText}>Place Booking</Text>
       </TouchableOpacity>
     </View>
   );
@@ -278,20 +286,24 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   button: {
-    backgroundColor: "#007bff",
+    backgroundColor: "black",
     padding: 10,
     borderRadius: 5,
-    marginVertical: 10,
+    marginTop: 40,
     width: "90%",
     alignItems: "center",
     justifyContent: "center",
   },
-
+  buttonText: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
   setterButton: {
     backgroundColor: "#E0E0E0",
     padding: 10,
     borderRadius: 5,
-    marginVertical: 10,
+    marginVertical: 5,
     width: "90%",
     alignItems: "center",
     justifyContent: "center",
@@ -304,12 +316,21 @@ const styles = StyleSheet.create({
   },
   counterButton: {
     backgroundColor: "#e0e0e0",
-    paddingTop: 10,
-    paddingBottom: 10,
-    paddingLeft: 15,
-    paddingRight: 15,
+    paddingTop: 8,
+    paddingBottom: 8,
+    paddingLeft: 14,
+    paddingRight: 14,
     marginHorizontal: 10,
     borderRadius: 5,
+  },
+
+  showerText: {
+    marginVertical: 10,
+  },
+
+  iconContainer: {
+    width: "90%",
+    marginBottom: 30,
   },
 });
 
