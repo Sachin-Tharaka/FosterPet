@@ -10,6 +10,7 @@ import {
 import DateTimePicker from "@react-native-community/datetimepicker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Picker } from "@react-native-picker/picker";
+import Icon from "react-native-vector-icons/FontAwesome";
 import PetsService from "../services/PetsService";
 import BookingService from "../services/BookingService";
 
@@ -127,9 +128,16 @@ const BookingCardScreen = ({ route, navigation }) => {
         .slice(0, 5)}`
     : "";
 
+  const backToHome = () => {
+    navigation.navigate("BookingHouse");
+  };
+
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Booking</Text>
+      <TouchableOpacity onPress={backToHome} style={styles.iconContainer}>
+        <Icon name="arrow-left" size={24} color="#333" />
+      </TouchableOpacity>
+      <Text style={styles.text}>Booking Card</Text>
       {error && <Text style={styles.error}>{error}</Text>}
 
       <Picker
@@ -246,7 +254,7 @@ const BookingCardScreen = ({ route, navigation }) => {
       </View>
 
       <TouchableOpacity onPress={handleBooking} style={styles.button}>
-        <Text style={styles.buttonText}>Book</Text>
+        <Text style={styles.buttonText}>Place Booking</Text>
       </TouchableOpacity>
     </View>
   );
@@ -282,12 +290,16 @@ const styles = StyleSheet.create({
     backgroundColor: "black",
     padding: 10,
     borderRadius: 5,
-    marginTop: 50,
+    marginTop: 40,
     width: "90%",
     alignItems: "center",
     justifyContent: "center",
   },
-
+  buttonText: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
   setterButton: {
     backgroundColor: "#E0E0E0",
     padding: 10,
@@ -305,19 +317,21 @@ const styles = StyleSheet.create({
   },
   counterButton: {
     backgroundColor: "#e0e0e0",
-    paddingVertical: 6,
-    paddingHorizontal: 20,
+    paddingTop: 8,
+    paddingBottom: 8,
+    paddingLeft: 14,
+    paddingRight: 14,
     marginHorizontal: 10,
     borderRadius: 5,
   },
 
   showerText: {
-    marginVertical: 15,
+    marginVertical: 10,
   },
 
-  buttonText: {
-    fontWeight: "bold",
-    color: "white",
+  iconContainer: {
+    width: "90%",
+    marginBottom: 30,
   },
 });
 

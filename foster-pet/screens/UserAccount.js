@@ -1,24 +1,30 @@
-import React,{useState,useEffect} from 'react';
-import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import Navbar from '../components/Navbar';
-import UserService from '../services/UserService';
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Image,
+  TouchableOpacity,
+} from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import Navbar from "../components/Navbar";
+import UserService from "../services/UserService";
 
 const UserAccount = ({ navigation }) => {
-
   const [userData, setUserData] = useState([]);
 
   useEffect(() => {
     const getToken = async () => {
-      const token = await AsyncStorage.getItem('token');
-      const userId = await AsyncStorage.getItem('userId');
+      const token = await AsyncStorage.getItem("token");
+      const userId = await AsyncStorage.getItem("userId");
       if (token) {
         // Token exists, fetch  user data
         getUserById(userId, token);
       } else {
         // Token doesn't exist, navigate to Login screen
         console.log("Please login");
-        navigation.navigate('Login');
+        navigation.navigate("Login");
       }
     };
     getToken();
@@ -28,37 +34,40 @@ const UserAccount = ({ navigation }) => {
     // call get user by id function
     try {
       const data = await UserService.getUserById(id, token);
-      console.log('user data:', data);
+      console.log("user data:", data);
       setUserData(data);
     } catch (error) {
-      // Handle error 
-      console.error('Error:', error.message);
+      // Handle error
+      console.error("Error:", error.message);
     }
   };
 
   const goToBecomeAgent = () => {
-    navigation.navigate('BecomeAgent');
+    navigation.navigate("BecomeAgent");
   };
 
   const goToUserHome = () => {
-    navigation.navigate('AgentHome');
+    navigation.navigate("AgentHome");
   };
 
-  const goToPetsUI =()=>{
-    navigation.navigate('PetsScreen');
-  }
+  const goToPetsUI = () => {
+    navigation.navigate("PetsScreen");
+  };
 
   return (
     <View style={styles.outerContainer}>
       <ScrollView style={styles.container}>
         <View style={styles.header}>
           <Image source={{ uri: userData.profileImage }} style={styles.logo} />
-          <Text style={styles.title}>{userData.firstName} {userData.lastName}</Text>
-          <Text >{userData.email}</Text>
-          <Text >{userData.phoneNumber} </Text>
+          <Text style={styles.title}>
+            {userData.firstName} {userData.lastName}
+          </Text>
+          <Text>{userData.email}</Text>
+          <Text>{userData.phoneNumber} </Text>
           <Text style={styles.location}>
-  {userData.address && `${userData.address.address1} ${userData.address.address2} ${userData.address.city}`}
-</Text>
+            {userData.address &&
+              `${userData.address.address1} ${userData.address.address2} ${userData.address.city}`}
+          </Text>
         </View>
 
         <View style={styles.buttonsContainer}>
@@ -75,7 +84,7 @@ const UserAccount = ({ navigation }) => {
             <Text>Other Agent UIs</Text>
           </View>
           <TouchableOpacity style={styles.button} onPress={goToUserHome}>
-            <Text style={styles.buttonText}>User Home</Text>
+            <Text style={styles.buttonText}>Agent Home (Remove later)</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -87,14 +96,14 @@ const UserAccount = ({ navigation }) => {
 const styles = StyleSheet.create({
   outerContainer: {
     flex: 1,
-    backgroundColor: 'white',
-    paddingTop: 60
+    backgroundColor: "white",
+    paddingTop: 60,
   },
   container: {
-    flex: 1
+    flex: 1,
   },
   header: {
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: 20,
   },
   logo: {
@@ -104,31 +113,31 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginTop: 10,
   },
   location: {
     fontSize: 16,
-    color: 'gray',
+    color: "gray",
     marginBottom: 20,
   },
   buttonsContainer: {
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'space-around',
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "space-around",
     marginVertical: 20,
   },
   button: {
-    backgroundColor: 'black',
+    backgroundColor: "black",
     padding: 10,
-    width: '80%',
-    alignItems: 'center',
+    width: "80%",
+    alignItems: "center",
     borderRadius: 5,
-    marginBottom: 10
+    marginBottom: 10,
   },
   buttonText: {
-    color: 'white',
-    fontWeight: 'bold',
+    color: "white",
+    fontWeight: "bold",
   },
 });
 
