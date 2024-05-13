@@ -74,9 +74,6 @@ const FosterProfile = ({ route, navigation }) => {
           <Text style={styles.buttonText}>Book A Fostering</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>View History</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
           <Text style={styles.buttonText}>Message</Text>
         </TouchableOpacity>
       </View>

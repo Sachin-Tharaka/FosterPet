@@ -46,12 +46,20 @@ const UserAccount = ({ navigation }) => {
     navigation.navigate("BecomeAgent");
   };
 
+  const switchAccounts = () => {
+    navigation.navigate("SwitchAccounts");
+  };
+
   const goToUserHome = () => {
     navigation.navigate("AgentHome");
   };
 
   const goToPetsUI = () => {
     navigation.navigate("PetsScreen");
+  };
+
+  const changeDetails = () => {
+    navigation.navigate("ChangeDetails");
   };
 
   return (
@@ -71,7 +79,7 @@ const UserAccount = ({ navigation }) => {
         </View>
 
         <View style={styles.buttonsContainer}>
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.button} onPress={changeDetails}>
             <Text style={styles.buttonText}>Change Details</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={goToPetsUI}>
@@ -79,6 +87,9 @@ const UserAccount = ({ navigation }) => {
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={goToBecomeAgent}>
             <Text style={styles.buttonText}>Become an Agent</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={switchAccounts}>
+            <Text style={styles.buttonText}>Switch Accounts</Text>
           </TouchableOpacity>
           <View>
             <Text>Other Agent UIs</Text>

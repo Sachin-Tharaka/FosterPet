@@ -284,6 +284,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     height: 40,
     padding: 10,
+    backgroundColor: "#E0E0E0",
   },
   button: {
     backgroundColor: "black",
