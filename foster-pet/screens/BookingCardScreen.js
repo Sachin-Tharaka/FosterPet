@@ -129,7 +129,7 @@ const BookingCardScreen = ({ route, navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Booking Card</Text>
+      <Text style={styles.text}>Booking</Text>
       {error && <Text style={styles.error}>{error}</Text>}
 
       <Picker
@@ -184,7 +184,7 @@ const BookingCardScreen = ({ route, navigation }) => {
         />
       )}
 
-      <Text>Start Date and Time: {startDate}</Text>
+      <Text style={styles.showerText}>Start Date and Time: {startDate}</Text>
 
       <TouchableOpacity
         onPress={() => setShowEndDatePicker(true)}
@@ -227,7 +227,7 @@ const BookingCardScreen = ({ route, navigation }) => {
           }}
         />
       )}
-      <Text>End Date and Time: {endDate}</Text>
+      <Text style={styles.showerText}>End Date and Time: {endDate}</Text>
       <View style={styles.counterContainer}>
         <Text>Number of Pets: </Text>
         <TouchableOpacity
@@ -246,7 +246,7 @@ const BookingCardScreen = ({ route, navigation }) => {
       </View>
 
       <TouchableOpacity onPress={handleBooking} style={styles.button}>
-        <Text>Book</Text>
+        <Text style={styles.buttonText}>Book</Text>
       </TouchableOpacity>
     </View>
   );
@@ -276,12 +276,13 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     height: 40,
     padding: 10,
+    backgroundColor: "#E0E0E0",
   },
   button: {
-    backgroundColor: "#007bff",
+    backgroundColor: "black",
     padding: 10,
     borderRadius: 5,
-    marginVertical: 10,
+    marginTop: 50,
     width: "90%",
     alignItems: "center",
     justifyContent: "center",
@@ -291,7 +292,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#E0E0E0",
     padding: 10,
     borderRadius: 5,
-    marginVertical: 10,
+    marginVertical: 5,
     width: "90%",
     alignItems: "center",
     justifyContent: "center",
@@ -304,12 +305,19 @@ const styles = StyleSheet.create({
   },
   counterButton: {
     backgroundColor: "#e0e0e0",
-    paddingTop: 10,
-    paddingBottom: 10,
-    paddingLeft: 15,
-    paddingRight: 15,
+    paddingVertical: 6,
+    paddingHorizontal: 20,
     marginHorizontal: 10,
     borderRadius: 5,
+  },
+
+  showerText: {
+    marginVertical: 15,
+  },
+
+  buttonText: {
+    fontWeight: "bold",
+    color: "white",
   },
 });
 
