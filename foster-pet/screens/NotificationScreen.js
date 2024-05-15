@@ -10,6 +10,18 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Navbar from "../components/Navbar";
 import NotificationService from "../services/NotificationService";
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Image,
+  TouchableOpacity,
+} from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import Navbar from "../components/Navbar";
+import NotificationService from "../services/NotificationService";
 
 const NotificationScreen = ({ navigation }) => {
   const [notifications, setNotifications] = useState([]);
@@ -61,6 +73,17 @@ const NotificationScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      <TouchableOpacity
+        style={[styles.button, styles.loginButton]}
+        onPress={() => {
+          // Handle login button press
+          navigation.navigate("PaymentScreen");
+        }}
+      >
+        <Text style={[styles.buttonText, styles.loginButtonText]}>
+          Payments
+        </Text>
+      </TouchableOpacity>
       <Text style={styles.header}>Notifications</Text>
       <ScrollView style={styles.list}>
         {notifications.map((notification) => (
