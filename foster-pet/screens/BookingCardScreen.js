@@ -108,6 +108,10 @@ const BookingCardScreen = ({ route, navigation }) => {
         token
       );
       console.log("Booking completed:", responseData);
+      if (responseData && responseData.success) {
+        console.log("Navigating to checkout...");
+        navigation.navigate("PaymentScreen");
+      }
     } catch (error) {
       console.error("Booking failed:", error.message);
       setError("Booking failed");
@@ -254,7 +258,7 @@ const BookingCardScreen = ({ route, navigation }) => {
       </View>
 
       <TouchableOpacity onPress={handleBooking} style={styles.button}>
-        <Text style={styles.buttonText}>Place Booking</Text>
+        <Text style={styles.buttonText}>Next</Text>
       </TouchableOpacity>
     </View>
   );
