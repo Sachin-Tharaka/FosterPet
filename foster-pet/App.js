@@ -156,6 +156,13 @@ export default function App() {
             headerShown: false,
           }}
         />
+        <Stack.Screen
+          name="AgentHome"
+          component={AgentHome}
+          options={{
+            headerShown: false,
+          }}
+        />
 
         <Stack.Screen
           name="AgentChat"
