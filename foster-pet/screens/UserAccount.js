@@ -44,9 +44,6 @@ const UserAccount = ({ navigation }) => {
     navigation.navigate('AgentHome');
   };
 
-  const goToPetsUI =()=>{
-    navigation.navigate('PetsScreen');
-  }
 
   return (
     <View style={styles.outerContainer}>
@@ -65,7 +62,7 @@ const UserAccount = ({ navigation }) => {
           <TouchableOpacity style={styles.button}>
             <Text style={styles.buttonText}>Change Details</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={goToPetsUI}>
+          <TouchableOpacity style={styles.button} onPress={navigation.navigate('PetsScreen')}>
             <Text style={styles.buttonText}>Pets</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={goToBecomeAgent}>

@@ -68,17 +68,10 @@ const PetProfileScreen = ({ route, navigation }) => {
 </Text>
         </View>
 
-        <ScrollView>
+      <ScrollView style={styles.scrollView}>
   <View style={styles.images}>
     {pet.petImages && Array.isArray(pet.petImages) && pet.petImages.map((image, index) => (
-      index % 2 === 0 && (
-        <View key={index} style={styles.petRow}>
-          <Image source={{ uri: image }} style={styles.image} />
-          {index + 1 < pet.petImages.length && (
-            <Image source={{ uri: pet.petImages[index + 1] }} style={styles.petImage} />
-          )}
-        </View>
-      )
+      <Image key={index} source={{ uri: image }} style={styles.image} />
     ))}
   </View>
 </ScrollView>
@@ -104,6 +97,9 @@ const PetProfileScreen = ({ route, navigation }) => {
         padding: 10,
         borderRadius: 5,
         marginTop: 10,
+      },
+      scrollView: {
+        maxHeight: 200, 
       },
   });
 

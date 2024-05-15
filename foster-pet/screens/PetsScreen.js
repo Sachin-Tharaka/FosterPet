@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import KennelService from '../services/KennelService';
 import PetsService from '../services/PetsService';
 
 
@@ -42,14 +41,18 @@ const PetsScreen = ({ navigation }) => {
     }
   };
 
-  
+  //add new pet
+  const addNewPet= async ()=>{
+
+    navigation.navigate('AddPetScreen');
+  }
 
     return (
     
       <View style={styles.container}>
         <Text style={styles.header}>Pets</Text>
         <View style={styles.buttonsContainer}>
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.button} onPress={addNewPet}>
             <Text style={styles.buttonText}>+ Add Pet</Text>
           </TouchableOpacity>
           
