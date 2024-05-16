@@ -30,13 +30,13 @@ const AddPetScreen = ({ navigation }) => {
     // Convert petAge and petWeight to numbers
     const age = parseInt(petAge);
     const weight = parseFloat(petWeight);
-   
+
     // Check if age and weight are valid numbers
     if (isNaN(age) || isNaN(weight)) {
       setError('Age and weight must be numbers');
       return;
     }
-   
+
     if (!petType || !petName || !petAddress1 || !petCity || !petZip || !age || !weight || !petBreed || !petMediConditions || !petVaccinationStatus || !kasl_regNo || images.length === 0) {
       setError('All fields are required, including at least one image');
       return;
@@ -45,7 +45,7 @@ const AddPetScreen = ({ navigation }) => {
     console.log('petImages:', images);
 
     try {
-      
+
       const token = await AsyncStorage.getItem('token');
       const ownerId = await AsyncStorage.getItem('userId');
 
@@ -65,11 +65,13 @@ const AddPetScreen = ({ navigation }) => {
       formData.append('kasl_regNo', kasl_regNo);
 
       images.forEach((image, index) => {
-        formData.append(`petImages${index}`, {
-          uri: image.uri,
-          name: `image${index}.jpg`,
+        const file = {
+          uri: image,
+          name: `image_${index}.jpg`,
           type: 'image/jpeg',
-        });
+        };
+
+        formData.append(`image_${index}`, file);
       });
 console.log('Calling backend...');
       const response = await PetsService.addNewPet(formData,token);
@@ -101,11 +103,11 @@ console.log('Calling backend...');
   };
 
   const handleImageUpload = async () => {
-    
+
     //   mediaType: 'photo',
     //   quality: 0.8,
     // };
-  
+
     // ImagePicker.launchImageLibrary(options, (response) => {
     //   if (response.didCancel) {
     //     console.log('User cancelled image picker');
@@ -123,7 +125,7 @@ console.log('Calling backend...');
       maxWidth: 2000,
     };
 
-    launchImageLibrary(options, (response) => {
+    await launchImageLibrary(options, (response) => {
       if (response.didCancel) {
         console.log('User cancelled image picker');
       } else if (response.error) {
@@ -134,7 +136,7 @@ console.log('Calling backend...');
       }
     });
   };
-  
+
   const uploadFiles = async () => {
     try {
       console.log(selectFiles);

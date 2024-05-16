@@ -13,7 +13,7 @@ async getPetsByOwnerId(id,token) {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
         },
-        
+
       });
 
       if (!response.ok) {
@@ -24,7 +24,7 @@ async getPetsByOwnerId(id,token) {
 
       const data = await response.json();
       console.warn(data);
-      return data; 
+      return data;
     } catch (error) {
       throw error;
     }
@@ -41,20 +41,20 @@ async getPetsByOwnerId(id,token) {
           'Authorization': `Bearer ${token}`,
         },
       });
-  
+
       if (!response.ok) {
         throw new Error('Failed to get pet data');
       }
-  
+
       const data = await response.json();
       console.warn(data);
-      return data; 
+      return data;
     } catch (error) {
       throw error;
     }
   }
 
-  
+
   //add new pet
 // async addNewPet(newPet, token) {
 //   try {
@@ -88,9 +88,9 @@ async addNewPet(petData,token) {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
-        'Content-Type': 'multipart/form-data', 
+        'Content-Type': 'multipart/form-data',
       },
-      body: petData
+      petData
   })
   .then(response => {
         console.log(response.body)
@@ -114,9 +114,9 @@ async addNewPet(petData,token) {
   });
 }
 
-  
-  
+
+
 
 }
-  
+
 export default new PetsService();
