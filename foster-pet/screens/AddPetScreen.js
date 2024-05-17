@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, Button, ScrollView, Image } from 'react-native';
-import ImagePicker from 'react-native-image-picker';
-import {launchImageLibrary} from 'react-native-image-picker';
-import DocumentPicker from 'react-native-document-picker';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import PetsService from '../services/PetsService';
+import * as ImagePicker from 'expo-image-picker';
 
 const AddPetScreen = ({ navigation }) => {
   const [petType, setPetType] = useState('');
@@ -63,17 +62,16 @@ const AddPetScreen = ({ navigation }) => {
       formData.append('petVaccinationStatus', petVaccinationStatus);
       formData.append('ownerId', ownerId);
       formData.append('kasl_regNo', kasl_regNo);
+      // formData.append('petImages', images.at(0));
 
       images.forEach((image, index) => {
-        const file = {
-          uri: image,
-          name: `image_${index}.jpg`,
-          type: 'image/jpeg',
-        };
-
-        formData.append(`image_${index}`, file);
+          formData.append('petImages', {
+            uri: image.uri,
+            name: `image_${index}.jpg`,
+            type: 'image/jpeg',
+          });
       });
-console.log('Calling backend...');
+      console.log('Calling backend...');
       const response = await PetsService.addNewPet(formData,token);
       console.log('pets data:', response);
       if (response.success) {
@@ -102,86 +100,26 @@ console.log('Calling backend...');
     }
   };
 
-  const handleImageUpload = async () => {
+    const pickImages = async () => {
+        // No permissions request is necessary for launching the image library
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsMultipleSelection: true,
+            base64: false,
+        });
 
-    //   mediaType: 'photo',
-    //   quality: 0.8,
-    // };
-
-    // ImagePicker.launchImageLibrary(options, (response) => {
-    //   if (response.didCancel) {
-    //     console.log('User cancelled image picker');
-    //   } else if (response.error) {
-    //     console.log('ImagePicker Error: ', response.error);
-    //   } else {
-    //     const source = { uri: response.uri };
-    //     setImages([...images, source]);
-    //   }
-    // });
-    const options = {
-      mediaType: 'photo',
-      includeBase64: false,
-      maxHeight: 2000,
-      maxWidth: 2000,
+        if (!result.canceled) {
+            setImages(result.assets);
+        }
     };
 
-    await launchImageLibrary(options, (response) => {
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (response.error) {
-        console.log('Image picker error: ', response.error);
-      } else {
-        let imageUri = response.uri || response.assets?.[0]?.uri;
-        setImages([...images, imageUri]);
-      }
-    });
-  };
-
-  const uploadFiles = async () => {
-    try {
-      console.log(selectFiles);
-      const formData = new FormData();
-      selectedFiles.forEach((file, index) => {
-        formData.append(`file${index}`, {
-          uri: file.uri,
-          type: file.type,
-          name: file.name,
-        });
-      });
-
-      const response = await axios.post('YOUR_UPLOAD_URL', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-
-      console.log('Files uploaded successfully:', response.data);
-    } catch (error) {
-      console.error('Error uploading files:', error);
-    }
-  };
-
-  const selectFiles = async () => {
-    try {
-      const results = await DocumentPicker.pickMultiple({
-        type: [DocumentPicker.types.allFiles],
-      });
-      setSelectedFiles(results);
-    } catch (err) {
-      if (DocumentPicker.isCancel(err)) {
-        console.log('User cancelled the file selection');
-      } else {
-        console.log('Error while selecting the file', err);
-      }
-    }
-  };
   return (
     <ScrollView>
       <View style={styles.container}>
-      <Button title="Select and Upload Files" onPress={selectFiles} />
-      {selectedFiles.length > 0 && (
-        <Button title="Upload Files" onPress={uploadFiles} />
-      )}
+      {/*<Button title="Select and Upload Files" onPress={selectFiles} />*/}
+      {/*{selectedFiles.length > 0 && (*/}
+      {/*  <Button title="Upload Files" onPress={uploadFiles} />*/}
+      {/*)}*/}
         <Text style={styles.header}>Add New Pet</Text>
         {error && <Text style={styles.error}>{error}</Text>}
        <TextInput
@@ -259,7 +197,7 @@ console.log('Calling backend...');
   onChangeText={setKasl_regNo}
 />
 
-        <Button title="Choose Images" onPress={handleImageUpload} />
+        <Button title="Choose Images" onPress={pickImages} />
         {/* {images.length > 0 && images.map((imageUri, index) => (
           <Image key={index} source={{ uri: imageUri }} style={{ width: 200, height: 200 }} />
         ))} */}

@@ -82,15 +82,14 @@ async getPetsByOwnerId(id,token) {
 // Assuming you have a function to save a pet in your JavaScript application
 async addNewPet(petData,token) {
   // Assuming petData is the data you want to send to the server
-
+    console.log('petData:', petData);
   // Make a POST request to the endpoint where the save method is defined
   fetch(`${this.baseUrl}/api/pet`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
-        'Content-Type': 'multipart/form-data',
       },
-      petData
+      body: petData
   })
   .then(response => {
         console.log(response.body)
