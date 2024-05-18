@@ -12,14 +12,14 @@ import Navbar from "../components/Navbar";
 import UserService from "../services/UserService";
 
 const UserAccount = ({ navigation }) => {
-  const [userData, setUserData] = useState([]);
+  const [userData, setUserData] = useState({});
 
   useEffect(() => {
     const getToken = async () => {
       const token = await AsyncStorage.getItem("token");
       const userId = await AsyncStorage.getItem("userId");
       if (token) {
-        // Token exists, fetch  user data
+        // Token exists, fetch user data
         getUserById(userId, token);
       } else {
         // Token doesn't exist, navigate to Login screen
@@ -28,10 +28,10 @@ const UserAccount = ({ navigation }) => {
       }
     };
     getToken();
-  }, []);
+  }, [navigation]);
+
   //get user by id
   const getUserById = async (id, token) => {
-    // call get user by id function
     try {
       const data = await UserService.getUserById(id, token);
       console.log("user data:", data);
@@ -55,6 +55,7 @@ const UserAccount = ({ navigation }) => {
   };
 
   const goToPetsUI = () => {
+    console.log("navigate to pet screen");
     navigation.navigate("PetsScreen");
   };
 
@@ -71,7 +72,7 @@ const UserAccount = ({ navigation }) => {
             {userData.firstName} {userData.lastName}
           </Text>
           <Text>{userData.email}</Text>
-          <Text>{userData.phoneNumber} </Text>
+          <Text>{userData.phoneNumber}</Text>
           <Text style={styles.location}>
             {userData.address &&
               `${userData.address.address1} ${userData.address.address2} ${userData.address.city}`}

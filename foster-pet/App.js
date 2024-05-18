@@ -20,10 +20,11 @@ import AgentChat from "./screens/AgentChat";
 import AgentApprovals from "./screens/AgentApprovals";
 import AgentWallet from "./screens/AgentWallet";
 import PetsScreen from "./screens/PetsScreen";
-import PetProfileScreen from "./screens/PetsProfileScreen";
+import PetProfileScreen from "./screens/PetProfileScreen";
 import ChangeDetails from "./screens/ChangeDetails";
 import SwitchAccounts from "./screens/SwitchAccounts";
 import PaymentScreen from "./screens/PaymentScreen";
+import AddPetScreen from "./screens/AddPetScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -196,6 +197,13 @@ export default function App() {
         <Stack.Screen
           name="PaymentScreen"
           component={PaymentScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="AddPetScreen"
+          component={AddPetScreen}
           options={{
             headerShown: false,
           }}
