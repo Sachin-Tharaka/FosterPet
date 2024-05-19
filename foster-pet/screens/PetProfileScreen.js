@@ -42,9 +42,15 @@ const PetProfileScreen = ({ route, navigation }) => {
     }
   };
 
+  //navigate to update screen
+  const handleEditProfile =async()=>{
+    console.log("navigate to update pet profile screen");
+    navigation.navigate("UpdatePetProfileScreen", { petID: petID });
+  }
+  
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={handleEditProfile}>
         <Text style={styles.buttonText}>Edit Account</Text>
       </TouchableOpacity>
 
@@ -65,6 +71,7 @@ const PetProfileScreen = ({ route, navigation }) => {
           <Text>Weight: {pet.petWeight} lbs</Text>
           <Text>Medical Conditions: {pet.petMediConditions}</Text>
           <Text>Vaccination Status: {pet.petVaccinationStatus}</Text>
+          <Text>KASL Registration Number: {pet.kasl_regNo}</Text>
           <Text>Owner: {pet.ownerName}</Text>
           <Text>Contact: {pet.ownerPhone}</Text>
           <Text>Email: {pet.ownerEmail}</Text>
