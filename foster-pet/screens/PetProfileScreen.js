@@ -52,12 +52,7 @@ const PetProfileScreen = ({ route, navigation }) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.button} onPress={handleEditProfile}>
-
-  return (
-    <View style={styles.container}>
-      <TouchableOpacity style={styles.button}>
-
-        <Text style={styles.buttonText}>Edit Account</Text>
+       <Text style={styles.buttonText}>Edit Account</Text>
       </TouchableOpacity>
 
       <View style={styles.petContainer}>
