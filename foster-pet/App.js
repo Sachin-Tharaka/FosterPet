@@ -25,6 +25,8 @@ import ChangeDetails from "./screens/ChangeDetails";
 import SwitchAccounts from "./screens/SwitchAccounts";
 import PaymentScreen from "./screens/PaymentScreen";
 import AddPetScreen from "./screens/AddPetScreen";
+import UpdatePetProfileScreen from "./screens/UpdatePetProfileScreen";
+
 
 const Stack = createNativeStackNavigator();
 
@@ -208,6 +210,15 @@ export default function App() {
             headerShown: false,
           }}
         />
+
+        <Stack.Screen
+          name="UpdatePetProfileScreen"
+          component={UpdatePetProfileScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+
       </Stack.Navigator>
     </NavigationContainer>
   );
