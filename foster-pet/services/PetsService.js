@@ -56,7 +56,8 @@ async getPetsByOwnerId(id,token) {
 
 
 
-// add pet function
+
+// add pet
 async addNewPet(petData,token) {
   // Assuming petData is the data you want to send to the server
     console.log('petData:', petData);
@@ -89,6 +90,7 @@ async addNewPet(petData,token) {
       console.error('Error saving pet:', error.message);
   });
 }
+
 
 //update pet profile
 async updatePetProfile(petData,token) {
@@ -123,6 +125,7 @@ async updatePetProfile(petData,token) {
       console.error('Error saving pet:', error.message);
   });
 }
+
 
 
 }
