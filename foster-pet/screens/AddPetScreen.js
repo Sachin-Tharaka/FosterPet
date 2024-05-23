@@ -54,7 +54,7 @@ const AddPetScreen = ({ navigation }) => {
       formData.append('petMediConditions', petMediConditions);
       formData.append('petVaccinationStatus', petVaccinationStatus);
       formData.append('ownerId', ownerId);
-      formData.append('kasl_regNo', kasl_regNo);
+      formData.append('KASL_regNo', kasl_regNo);
 
       images.forEach((image, index) => {
         formData.append('petImages', {
