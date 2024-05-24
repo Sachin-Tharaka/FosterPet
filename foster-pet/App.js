@@ -27,7 +27,6 @@ import PaymentScreen from "./screens/PaymentScreen";
 import AddPetScreen from "./screens/AddPetScreen";
 import UpdatePetProfileScreen from "./screens/UpdatePetProfileScreen";
 
-
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -218,6 +217,8 @@ export default function App() {
             headerShown: false,
           }}
         />
+
+
 
       </Stack.Navigator>
     </NavigationContainer>
