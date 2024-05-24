@@ -10,6 +10,7 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Navbar from "../components/Navbar";
 import UserService from "../services/UserService";
+import defaultProfileImage from "../assets/ProfilePicture.png"; 
 
 const UserAccount = ({ navigation }) => {
   const [userData, setUserData] = useState({});
@@ -30,7 +31,7 @@ const UserAccount = ({ navigation }) => {
     getToken();
   }, [navigation]);
 
-  //get user by id
+  // Get user by id
   const getUserById = async (id, token) => {
     try {
       const data = await UserService.getUserById(id, token);
@@ -63,11 +64,16 @@ const UserAccount = ({ navigation }) => {
     navigation.navigate("ChangeDetails");
   };
 
+  
+
   return (
     <View style={styles.outerContainer}>
       <ScrollView style={styles.container}>
         <View style={styles.header}>
-          <Image source={{ uri: userData.profileImage }} style={styles.logo} />
+          <Image
+            source={userData.profileImage ? { uri: userData.profileImage } : defaultProfileImage}
+            style={styles.logo}
+          />
           <Text style={styles.title}>
             {userData.firstName} {userData.lastName}
           </Text>
@@ -80,6 +86,7 @@ const UserAccount = ({ navigation }) => {
         </View>
 
         <View style={styles.buttonsContainer}>
+        
           <TouchableOpacity style={styles.button} onPress={changeDetails}>
             <Text style={styles.buttonText}>Change Details</Text>
           </TouchableOpacity>
