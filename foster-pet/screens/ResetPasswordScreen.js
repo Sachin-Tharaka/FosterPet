@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import AuthenticationService from '../services/AuthenticationService';
 
 const ResetPasswordScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -7,7 +8,7 @@ const ResetPasswordScreen = ({ navigation }) => {
   const [emailError, setEmailError] = useState('');
   
   //reset password
-  const handleReset = () => {
+  const handleReset = async() => {
     setEmailError('');
    
     
@@ -19,17 +20,26 @@ const ResetPasswordScreen = ({ navigation }) => {
     } else if (!regex.test(email)) {
       setEmailError('Please enter a valid email address.');
       return;
-    } 
-
-    // Call the reset passowrd function
-
-    
+    } else{
+      try {
+        const response = await AuthenticationService.emailSend(email);
+  
+  console.log('Response', response);
+ if(response.status=="Success"){
+  console.warn('navigate to verification screen screen');
+navigation.navigate('VerificationScreenForSaveNewPassword',  {email} );
+ }else{
+  setError('Invalid Email address');
+ }    
+      }catch (error) {
+        // Handle verification error 
+        console.error('Invalid emaail address:', error.message);
+        setError('Invalid email address');
+      }
+    }
   };
 
-//resend email
-const handleResend =()=>{
-    //call resend email function
-}
+
 
 
   return (
@@ -45,16 +55,10 @@ const handleResend =()=>{
       
 
       <TouchableOpacity style={styles.button} onPress={handleReset}>
-        <Text style={styles.buttonText}>Send reset link</Text>
+        <Text style={styles.buttonText}>Submit</Text>
       </TouchableOpacity>
       
-      <Text>
-  Didn't get the Email?{' '}
-  <Text style={styles.resend} onPress={handleResend}>
-    Resend
-  </Text>
-</Text>
-    </View>
+        </View>
   );
 };
 

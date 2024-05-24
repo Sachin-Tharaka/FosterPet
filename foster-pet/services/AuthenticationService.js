@@ -78,6 +78,55 @@ class AuthenticationService {
       }
   }
 
+  //email send
+  async emailSend(email) {
+        
+    try {
+      const response = await fetch(`${this.baseUrl}/api/auth/send-reset-password-code`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email}),
+      });
+
+      if (!response.ok) {
+        throw new Error('Invalid verification code');
+      }
+
+      const data = await response.json();
+      console.warn("verified");
+      console.warn(data);
+      return data; 
+    } catch (error) {
+      throw error;
+    }
+}
+
+ //save new password for porget
+ async savePasswordForForget( email, password,verificationCode) {
+        
+  try {
+    const response = await fetch(`${this.baseUrl}/api/auth/reset-password`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({  email, password,verificationCode }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Registration failed');
+    }
+
+    const data = await response.json();
+    
+    console.warn(data);
+    return data; // You may want to return user data or a success message
+  } catch (error) {
+    throw error;
+  }
+}
   
   }
   

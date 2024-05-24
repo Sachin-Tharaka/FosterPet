@@ -26,6 +26,8 @@ import SwitchAccounts from "./screens/SwitchAccounts";
 import PaymentScreen from "./screens/PaymentScreen";
 import AddPetScreen from "./screens/AddPetScreen";
 import UpdatePetProfileScreen from "./screens/UpdatePetProfileScreen";
+import VerificationScreenForForgetPassword from "./screens/VerificationScreenForForgetPassword";
+import SaveNewPasswordScreen from "./screens/SaveNewPasswordScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -213,6 +215,20 @@ export default function App() {
         <Stack.Screen
           name="UpdatePetProfileScreen"
           component={UpdatePetProfileScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="VerificationScreenForSaveNewPassword"
+          component={VerificationScreenForForgetPassword}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="SaveNewPasswordScreen"
+          component={SaveNewPasswordScreen}
           options={{
             headerShown: false,
           }}

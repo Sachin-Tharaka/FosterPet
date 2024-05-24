@@ -1,18 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
-
 
 function CustomOTPInput({ length, onComplete }) {
   const [otp, setOtp] = useState(Array(length).fill(''));
+
+  // Create an array to store refs for each input
+  const otpInputsRefs = Array.from({ length }, () => useRef(null));
 
   const handleOTPChange = (text, index) => {
     const newOtp = [...otp];
     newOtp[index] = text;
     setOtp(newOtp);
 
-    if (index < length - 1 && text !== '') {
+    if (text !== '' && index < length - 1) {
       // Move focus to the next input
-      otpInputsRefs[index + 1].focus();
+      otpInputsRefs[index + 1].current.focus();
     }
 
     if (newOtp.every((digit) => digit !== '')) {
@@ -20,9 +22,6 @@ function CustomOTPInput({ length, onComplete }) {
       onComplete(otpValue);
     }
   };
-
-  // Create an array to store refs for each input
-  const otpInputsRefs = Array(length).fill(null).map(() => React.createRef());
 
   return (
     <View style={styles.otpInput}>
@@ -40,18 +39,19 @@ function CustomOTPInput({ length, onComplete }) {
     </View>
   );
 }
+
 const styles = StyleSheet.create({
-    otpInput: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-    },
-    otpDigit: {
-      width: 50,
-      height: 50,
-      borderWidth: 1,
-      textAlign: 'center',
-      fontSize: 20,
-    },
-  });
-  
+  otpInput: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  otpDigit: {
+    width: 50,
+    height: 50,
+    borderWidth: 1,
+    textAlign: 'center',
+    fontSize: 20,
+  },
+});
+
 export default CustomOTPInput;
