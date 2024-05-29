@@ -38,7 +38,7 @@ async updateUser(userData,token) {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
       },
-      body: JSON.stringify(userData),
+      body: JSON.stringify({userData}),
   })
   .then(response => {
         console.log("response body: ",response.body)

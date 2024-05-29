@@ -11,10 +11,12 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import KennelService from "../services/KennelService";
 import UserService from "../services/UserService";
+import VounteerService from "../services/VounteerService";
 import Navbar from "../components/Navbar";
 
 const BookingHouseScreen = ({ navigation }) => {
   const [kennels, setKennels] = useState([]);
+  const [volunteersData,setVolunteersData]=useState([]);
   const [userData, setUserData] = useState([]);
 
   useEffect(() => {
@@ -22,9 +24,11 @@ const BookingHouseScreen = ({ navigation }) => {
       const token = await AsyncStorage.getItem("token");
       const userId = await AsyncStorage.getItem("userId");
       if (token) {
-        // Token exists, fetch kennels and user data
-        getAllKennelNear(79.8, 6.9, 50000, token);
+        // Token exists, fetch kennels,volunteers and user data
         getUserById(userId, token);
+        getAllKennelNear(79.8, 6.9, 50000, token);
+        getAllVolunteerNear(79.8, 6.9, 50000, token);
+        
       } else {
         // Token doesn't exist, navigate to Login screen
         console.log("Please login");
@@ -44,8 +48,26 @@ const BookingHouseScreen = ({ navigation }) => {
         maxDistance,
         token
       );
-      console.log("kennel data:", data);
+     // console.log("kennel data:", data);
       setKennels(data);
+    } catch (error) {
+      // Handle error
+      console.error("Error:", error.message);
+    }
+  };
+
+  //get all kennel near
+  const getAllVolunteerNear = async (longitude, latitude, maxDistance, token) => {
+    // call get all volunteer near function
+    try {
+      const data = await VounteerService.getAllVolunteerNear(
+        longitude,
+        latitude,
+        maxDistance,
+        token
+      );
+      console.log("volunteer data:", data);
+      setVolunteersData(data);
     } catch (error) {
       // Handle error
       console.error("Error:", error.message);

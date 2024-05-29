@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -20,18 +20,17 @@ const ChangeDetails = ({ navigation }) => {
   const [userAddress1, setUserAddress1] = useState("");
   const [userAddress2, setUserAddress2] = useState("");
   const [userCity, setUserCity] = useState("");
-  const [userZip,setUserZip]=useState("");
-  const [profileImage,setProfileImage]=useState("");
-
+  const [userZip, setUserZip] = useState("");
+  const [profileImage, setProfileImage] = useState("");
+  const [password, setPassword] = useState("");
+ 
   useEffect(() => {
     const getToken = async () => {
       const token = await AsyncStorage.getItem("token");
       const userId = await AsyncStorage.getItem("userId");
-      if (token) {
-        // Token exists, fetch user data
+      if (token && userId) {
         getUserById(userId, token);
       } else {
-        // Token doesn't exist, navigate to Login screen
         console.log("Please login");
         navigation.navigate("Login");
       }
@@ -39,11 +38,9 @@ const ChangeDetails = ({ navigation }) => {
     getToken();
   }, [navigation]);
 
-  // Get user by id
   const getUserById = async (id, token) => {
     try {
       const data = await UserService.getUserById(id, token);
-      console.log("user data:", data);
       setFirstName(data.firstName);
       setLastName(data.lastName);
       setEmail(data.email);
@@ -53,8 +50,8 @@ const ChangeDetails = ({ navigation }) => {
       setUserCity(data.userCity);
       setUserZip(data.userZip);
       setProfileImage(data.profileImage);
+      setPassword(data.password);
     } catch (error) {
-      // Handle error
       console.error("Error:", error.message);
     }
   };
@@ -68,6 +65,7 @@ const ChangeDetails = ({ navigation }) => {
         firstName,
         lastName,
         email,
+        password,
         phoneNumber,
         userAddress1,
         userAddress2,
@@ -77,12 +75,7 @@ const ChangeDetails = ({ navigation }) => {
       };
 
       try {
-        const response = await UserService.updateUser(
-          
-          updatedData,
-          token
-        );
-        console.log("response: ",response);
+        const response = await UserService.updateUser(updatedData, token);
         Alert.alert("Success", "Your details have been updated.");
         navigation.goBack();
       } catch (error) {
@@ -93,7 +86,7 @@ const ChangeDetails = ({ navigation }) => {
       navigation.navigate("Login");
     }
   };
-//pick image
+
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -134,6 +127,12 @@ const ChangeDetails = ({ navigation }) => {
         style={styles.input}
       />
       <TextInput
+        placeholder="Password"
+        value={password}
+        onChangeText={setPassword}
+        style={styles.input}
+      />
+      <TextInput
         placeholder="Address 1"
         value={userAddress1}
         onChangeText={setUserAddress1}
@@ -151,7 +150,7 @@ const ChangeDetails = ({ navigation }) => {
         onChangeText={setUserCity}
         style={styles.input}
       />
-       <TextInput
+      <TextInput
         placeholder="Zip Code"
         value={userZip}
         onChangeText={setUserZip}

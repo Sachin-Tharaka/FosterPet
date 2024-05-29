@@ -1,14 +1,47 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, FlatList, Image } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import KennelService from '../services/KennelService';
 
-const AgentHome = ({ navigation }) => {
+const AgentHome = ({ route, navigation }) => {
+  const { kennelID } = route.params;
   const [isCollapsed, setIsCollapsed] = useState(true);
+  const [kennelData, setKennelData] = useState([]);
+
+  useEffect(() => {
+    console.log("kennel id ", kennelID);
+    const getToken = async () => {
+      const token = await AsyncStorage.getItem("token");
+      const userId = await AsyncStorage.getItem("userId");
+      if (token) {
+        // Token exists, fetch kennels and user data
+        getKennelById(kennelID, token);
+      } else {
+        // Token doesn't exist, navigate to Login screen
+        console.log("Please login");
+        navigation.navigate("Login");
+      }
+    };
+    getToken();
+  }, []);
 
   const toggleNavbar = () => {
     setIsCollapsed(!isCollapsed);
   };
 
+  //get kennel by id
+  const getKennelById = async (id, token) => {
+    // call get kennel by id function
+    try {
+      const data = await KennelService.getKennelById(id, token);
+      console.log("kennel data:", data);
+      setKennelData(data);
+    } catch (error) {
+      // Handle error
+      console.error("Error:", error.message);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -20,27 +53,49 @@ const AgentHome = ({ navigation }) => {
         <Text style={styles.header}>Home</Text>
 
         <View style={styles.user_header}>
-        <Image source={{ uri: 'https://picsum.photos/400/600?image=1' }} style={styles.logo} />
-  
-          <Text style={styles.title}>Nipuni Perera</Text>
-          <Text style={styles.location}>Kotikawaththa</Text>
+          <Image
+            source={{
+              uri:
+                kennelData.images && kennelData.images.length > 0
+                  ? kennelData.images[0]
+                  : '',
+            }}
+            style={styles.logo}
+          />
+
+          <Text style={styles.title}>{kennelData.kennelName}</Text>
+          <Text style={styles.location}>
+            {kennelData.kennelAddress
+              ? `${kennelData.kennelAddress.address1}, ${kennelData.kennelAddress.address2}, ${kennelData.kennelAddress.city},${kennelData.kennelAddress.zipCode}.`
+              : "Address not available"}
+          </Text>
+          <Text>Owner Name: {kennelData.ownerName}</Text>
+          <Text>Owner Email: {kennelData.ownerEmail}</Text>
+          <Text>Owner Phone: {kennelData.ownerPhone}</Text>
+          <Text>Payment Rates: {kennelData.paymentRates}</Text>
         </View>
 
-        <View style={styles.buttonsContainer}>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Change Details</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>View History</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Ongoing Orders</Text>
-        </TouchableOpacity>
-    
-      </View>
+        <ScrollView horizontal style={styles.imagesContainer}>
+          {kennelData.images &&
+            Array.isArray(kennelData.images) &&
+            kennelData.images.map((image, index) => (
+              <Image key={index} source={{ uri: image }} style={styles.image} />
+            ))}
+        </ScrollView>
 
+        <View style={styles.buttonsContainer}>
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.buttonText}>Change Details</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.buttonText}>View History</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.buttonText}>Ongoing Orders</Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
-      
+
       {!isCollapsed && (
         <View style={styles.sidebar}>
           <TouchableOpacity style={styles.closeIcon} onPress={toggleNavbar}>
@@ -59,14 +114,11 @@ const AgentHome = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop:60
-
-
+    marginTop: 60,
   },
   content: {
     flex: 1,
     padding: 20,
-
   },
   itemContainer: {
     flexDirection: 'row',
@@ -75,7 +127,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     borderRadius: 5,
     alignItems: 'center',
-
   },
   title: {
     fontSize: 24,
@@ -100,22 +151,22 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 25,
-    marginRight: 10
+    marginRight: 10,
   },
   detailContainer: {
-    flex: 1
+    flex: 1,
   },
   name: {
     fontWeight: 'bold',
-    fontSize: 16
+    fontSize: 16,
   },
   role: {
     fontSize: 14,
-    color: '#666'
+    color: '#666',
   },
   detail: {
     fontSize: 12,
-    color: '#999'
+    color: '#999',
   },
   buttonsContainer: {
     display: 'flex',
@@ -130,37 +181,37 @@ const styles = StyleSheet.create({
     width: '80%',
     alignItems: 'center',
     borderRadius: 5,
-    marginBottom:10
+    marginBottom: 10,
   },
   buttonContainer: {
     flexDirection: 'column',
-    alignItems: 'flex-end'
+    alignItems: 'flex-end',
   },
   buttonSmall: {
     backgroundColor: '#E0E0E0',
     padding: 8,
     borderRadius: 5,
-    marginBottom: 5
+    marginBottom: 5,
   },
   buttonSmallBlue: {
     backgroundColor: '#007BFF',
     padding: 8,
-    borderRadius: 5
+    borderRadius: 5,
   },
   buttonText: {
     fontSize: 12,
     color: 'white',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   buttonTextWhite: {
     fontSize: 12,
-    color: '#FFF'
+    color: '#FFF',
   },
   header: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
-    marginTop: 50  // Add margin to avoid overlap with the menu icon
+    marginTop: 50, // Add margin to avoid overlap with the menu icon
   },
   sidebar: {
     position: 'absolute',
@@ -169,25 +220,34 @@ const styles = StyleSheet.create({
     backgroundColor: '#2C3E50',
     paddingTop: 20,
     left: 0,
-    top: 0
+    top: 0,
   },
   navItem: {
     padding: 10,
     color: 'white',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   menuIcon: {
     position: 'absolute',
     top: 20,
     left: 20,
-    zIndex: 2
+    zIndex: 2,
   },
   closeIcon: {
     position: 'absolute',
     top: 20,
     right: 20,
-    zIndex: 2
-  }
+    zIndex: 2,
+  },
+  imagesContainer: {
+    marginVertical: 20,
+  },
+  image: {
+    width: 150,
+    height: 150,
+    borderRadius: 10,
+    marginRight: 10,
+  },
 });
 
 export default AgentHome;
