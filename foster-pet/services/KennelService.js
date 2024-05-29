@@ -43,9 +43,9 @@ async getAllKennelNear(longitude, latitude, maxDistance, token) {
         console.warn('Error.........');
         throw new Error('Failed to get kennel data');
       }
-     console.warn("response " ,response);
+     //console.warn("response " ,response);
       const data = await response.json();
-      console.warn(data);
+      //console.warn(data);
       return data; 
     } catch (error) {
       throw error;
@@ -76,6 +76,29 @@ async getKennelById(id,token) {
   }
 }
 
+//get kennel by user id
+async getKennelsByUserId(id,token) {
+  try {
+    const response = await fetch(`${this.baseUrl}/api/kennel/owner?ownerId=${id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to get kennels data');
+    }
+
+    const data = await response.json();
+    console.warn(data);
+    return data; 
+  } catch (error) {
+    throw error;
+  }
+}
 
   }
   

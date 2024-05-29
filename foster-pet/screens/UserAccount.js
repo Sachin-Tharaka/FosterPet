@@ -51,8 +51,9 @@ const UserAccount = ({ navigation }) => {
     navigation.navigate("SwitchAccounts");
   };
 
-  const goToUserHome = () => {
-    navigation.navigate("AgentHome");
+  const goToKennels = () => {
+    console.log('navigate to my kennel screen');
+    navigation.navigate("MyKennelsScreen");
   };
 
   const goToPetsUI = () => {
@@ -102,8 +103,8 @@ const UserAccount = ({ navigation }) => {
           <View>
             <Text>Other Agent UIs</Text>
           </View>
-          <TouchableOpacity style={styles.button} onPress={goToUserHome}>
-            <Text style={styles.buttonText}>Agent Home (Remove later)</Text>
+          <TouchableOpacity style={styles.button} onPress={goToKennels}>
+            <Text style={styles.buttonText}>My Kennels (Remove later)</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
