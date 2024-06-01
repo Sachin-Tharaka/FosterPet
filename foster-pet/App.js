@@ -31,6 +31,8 @@ import SaveNewPasswordScreen from "./screens/SaveNewPasswordScreen";
 import MyKennelsScreen from "./screens/MyKennelsScreen";
 import AddNewKennelScreen from "./screens/AddNewKennelScreen";
 
+
+
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -243,6 +245,7 @@ export default function App() {
             headerShown: false,
           }}
         />
+
 
 <Stack.Screen
           name="AddNewKennelScreen"

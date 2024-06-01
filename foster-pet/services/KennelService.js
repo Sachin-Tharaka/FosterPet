@@ -78,6 +78,7 @@ async getKennelsByUserId(id,token) {
   }
 }
 
+
 //add new kennel
 async addNewKennel(data,token) {
   // Assuming data is the data you want to send to the server
@@ -110,6 +111,30 @@ async addNewKennel(data,token) {
       // Handle any errors that occurred during the fetch
       console.error('Error saving kennel:', error.message);
   });
+
+//get kennel by user id
+async getKennelsByUserId(id,token) {
+  try {
+    const response = await fetch(`${this.baseUrl}/api/kennel/owner?ownerId=${id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to get kennels data');
+    }
+
+    const data = await response.json();
+    console.warn(data);
+    return data; 
+  } catch (error) {
+    throw error;
+  }
+
 }
 
   }
