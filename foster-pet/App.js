@@ -33,6 +33,7 @@ import AddNewKennelScreen from "./screens/AddNewKennelScreen";
 import UpdateKennelDataScreen from "./screens/UpdateKennelDataScreen";
 
 
+
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -255,6 +256,7 @@ export default function App() {
           }}
         />
 
+
 <Stack.Screen
           name="UpdateKennelDataScreen"
           component={UpdateKennelDataScreen}
@@ -262,6 +264,7 @@ export default function App() {
             headerShown: false,
           }}
         />
+
 
 
 

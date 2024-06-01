@@ -70,6 +70,7 @@ async getKennelsByUserId(id,token) {
       throw new Error('Failed to get kennels data');
     }
 
+
     const data = await response.json();
     console.warn(data);
     return data; 
@@ -113,7 +114,20 @@ async addNewKennel(data,token) {
   });
 
 
+
+    const data = await response.json();
+    console.warn(data);
+    return data; 
+  } catch (error) {
+    throw error;
   }
+}
+
+
+
+
+
+  
 
   //update kennel
 async updateKennel(data,token) {
