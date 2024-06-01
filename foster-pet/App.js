@@ -30,6 +30,7 @@ import VerificationScreenForForgetPassword from "./screens/VerificationScreenFor
 import SaveNewPasswordScreen from "./screens/SaveNewPasswordScreen";
 import MyKennelsScreen from "./screens/MyKennelsScreen";
 import AddNewKennelScreen from "./screens/AddNewKennelScreen";
+import UpdateKennelDataScreen from "./screens/UpdateKennelDataScreen";
 
 
 
@@ -254,6 +255,16 @@ export default function App() {
             headerShown: false,
           }}
         />
+
+
+<Stack.Screen
+          name="UpdateKennelDataScreen"
+          component={UpdateKennelDataScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+
 
 
 
