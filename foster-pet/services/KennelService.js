@@ -3,29 +3,7 @@ class KennelService {
       this.baseUrl = 'https://fosterpet.azurewebsites.net';
     }
   
-    //get all kennels
-    async getAllKennel(token) {
-        try {
-          const response = await fetch(`${this.baseUrl}/api/kennel`, {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token}`,
-            },
-            
-          });
     
-          if (!response.ok) {
-            throw new Error('Failed to get kennel data');
-          }
-    
-          const data = await response.json();
-          console.warn(data);
-          return data; 
-        } catch (error) {
-          throw error;
-        }
-      }
 //get kennel nearby
 async getAllKennelNear(longitude, latitude, maxDistance, token) {
   console.warn("Calling api...");
@@ -65,7 +43,7 @@ async getKennelById(id,token) {
     });
 
     if (!response.ok) {
-      throw new Error('Failed to get user data');
+      throw new Error('Failed to get kennel data');
     }
 
     const data = await response.json();
@@ -98,6 +76,40 @@ async getKennelsByUserId(id,token) {
   } catch (error) {
     throw error;
   }
+}
+
+//add new kennel
+async addNewKennel(data,token) {
+  // Assuming data is the data you want to send to the server
+    console.log('kennel data:', data);
+  // Make a POST request to the endpoint where the save method is defined
+  fetch(`${this.baseUrl}/api/kennel`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+      body: data
+  })
+  .then(response => {
+        console.log("response body: ",response.body)
+      // Check if response status is OK
+      if (!response.ok) {
+          // If response status is not OK, handle the error
+          return response.text().then(errorMessage => {
+            throw new Error(errorMessage);
+          })
+      }
+      // If response status is OK, return the JSON response
+      return response.json();
+  })
+  .then(data => {
+      // Handle successful response data here
+      console.log('Kennel saved successfully:', data);
+  })
+  .catch(error => {
+      // Handle any errors that occurred during the fetch
+      console.error('Error saving kennel:', error.message);
+  });
 }
 
   }

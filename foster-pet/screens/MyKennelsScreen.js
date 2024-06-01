@@ -51,7 +51,7 @@ const MyKennelsScreen = ({ navigation }) => {
     <View style={styles.container}>
       <Text style={styles.header}>My Kennels</Text>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('AddKennelScreen')}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('AddNewKennelScreen')}>
           <Text style={styles.buttonText}>Add Kennel</Text>
         </TouchableOpacity>
       </View>
