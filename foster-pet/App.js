@@ -29,6 +29,9 @@ import UpdatePetProfileScreen from "./screens/UpdatePetProfileScreen";
 import VerificationScreenForForgetPassword from "./screens/VerificationScreenForForgetPassword";
 import SaveNewPasswordScreen from "./screens/SaveNewPasswordScreen";
 import MyKennelsScreen from "./screens/MyKennelsScreen";
+import AddNewKennelScreen from "./screens/AddNewKennelScreen";
+
+
 
 const Stack = createNativeStackNavigator();
 
@@ -238,6 +241,15 @@ export default function App() {
 <Stack.Screen
           name="MyKennelsScreen"
           component={MyKennelsScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+
+
+<Stack.Screen
+          name="AddNewKennelScreen"
+          component={AddNewKennelScreen}
           options={{
             headerShown: false,
           }}
