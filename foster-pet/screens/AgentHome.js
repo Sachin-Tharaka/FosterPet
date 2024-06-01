@@ -43,6 +43,11 @@ const AgentHome = ({ route, navigation }) => {
     }
   };
 
+  const updateData = () => {
+    console.log('navigate to update kennel screen');
+    navigation.navigate("UpdateKennelDataScreen",{kennelId:kennelID});
+  };
+
   return (
     <View style={styles.container}>
       <ScrollView style={styles.content}>
@@ -85,7 +90,7 @@ const AgentHome = ({ route, navigation }) => {
 
         <View style={styles.buttonsContainer}>
           <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Change Details</Text>
+            <Text style={styles.buttonText} onPress={updateData}>Change Details</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button}>
             <Text style={styles.buttonText}>View History</Text>

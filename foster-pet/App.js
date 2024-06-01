@@ -30,6 +30,8 @@ import VerificationScreenForForgetPassword from "./screens/VerificationScreenFor
 import SaveNewPasswordScreen from "./screens/SaveNewPasswordScreen";
 import MyKennelsScreen from "./screens/MyKennelsScreen";
 import AddNewKennelScreen from "./screens/AddNewKennelScreen";
+import UpdateKennelDataScreen from "./screens/UpdateKennelDataScreen";
+
 
 const Stack = createNativeStackNavigator();
 
@@ -244,9 +246,18 @@ export default function App() {
           }}
         />
 
+
 <Stack.Screen
           name="AddNewKennelScreen"
           component={AddNewKennelScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+
+<Stack.Screen
+          name="UpdateKennelDataScreen"
+          component={UpdateKennelDataScreen}
           options={{
             headerShown: false,
           }}

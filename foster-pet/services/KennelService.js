@@ -78,6 +78,7 @@ async getKennelsByUserId(id,token) {
   }
 }
 
+
 //add new kennel
 async addNewKennel(data,token) {
   // Assuming data is the data you want to send to the server
@@ -110,9 +111,45 @@ async addNewKennel(data,token) {
       // Handle any errors that occurred during the fetch
       console.error('Error saving kennel:', error.message);
   });
-}
+
 
   }
-  
+
+  //update kennel
+async updateKennel(data,token) {
+  // Assuming data is the data you want to send to the server
+    console.log('kennel data:', data);
+  // Make a POST request to the endpoint where the save method is defined
+  fetch(`${this.baseUrl}/api/kennel/update`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+      body: data
+  })
+  .then(response => {
+        console.log("response body: ",response.body)
+      // Check if response status is OK
+      if (!response.ok) {
+          // If response status is not OK, handle the error
+          return response.text().then(errorMessage => {
+            throw new Error(errorMessage);
+          })
+      }
+      // If response status is OK, return the JSON response
+      return response.json();
+  })
+  .then(data => {
+      // Handle successful response data here
+      console.log('Kennel saved successfully:', data);
+  })
+  .catch(error => {
+      // Handle any errors that occurred during the fetch
+      console.error('Error saving kennel:', error.message);
+  });
+
+
+  }
+}
   export default new KennelService();
   
