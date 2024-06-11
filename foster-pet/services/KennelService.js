@@ -81,47 +81,36 @@ async getKennelsByUserId(id,token) {
 
 
 //add new kennel
-async addNewKennel(data,token) {
-  // Assuming data is the data you want to send to the server
-    console.log('kennel data:', data);
-  // Make a POST request to the endpoint where the save method is defined
-  fetch(`${this.baseUrl}/api/kennel`, {
+async addNewKennel(kennelData, token) {
+  try {
+    console.log('kennel data:', kennelData);
+
+    const response = await fetch(`${this.baseUrl}/api/kennel`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
       },
-      body: data
-  })
-  .then(response => {
-        console.log("response body: ",response.body)
-      // Check if response status is OK
-      if (!response.ok) {
-          // If response status is not OK, handle the error
-          return response.text().then(errorMessage => {
-            throw new Error(errorMessage);
-          })
-      }
-      // If response status is OK, return the JSON response
-      return response.json();
-  })
-  .then(data => {
-      // Handle successful response data here
-      console.log('Kennel saved successfully:', data);
-  })
-  .catch(error => {
-      // Handle any errors that occurred during the fetch
-      console.error('Error saving kennel:', error.message);
-  });
+      body: kennelData
+    });
 
+    if (!response.ok) {
+      // If response status is not OK, handle the error
+      const errorMessage = await response.text();
+      throw new Error(errorMessage);
+    }
 
-
+    // If response status is OK, return the JSON response
     const data = await response.json();
-    console.warn(data);
-    return data; 
+    console.log('Kennel saved successfully:', data);
+    return data;
   } catch (error) {
+    // Handle any errors that occurred during the fetch
+    console.error('Error saving kennel:', error.message);
     throw error;
   }
 }
+
+
 
 
 
@@ -164,6 +153,7 @@ async updateKennel(data,token) {
 
 
   }
+
 }
   export default new KennelService();
   

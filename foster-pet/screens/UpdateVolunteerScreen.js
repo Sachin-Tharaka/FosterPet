@@ -1,20 +1,15 @@
 import React, { useState,useEffect } from 'react';
 import { View, Text, StyleSheet, TextInput, Button, ScrollView, Image, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import KennelService from '../services/KennelService';
+import VounteerService from '../services/VounteerService';
 import * as ImagePicker from 'expo-image-picker';
 
-const UpdateKennelDataScreen = ({ route, navigation }) => {
+const UpdateVolunteerScreen = ({ route, navigation }) => {
 
-  const { kennelId } = route.params || { kennelId: "" };
+  const { volunteerId } = route.params || { volunteerId: "" };
     
-  const [kennelName, setKennelName] = useState('');
-  const [kennelAddress1, setKennelAddress1] = useState('');
-  const [kennelAddress2, setKennelAddress2] = useState('');
-  const [kennelCity, setKennelCity] = useState('');
-  const [kennelZip, setKennelZip] = useState('');
-  const [longitude, setLongitude] = useState(0);
-  const [latitude, setLatitude] = useState(0);
+  const [nicNo, setNicNo] = useState('');
+  const [userId,setUserId]=useState('');
   const [images, setImages] = useState([]);
   const [error, setError] = useState('');
 
@@ -22,8 +17,8 @@ const UpdateKennelDataScreen = ({ route, navigation }) => {
     const getToken = async () => {
       const token = await AsyncStorage.getItem("token");
       if (token) {
-        // Token exists, fetch pet data
-        getKennelById(kennelId, token);
+        // Token exists, fetch volunteer data
+        getVolunteerById(volunteerId, token);
       } else {
         // Token doesn't exist, navigate to Login screen
         console.log("Please login");
@@ -33,22 +28,16 @@ const UpdateKennelDataScreen = ({ route, navigation }) => {
     getToken();
   }, [navigation]);
 
-  const getKennelById = async (id, token) => {
+  const getVolunteerById = async (id, token) => {
     try {
-      const data = await KennelService.getKennelById(id, token);
-      console.log("kennel data:", data);
+      const data = await VounteerService.getVolunteerDataById(id, token);
+      console.log("volunteer data:", data);
 
       // Ensure data is converted to string if necessary
-      setKennelName(data.kennelName || '');
-      setKennelAddress1(data.kennelAddress?.address1 || '');
-      setKennelAddress2(data.kennelAddress?.address2 || '');
-      setKennelCity(data.kennelAddress?.city || '');
-      setKennelZip(data.kennelAddress?.zipCode.toString() || '');
-      setLongitude(data.kennelLocation?.coordinates[0].toString() || '');
-      setLatitude(data.kennelLocation?.coordinates[1].toString()|| '');
-     
+      setNicNo(data.nicNumber || '');
+      setUserId(data.userId || '');
 
-      // Check if petImages is an array of objects with uri property
+      // Check if images is an array of objects with uri property
       const imageUris = (data.images || []).map(image => {
         if (typeof image === 'string') {
           return { uri: image };
@@ -66,17 +55,10 @@ const UpdateKennelDataScreen = ({ route, navigation }) => {
     }
   };
 
-  const updateKennel = async () => {
-    console.log('update kennel....');
-    const kennelLongitude = parseInt(longitude);
-    const kennelLatitude = parseFloat(latitude);
+  const updateVolunteer = async () => {
+    console.log('update volunteer....');
 
-    if (isNaN(longitude) || isNaN(latitude)) {
-      setError('Longitude and Latitude must be numbers');
-      return;
-    }
-
-    if (!kennelName || !kennelAddress1 || !kennelAddress2 || !kennelCity || !kennelZip || !longitude || !latitude || images.length === 0) {
+    if (!nicNo || images.length === 0) {
       setError('All fields are required, including at least one image');
       return;
     }
@@ -85,18 +67,13 @@ const UpdateKennelDataScreen = ({ route, navigation }) => {
 
     try {
       const token = await AsyncStorage.getItem('token');
-      const ownerId = await AsyncStorage.getItem('userId');
+     
 
       const formData = new FormData();
-      formData.append('kennelId', kennelId);
-      formData.append('kennelName', kennelName);
-      formData.append('kennelAddress1', kennelAddress1);
-      formData.append('kennelAddress2', kennelAddress2);
-      formData.append('kennelCity', kennelCity);
-      formData.append('kennelZip', kennelZip);
-      formData.append('kennelLongitude', kennelLongitude.toString());
-      formData.append('kennelLatitude', kennelLatitude.toString());
-     formData.append('ownerId', ownerId);
+      formData.append('nicNumber', nicNo);
+      formData.append('volunteerId', volunteerId);
+      formData.append('userId', userId);
+     
 
 
       images.forEach((image, index) => {
@@ -108,10 +85,10 @@ const UpdateKennelDataScreen = ({ route, navigation }) => {
       });
 
       console.log('Calling backend...');
-      const response = await KennelService.updateKennel(formData, token);
+      const response = await VounteerService.updateVolunteer(formData, token);
       console.log(' data: ', response);
       console.log("navigate to all screen");
-        navigation.navigate('MyKennelsScreen');
+        navigation.navigate('VolunteerScreen',{volunteerId:volunteerId});
     //   if (response==null) {
     //     setError("Failed to add new kennel");
     //   } else {
@@ -122,7 +99,7 @@ const UpdateKennelDataScreen = ({ route, navigation }) => {
       
     } catch (error) {
       console.error('Error:', error.message);
-      setError("Failed to update kennel");
+      setError("Failed to update volunteer");
     }
   };
 
@@ -146,16 +123,10 @@ const UpdateKennelDataScreen = ({ route, navigation }) => {
   return (
     <ScrollView>
       <View style={styles.container}>
-        <Text style={styles.header}>Update Kennel</Text>
+        <Text style={styles.header}>Update Volunteer</Text>
         {error && <Text style={styles.error}>{error}</Text>}
-        <TextInput style={styles.input} placeholder="Kennel Name" value={kennelName} onChangeText={setKennelName} />
-        <TextInput style={styles.input} placeholder=" Address Line 1" value={kennelAddress1} onChangeText={setKennelAddress1} />
-        <TextInput style={styles.input} placeholder=" Address Line 2" value={kennelAddress2} onChangeText={setKennelAddress2} />
-        <TextInput style={styles.input} placeholder="City" value={kennelCity} onChangeText={setKennelCity} />
-        <TextInput style={styles.input} placeholder="Zip" value={kennelZip} onChangeText={setKennelZip} />
-        <TextInput style={styles.input} placeholder="Longitude" value={longitude} onChangeText={setLongitude} keyboardType="numeric" />
-        <TextInput style={styles.input} placeholder="latitude" value={latitude} onChangeText={setLatitude} keyboardType="numeric" />
-       
+        <TextInput style={styles.input} placeholder="Nic No" value={nicNo} onChangeText={setNicNo} />
+      
         <Button title="Choose Images" onPress={pickImages} />
         <View style={styles.imageContainer}>
           {images.map((image, index) => (
@@ -167,7 +138,7 @@ const UpdateKennelDataScreen = ({ route, navigation }) => {
             </View>
           ))}
         </View>
-        <Button title="Update Kennel" onPress={updateKennel} />
+        <Button title="Update Volunteer" onPress={updateVolunteer} />
       </View>
     </ScrollView>
   );
@@ -224,4 +195,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default UpdateKennelDataScreen;
+export default UpdateVolunteerScreen;

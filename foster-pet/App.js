@@ -31,8 +31,10 @@ import SaveNewPasswordScreen from "./screens/SaveNewPasswordScreen";
 import MyKennelsScreen from "./screens/MyKennelsScreen";
 import AddNewKennelScreen from "./screens/AddNewKennelScreen";
 import UpdateKennelDataScreen from "./screens/UpdateKennelDataScreen";
-
-
+import KennelReviewScreen from "./screens/KennelReviewScreen";
+import BeAVolunteerScreen from "./screens/BeAVolunteerScreen";
+import VolunteerScreen from "./screens/VolunteerScreen";
+import UpdateVolunteerScreen from "./screens/UpdateVolunteerScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -265,8 +267,38 @@ export default function App() {
           }}
         />
 
+<Stack.Screen
+          name="KennelReviewScreen"
+          component={KennelReviewScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+
+<Stack.Screen
+          name="BeVolunteerScreen"
+          component={BeAVolunteerScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+
+<Stack.Screen
+          name="VolunteerScreen"
+          component={VolunteerScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
 
 
+<Stack.Screen
+          name="UpdateVolunteerProfileScreen"
+          component={UpdateVolunteerScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
 
       </Stack.Navigator>
     </NavigationContainer>

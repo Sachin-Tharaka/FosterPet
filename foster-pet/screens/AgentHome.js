@@ -49,6 +49,11 @@ const AgentHome = ({ route, navigation }) => {
     navigation.navigate("UpdateKennelDataScreen",{kennelId:kennelID});
   };
 
+  const viewReviews = () => {
+    console.log('navigate to reviews screen');
+    navigation.navigate("KennelReviewScreen",{kennelId:kennelID});
+  };
+
 
   return (
     <View style={styles.container}>
@@ -102,6 +107,9 @@ const AgentHome = ({ route, navigation }) => {
           <TouchableOpacity style={styles.button}>
             <Text style={styles.buttonText}>Ongoing Orders</Text>
           </TouchableOpacity>
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.buttonText} onPress={viewReviews}>Reviews</Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
 
@@ -114,6 +122,7 @@ const AgentHome = ({ route, navigation }) => {
           <Text style={styles.navItem} onPress={() => navigation.navigate('AgentApprovals')}>Bookings</Text>
           <Text style={styles.navItem} onPress={() => navigation.navigate('AgentChat')}>Chats</Text>
           <Text style={styles.navItem} onPress={() => navigation.navigate('AgentWallet')}>Wallet</Text>
+          
         </View>
       )}
     </View>
