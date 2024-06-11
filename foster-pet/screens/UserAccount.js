@@ -11,6 +11,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import Navbar from "../components/Navbar";
 import UserService from "../services/UserService";
 import defaultProfileImage from "../assets/ProfilePicture.png"; 
+import VounteerService from "../services/VounteerService";
 
 const UserAccount = ({ navigation }) => {
   const [userData, setUserData] = useState({});
@@ -65,6 +66,34 @@ const UserAccount = ({ navigation }) => {
     navigation.navigate("ChangeDetails");
   };
 
+  const goToVolunteerScreen = async () =>  {
+    console.log("Click on button... ");
+    const token = await AsyncStorage.getItem("token");
+    const userId = await AsyncStorage.getItem("userId");
+
+    try{
+      const data = await VounteerService.getVolunteerByUserId(userId,token);
+      console.log("data "+data);
+      if(data!=null){
+        console.log("volunteer screen ");
+        navigation.navigate("VolunteerScreen",{volunteerId:data.volunteerId});
+        
+      }else{
+        console.log("be a volunteer screen ");
+        navigation.navigate("BeVolunteerScreen");
+      }
+    }catch{
+      console.log("be a volunteer screen ");
+      navigation.navigate("BeVolunteerScreen");
+    }
+
+  };
+  
+    
+    
+   
+  
+
   
 
   return (
@@ -105,6 +134,9 @@ const UserAccount = ({ navigation }) => {
           </View>
           <TouchableOpacity style={styles.button} onPress={goToKennels}>
             <Text style={styles.buttonText}>My Kennels (Remove later)</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={goToVolunteerScreen}>
+            <Text style={styles.buttonText}>Volunteer</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
