@@ -16,9 +16,9 @@ import BookingService from "../services/BookingService";
 
 const BookingCardScreen = ({ route, navigation }) => {
   const { kennelID } = route.params || { kennelID: "" };
+  const { volunteerID } = route.params || { volunteerID: "" };
 
   const [petID, setPetID] = useState("");
-  const [volunteerID, setVolunteerID] = useState("");
   const [selectedStartDate, setSelectedStartDate] = useState(new Date());
   const [startTime, setStartTime] = useState(new Date());
   const [selectedEndDate, setSelectedEndDate] = useState(new Date());
