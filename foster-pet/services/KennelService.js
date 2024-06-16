@@ -79,6 +79,31 @@ async getKennelsByUserId(id,token) {
   }
 }
 
+//get all kennel 
+async getAllKennels(token) {
+  try {
+    const response = await fetch(`${this.baseUrl}/api/kennel`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to get kennels data');
+    }
+
+
+    const data = await response.json();
+    console.warn(data);
+    return data; 
+  } catch (error) {
+    throw error;
+  }
+}
+
 
 //add new kennel
 async addNewKennel(kennelData, token) {

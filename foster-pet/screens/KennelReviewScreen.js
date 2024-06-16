@@ -4,26 +4,21 @@ import {
   Text,
   StyleSheet,
   ScrollView,
-  Image,
   TouchableOpacity,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import ReviewService from "../services/ReviewService";
 
 const KennelReviewScreen = ({ route, navigation }) => {
-    const { kennelId } = route.params || { kennelId: "" };
+  const { kennelId } = route.params || { kennelId: "" };
   const [reviews, setReviews] = useState([]);
-
 
   useEffect(() => {
     const getToken = async () => {
       const token = await AsyncStorage.getItem("token");
-      
       if (token) {
-        // Token exists, fetch pets data
         getReviewByKennelId(kennelId, token);
       } else {
-        // Token doesn't exist, navigate to Login screen
         console.log("Please login");
         navigation.navigate("Login");
       }
@@ -31,25 +26,40 @@ const KennelReviewScreen = ({ route, navigation }) => {
     getToken();
   }, [navigation]);
 
-  //get pets by user id
   const getReviewByKennelId = async (id, token) => {
     try {
       const data = await ReviewService.getReviewsByKennelId(id, token);
       console.log("reviews data:", data);
       setReviews(data);
     } catch (error) {
-      // Handle error
       console.error("Error:", error.message);
     }
   };
 
- 
+  const handleReviewClick = (reviewerId) => {
+    console.log(`Navigate to profile of reviewer with ID: ${reviewerId}`);
+    // Implement navigation to the profile page
+    navigation.navigate("CustomerProfile", { customerId:reviewerId });
+  };
 
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Reviews</Text>
-      
-      
+      <ScrollView style={styles.list}>
+        {reviews.map((review) => (
+          <TouchableOpacity key={review.reviewId} onPress={() => handleReviewClick(review.reviewerId)}>
+            <View style={styles.entry}>
+              <View style={styles.infoContainer}>
+                <Text style={styles.message}>{review.message}</Text>
+                <Text style={styles.rating}>
+                  {Array(review.rating).fill("★").join("")}
+                  {Array(5 - review.rating).fill("☆").join("")}
+                </Text>
+              </View>
+            </View>
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
     </View>
   );
 };
@@ -64,27 +74,7 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 24,
     fontWeight: "bold",
-    margin: "auto",
     marginBottom: 30,
-  },
-  buttonContainer: {
-    flexDirection: "row",
-    width: "70%",
-    justifyContent: "space-between",
-    marginBottom: 20,
-    marginTop: 20,
-  },
-  button: {
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    backgroundColor: "black",
-    borderRadius: 20,
-    elevation: 3,
-    marginBottom: 20,
-  },
-  buttonText: {
-    color: "white",
-    fontWeight: "bold",
     textAlign: "center",
   },
   list: {
@@ -102,19 +92,17 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 2,
   },
-  image: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    marginRight: 15,
-  },
   infoContainer: {
     flex: 1,
-    justifyContent: "center",
   },
-  name: {
+  message: {
+    fontSize: 16,
+    fontWeight: "normal",
+  },
+  rating: {
     fontSize: 18,
     fontWeight: "bold",
+    color: "#FFD700",
   },
 });
 
