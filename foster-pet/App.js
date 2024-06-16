@@ -38,6 +38,7 @@ import UpdateVolunteerScreen from "./screens/UpdateVolunteerScreen";
 import CustomerProfileScreen from "./screens/CustomerProfileScreen";
 import CustomerPetsScreen from "./screens/CustomerPetsScreen";
 import CustomerPetProfileScreen from "./screens/CustomerPetProfileScreen";
+import VolunteerReviewScreen from "./screens/VolunteerReviewScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -322,6 +323,13 @@ export default function App() {
 <Stack.Screen
           name="CustomerPetProfileScreen"
           component={CustomerPetProfileScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+<Stack.Screen
+          name="VolunteerReview"
+          component={VolunteerReviewScreen}
           options={{
             headerShown: false,
           }}
