@@ -56,7 +56,29 @@ async getReviewsByVolunteerId(id, token) {
     }
   }
   
+//post a review 
+async postReview(data,token) {
+  try {
+    const response = await fetch(`${this.baseUrl}/api/review`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify(data),
+    });
 
+    if (!response.ok) {
+      throw new Error('Error');
+    }
+
+    const data = await response.json();
+    console.warn("response ",data);
+    return data; 
+  } catch (error) {
+    throw error;
+  }
+}
 
 
 }

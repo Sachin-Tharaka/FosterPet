@@ -49,6 +49,10 @@ const FosterProfile = ({ route, navigation }) => {
     navigation.navigate("Booking", { kennelID: kennelId });
   };
 
+  const viewReviews=()=>{
+    navigation.navigate("KennelReviewsForUserScreen", { kennelId: kennelId });
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -72,6 +76,9 @@ const FosterProfile = ({ route, navigation }) => {
       <View style={styles.buttonsContainer}>
         <TouchableOpacity style={styles.button} onPress={handleBookFosterHouse}>
           <Text style={styles.buttonText}>Book A Fostering</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={viewReviews}>
+          <Text style={styles.buttonText}>Reviews</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button}>
           <Text style={styles.buttonText}>Message</Text>

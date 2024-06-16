@@ -19,7 +19,7 @@ const BookingHouseScreen = ({ navigation }) => {
   const [volunteersData, setVolunteersData] = useState([]);
   const [userData, setUserData] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState([]);
-  const [category,setCategory]=useState('all');
+  const [category, setCategory] = useState("all");
 
   useEffect(() => {
     const getToken = async () => {
@@ -55,7 +55,12 @@ const BookingHouseScreen = ({ navigation }) => {
   };
 
   // get all volunteer near
-  const getAllVolunteerNear = async (longitude, latitude, maxDistance, token) => {
+  const getAllVolunteerNear = async (
+    longitude,
+    latitude,
+    maxDistance,
+    token
+  ) => {
     try {
       const data = await VounteerService.getAllVolunteerNear(
         longitude,
@@ -81,38 +86,49 @@ const BookingHouseScreen = ({ navigation }) => {
 
   const goToChangeLocation = () => {
     navigation.navigate("LocationSetterScreen", { setLocation: setSelectedLocation });
-    console.log("selected location" ,selectedLocation);
+    console.log("selected location", selectedLocation);
   };
 
-  const getAllKennel=async(token)=>{
+  const getAllKennel = async (token) => {
     try {
-      const data = await KennelService.getAllKennels( token);
+      const data = await KennelService.getAllKennels(token);
       setKennels(data);
     } catch (error) {
       console.error("Error:", error.message);
     }
-  }
+  };
 
-  const getAllVolunteer=async(token)=>{
+  const getAllVolunteer = async (token) => {
     try {
-      const data = await VounteerService.getAllVolunteers( token);
+      const data = await VounteerService.getAllVolunteers(token);
       setVolunteersData(data);
     } catch (error) {
       console.error("Error:", error.message);
     }
-  }
+  };
 
-  const getAll=()=>{
-setCategory('all');
-  }
+  const getAll = () => {
+    setCategory("all");
+  };
 
-  const getProfessional=()=>{
-setCategory('prop');
-  }
+  const getProfessional = () => {
+    setCategory("prop");
+  };
 
-  const getVolunteer=()=>{
-setCategory('vol');
-  }
+  const getVolunteer = () => {
+    setCategory("vol");
+  };
+
+  // Filter data based on the selected category
+  const filteredData = () => {
+    if (category === "all") {
+      return [...kennels, ...volunteersData];
+    } else if (category === "prop") {
+      return kennels;
+    } else if (category === "vol") {
+      return volunteersData;
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -123,7 +139,10 @@ setCategory('vol');
           <View style={styles.location_container_icon}>
             <Icon name="map-marker" size={32} color="#333" />
           </View>
-          <TouchableOpacity style={styles.location_container_text} onPress={goToChangeLocation}>
+          <TouchableOpacity
+            style={styles.location_container_text}
+            onPress={goToChangeLocation}
+          >
             <Text style={styles.address}>{selectedLocation.label}</Text>
             <Text style={styles.addressDetails}>{selectedLocation.address}</Text>
           </TouchableOpacity>
@@ -148,20 +167,28 @@ setCategory('vol');
         </TouchableOpacity>
       </View>
       <ScrollView style={styles.list}>
-        {kennels.map((kennel) => (
+        {filteredData().map((item) => (
           <TouchableOpacity
-            key={kennel.kennelId}
+            key={item.kennelId || item.volunteerId}
             style={styles.entry}
             onPress={() =>
-              navigation.navigate("FosterProfile", {
-                kennelId: kennel.kennelId,
-              })
+              item.kennelId
+                ? navigation.navigate("FosterProfile", {
+                    kennelId: item.kennelId,
+                  })
+                : navigation.navigate("VolunteerProfileScreen", {
+                    volunteerId: item.volunteerId,
+                  })
             }
           >
-            <Image source={{ uri: kennel.images[0] }} style={styles.image} />
+            <Image source={{ uri: item.images[0] }} style={styles.image} />
             <View style={styles.infoContainer}>
-              <Text style={styles.name}>{kennel.kennelName}</Text>
-              <Text style={styles.name}>{kennel.kennelAddress.city}</Text>
+              <Text style={styles.name}>
+                {item.kennelName || item.volunteerName}
+              </Text>
+              <Text style={styles.name}>
+                {item.kennelAddress?.city || item.volunteerAddress?.city}
+              </Text>
             </View>
           </TouchableOpacity>
         ))}
