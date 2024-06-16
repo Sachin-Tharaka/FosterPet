@@ -171,6 +171,31 @@ fetch(`${this.baseUrl}/api/volunteer/update`, {
 });
 }
 
+//get all volunteers
+async getAllVolunteers(token) {
+  try {
+    const response = await fetch(`${this.baseUrl}/api/volunteer`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to get volunteers data');
+    }
+
+
+    const data = await response.json();
+    console.warn(data);
+    return data; 
+  } catch (error) {
+    throw error;
+  }
+}
+
   }
   
   export default new VoulnteerService();
