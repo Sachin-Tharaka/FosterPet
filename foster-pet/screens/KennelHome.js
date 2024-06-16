@@ -4,7 +4,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import KennelService from '../services/KennelService';
 
-const AgentHome = ({ route, navigation }) => {
+const KennelHome = ({ route, navigation }) => {
   const { kennelID } = route.params;
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [kennelData, setKennelData] = useState([]);
@@ -119,7 +119,7 @@ const AgentHome = ({ route, navigation }) => {
             <FontAwesome name="times" size={24} color="white" />
           </TouchableOpacity>
           <Text style={styles.navItem} onPress={() => navigation.navigate('AgentHome')}>Home</Text>
-          <Text style={styles.navItem} onPress={() => navigation.navigate('AgentApprovals')}>Bookings</Text>
+          <Text style={styles.navItem} onPress={() => navigation.navigate('AgentApprovals',{kennelId:kennelID})}>Bookings</Text>
           <Text style={styles.navItem} onPress={() => navigation.navigate('AgentChat')}>Chats</Text>
           <Text style={styles.navItem} onPress={() => navigation.navigate('AgentWallet')}>Wallet</Text>
           
@@ -268,4 +268,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AgentHome;
+export default KennelHome;
