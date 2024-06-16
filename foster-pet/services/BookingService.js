@@ -62,6 +62,32 @@ class BookingService {
           throw error;
         }
       }
+
+      //get booking by volunteer id
+    async getBookingByVolunteerId(id, token) {
+      console.warn("Calling api...");
+        try {
+          const response = await fetch(`${this.baseUrl}/api/booking/volunteerId?volunteerId=${id}`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json;charset=utf-8',
+              'Authorization': `Bearer ${token}`,
+            },
+            //mode: 'no-cors'
+          });
+    
+          if (!response.ok) {
+            console.warn('Error.........');
+            throw new Error('Failed to get booking data');
+          }
+         //console.warn("response " ,response);
+          const data = await response.json();
+          //console.warn(data);
+          return data; 
+        } catch (error) {
+          throw error;
+        }
+      }
   
   }
   

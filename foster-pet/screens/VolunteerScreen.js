@@ -58,7 +58,7 @@ const VolunteerScreen = ({ route, navigation }) => {
   }
 
   const viewBooking=async()=>{
-    
+    navigation.navigate("VolunteerBooking", { volunteerId: volunteerId });
   }
   
   return (
