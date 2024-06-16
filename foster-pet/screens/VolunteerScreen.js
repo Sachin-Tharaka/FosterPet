@@ -54,6 +54,10 @@ const VolunteerScreen = ({ route, navigation }) => {
   }
 
   const viewReview=async()=>{
+    navigation.navigate("VolunteerReview", { volunteerId: volunteerId });
+  }
+
+  const viewBooking=async()=>{
     
   }
   
@@ -65,6 +69,9 @@ const VolunteerScreen = ({ route, navigation }) => {
 
       <TouchableOpacity style={styles.button} onPress={viewReview}>
        <Text style={styles.buttonText}>View Review</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={viewBooking}>
+       <Text style={styles.buttonText}>View Booking</Text>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.button} onPress={openChat}>
@@ -127,8 +134,8 @@ const styles = StyleSheet.create({
     backgroundColor: "black",
     padding: 10,
     borderRadius: 5,
-    marginTop: 10,
-    marginBottom: 40,
+    marginTop: 5,
+    marginBottom: 5,
   },
   buttonText: {
     fontWeight: "bold",
