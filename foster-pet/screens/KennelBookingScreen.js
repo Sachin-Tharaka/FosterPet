@@ -6,18 +6,13 @@ import BookingService from '../services/BookingService';
 
 const KennelBookingScreen = ({ route, navigation }) => {
   const { kennelId } = route.params || { kennelId: "" };
-  const [isCollapsed, setIsCollapsed] = useState(true);
   const [bookingData, setBookingData] = useState([]);
-
-  const toggleNavbar = () => {
-    setIsCollapsed(!isCollapsed);
-  };
 
   useEffect(() => {
     const getToken = async () => {
       const token = await AsyncStorage.getItem("token");
       if (token) {
-        getBookingBYKennelId(kennelId, token);
+        getBookingByKennelId(kennelId, token);
       } else {
         console.log("Please login");
         navigation.navigate("Login");
@@ -26,7 +21,7 @@ const KennelBookingScreen = ({ route, navigation }) => {
     getToken();
   }, [navigation]);
 
-  const getBookingBYKennelId = async (id, token) => {
+  const getBookingByKennelId = async (id, token) => {
     try {
       const data = await BookingService.getBookingByKennelId(id, token);
       console.log("booking data:", data);
@@ -37,19 +32,68 @@ const KennelBookingScreen = ({ route, navigation }) => {
   };
 
   const handleOwnerProfileClick = (ownerId) => {
-    navigation.navigate("CustomerProfile", { customerId:ownerId });
+    navigation.navigate("CustomerProfile", { customerId: ownerId });
   };
 
   const handlePetProfileClick = (petId) => {
     navigation.navigate("CustomerPetProfileScreen", { petID: petId });
   };
 
+  //confirm
+  const handleChangeStatusToConfrm = async (bookingId) => {
+    try {
+      const token = await AsyncStorage.getItem("token");
+      if (token) {
+        await BookingService.confirmBooking(bookingId,  token);
+        getBookingByKennelId(kennelId, token); // Refresh the booking data
+      }
+    } catch (error) {
+      console.error("Error updating status:", error.message);
+    }
+  };
+
+  //reject
+  const handleChangeStatusToReject = async (bookingId) => {
+    try {
+      const token = await AsyncStorage.getItem("token");
+      if (token) {
+        await BookingService.rejectBooking(bookingId,  token);
+        getBookingByKennelId(kennelId, token); // Refresh the booking data
+      }
+    } catch (error) {
+      console.error("Error updating status:", error.message);
+    }
+  };
+
+  //change to ongoing
+  const handleChangeStatusToOngoing = async (bookingId) => {
+    try {
+      const token = await AsyncStorage.getItem("token");
+      if (token) {
+        await BookingService.changeBookingStatusToOngoing(bookingId,  token);
+        getBookingByKennelId(kennelId, token); // Refresh the booking data
+      }
+    } catch (error) {
+      console.error("Error updating status:", error.message);
+    }
+  };
+
+  //change to confirm
+  const handleChangeStatusToCompleted= async (bookingId) => {
+    try {
+      const token = await AsyncStorage.getItem("token");
+      if (token) {
+        await BookingService.changeBookingStatusToCompleted(bookingId,  token);
+        getBookingByKennelId(kennelId, token); // Refresh the booking data
+      }
+    } catch (error) {
+      console.error("Error updating status:", error.message);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <ScrollView style={styles.content}>
-        <TouchableOpacity style={styles.menuIcon} onPress={toggleNavbar}>
-          <FontAwesome name={isCollapsed ? 'bars' : 'times'} size={24} color="black" />
-        </TouchableOpacity>
         <Text style={styles.header}>Bookings</Text>
         {bookingData.map((booking) => (
           <View key={booking.bookingID} style={styles.itemContainer}>
@@ -71,22 +115,42 @@ const KennelBookingScreen = ({ route, navigation }) => {
               >
                 <Text style={styles.buttonTextWhite}>View Pet Profile</Text>
               </TouchableOpacity>
+              {booking.status === 'PENDING' && (
+                <>
+                  <TouchableOpacity
+                    style={styles.buttonSmallGreen}
+                    onPress={() => handleChangeStatusToConfrm(booking.bookingID)}
+                  >
+                    <Text style={styles.buttonTextWhite}>Confirm</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.buttonSmallRed}
+                    onPress={() => handleChangeStatusToReject(booking.bookingID)}
+                  >
+                    <Text style={styles.buttonTextWhite}>Reject</Text>
+                  </TouchableOpacity>
+                </>
+              )}
+              {booking.status === 'CONFIRM' && (
+                <TouchableOpacity
+                  style={styles.buttonSmallOrange}
+                  onPress={() => handleChangeStatusToOngoing(booking.bookingID)}
+                >
+                  <Text style={styles.buttonTextWhite}>Change to Ongoing</Text>
+                </TouchableOpacity>
+              )}
+              {booking.status === 'ONGOING' && (
+                <TouchableOpacity
+                  style={styles.buttonSmallPurple}
+                  onPress={() => handleChangeStatusToCompleted(booking.bookingID)}
+                >
+                  <Text style={styles.buttonTextWhite}>Change to Completed</Text>
+                </TouchableOpacity>
+              )}
             </View>
           </View>
         ))}
       </ScrollView>
-      
-      {!isCollapsed && (
-        <View style={styles.sidebar}>
-          <TouchableOpacity style={styles.closeIcon} onPress={toggleNavbar}>
-            <FontAwesome name="times" size={24} color="white" />
-          </TouchableOpacity>
-          <Text style={styles.navItem} onPress={() => navigation.navigate('AgentHome')}>Home</Text>
-          <Text style={styles.navItem} onPress={() => navigation.navigate('AgentApprovals')}>Bookings</Text>
-          <Text style={styles.navItem} onPress={() => navigation.navigate('AgentChat')}>Chats</Text>
-          <Text style={styles.navItem} onPress={() => navigation.navigate('AgentWallet')}>Wallet</Text>
-        </View>
-      )}
     </View>
   );
 };
@@ -125,6 +189,30 @@ const styles = StyleSheet.create({
   },
   buttonSmallBlue: {
     backgroundColor: '#007BFF',
+    padding: 8,
+    borderRadius: 5,
+    marginBottom: 5,
+  },
+  buttonSmallGreen: {
+    backgroundColor: '#28A745',
+    padding: 8,
+    borderRadius: 5,
+    marginBottom: 5,
+  },
+  buttonSmallRed: {
+    backgroundColor: '#DC3545',
+    padding: 8,
+    borderRadius: 5,
+    marginBottom: 5,
+  },
+  buttonSmallOrange: {
+    backgroundColor: '#FFC107',
+    padding: 8,
+    borderRadius: 5,
+    marginBottom: 5,
+  },
+  buttonSmallPurple: {
+    backgroundColor: '#6F42C1',
     padding: 8,
     borderRadius: 5,
     marginBottom: 5,

@@ -6,7 +6,6 @@ import KennelService from '../services/KennelService';
 
 const KennelHome = ({ route, navigation }) => {
   const { kennelID } = route.params;
-  const [isCollapsed, setIsCollapsed] = useState(true);
   const [kennelData, setKennelData] = useState([]);
 
   useEffect(() => {
@@ -54,13 +53,16 @@ const KennelHome = ({ route, navigation }) => {
     navigation.navigate("KennelReviewScreen",{kennelId:kennelID});
   };
 
+  const viewBooking=()=>{
+    console.log('navigate to booking screen');
+    navigation.navigate("KennelBookingScreen",{kennelId:kennelID});
+  }
+
 
   return (
     <View style={styles.container}>
       <ScrollView style={styles.content}>
-        <TouchableOpacity style={styles.menuIcon} onPress={toggleNavbar}>
-          <FontAwesome name={isCollapsed ? 'bars' : 'times'} size={24} color="black" />
-        </TouchableOpacity>
+        
 
         <Text style={styles.header}>Home</Text>
 
@@ -102,10 +104,10 @@ const KennelHome = ({ route, navigation }) => {
 
           </TouchableOpacity>
           <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>View History</Text>
+            <Text style={styles.buttonText}>Notifications</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Ongoing Orders</Text>
+            <Text style={styles.buttonText} onPress={viewBooking}>Booking</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button}>
             <Text style={styles.buttonText} onPress={viewReviews}>Reviews</Text>
@@ -113,18 +115,7 @@ const KennelHome = ({ route, navigation }) => {
         </View>
       </ScrollView>
 
-      {!isCollapsed && (
-        <View style={styles.sidebar}>
-          <TouchableOpacity style={styles.closeIcon} onPress={toggleNavbar}>
-            <FontAwesome name="times" size={24} color="white" />
-          </TouchableOpacity>
-          <Text style={styles.navItem} onPress={() => navigation.navigate('AgentHome')}>Home</Text>
-          <Text style={styles.navItem} onPress={() => navigation.navigate('AgentApprovals',{kennelId:kennelID})}>Bookings</Text>
-          <Text style={styles.navItem} onPress={() => navigation.navigate('AgentChat')}>Chats</Text>
-          <Text style={styles.navItem} onPress={() => navigation.navigate('AgentWallet')}>Wallet</Text>
-          
-        </View>
-      )}
+      
     </View>
   );
 };
