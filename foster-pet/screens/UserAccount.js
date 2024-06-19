@@ -44,8 +44,8 @@ const UserAccount = ({ navigation }) => {
     }
   };
 
-  const goToBecomeAgent = () => {
-    navigation.navigate("BecomeAgent");
+  const goToMyBooking = () => {
+    navigation.navigate("MyBookingScreen");
   };
 
   const switchAccounts = () => {
@@ -123,8 +123,8 @@ const UserAccount = ({ navigation }) => {
           <TouchableOpacity style={styles.button} onPress={goToPetsUI}>
             <Text style={styles.buttonText}>Pets</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={goToBecomeAgent}>
-            <Text style={styles.buttonText}>Become an Agent</Text>
+          <TouchableOpacity style={styles.button} onPress={goToMyBooking}>
+            <Text style={styles.buttonText}>My Booking</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={switchAccounts}>
             <Text style={styles.buttonText}>Switch Accounts</Text>
