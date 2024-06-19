@@ -14,7 +14,7 @@ import NotificationScreen from "./screens/NotificationScreen";
 import FosterProfile from "./screens/FosterProfile";
 import LocationSetterScreen from "./screens/LocationSetterScreen";
 import UserAccount from "./screens/UserAccount";
-import BecomeAgent from "./screens/BecomeAgent";
+import MyBookingScreen from "./screens/MyBookingScreen";
 import AgentHome from "./screens/KennelHome";
 import AgentChat from "./screens/AgentChat";
 import AgentApprovals from "./screens/KennelBookingScreen";
@@ -161,8 +161,8 @@ export default function App() {
           }}
         />
         <Stack.Screen
-          name="BecomeAgent"
-          component={BecomeAgent}
+          name="MyBookingScreen"
+          component={MyBookingScreen}
           options={{
             headerShown: false,
           }}

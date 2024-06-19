@@ -74,8 +74,23 @@ const ChangeDetails = ({ navigation }) => {
         profileImage
       };
 
+      const formData = new FormData();
+      formData.append('userId', userId);
+      formData.append('firstName', firstName);
+      formData.append('lastName', lastName);
+      formData.append('email', email);
+      formData.append('password', password);
+      formData.append('phoneNumber', phoneNumber);
+      formData.append('userAddress1', userAddress1);
+      formData.append('userAddress2', userAddress2);
+      formData.append('userCity', userCity);
+      formData.append('userZip', userZip);
+      formData.append('profileImage',profileImage);
+
+      
+
       try {
-        const response = await UserService.updateUser(updatedData, token);
+        const response = await UserService.updateUser(formData, token);
         Alert.alert("Success", "Your details have been updated.");
         navigation.goBack();
       } catch (error) {

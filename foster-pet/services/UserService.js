@@ -27,41 +27,35 @@ async getUserById(id,token) {
     }
   }
 
-  //update user profile
-async updateUser(userData,token) {
-  
+  //update user
+  async updateUser(userData, token) {
     console.log('User data:', userData);
-  // Make a POST request to the endpoint where the save method is defined
-  fetch(`${this.baseUrl}/api/user/update`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
-      },
-      body: JSON.stringify({userData}),
-  })
-  .then(response => {
-        console.log("response body: ",response.body)
-      // Check if response status is OK
+  
+    try {
+      const response = await fetch(`${this.baseUrl}/api/user/update`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json', // assuming userData is JSON
+        },
+        body: userData, // ensure userData is serialized to JSON
+      });
+  
+      console.log('Response from server:', response);
+  
       if (!response.ok) {
-          // If response status is not OK, handle the error
-          return response.text().then(errorMessage => {
-            throw new Error(errorMessage);
-          })
+        const errorMessage = await response.text();
+        throw new Error(errorMessage);
       }
-      // If response status is OK, return the JSON response
-      return response.json();
-  })
-  .then(data => {
-      // Handle successful response data here
+  
+      const data = await response.json();
       console.log('User Profile updated successfully:', data);
-  })
-  .catch(error => {
-      // Handle any errors that occurred during the fetch
+    } catch (error) {
       console.error('Error saving user:', error.message);
-  });
-}
-
+    }
+  }
+  
+  
 
 
 }
