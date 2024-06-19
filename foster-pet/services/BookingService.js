@@ -121,7 +121,6 @@ class BookingService {
     } 
     
     //get all booking
-    //get booking by user id
   async getBooking( token) {
     console.warn("Calling api...");
       try {
@@ -156,7 +155,7 @@ class BookingService {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
           },
-          
+          body:null
         });
     
         console.log('Response from server:', response);
@@ -174,6 +173,117 @@ class BookingService {
         throw error;
       }
     }
+
+    //reject
+    async rejectBooking(id,token) {
+      try {
+        const response = await fetch(`${this.baseUrl}/api/booking/reject?bookingId=${id}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+          body:null
+        });
+    
+        console.log('Response from server:', response);
+    
+        if (!response.ok) {
+          console.error('Server returned error:', response.status, response.statusText);
+          throw new Error('Failed to reject booking');
+        }
+    
+        const data = await response.json();
+        console.log('Booking rejected successful:', data);
+        return data;
+      } catch (error) {
+        console.error('Error booking:', error.message);
+        throw error;
+      }
+    }
+
+  //confirm
+  async confirmBooking(id,token) {
+    try {
+      const response = await fetch(`${this.baseUrl}/api/booking/confirm?bookingId=${id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body:null
+      });
+  
+      console.log('Response from server:', response);
+  
+      if (!response.ok) {
+        console.error('Server returned error:', response.status, response.statusText);
+        throw new Error('Failed to confirm booking');
+      }
+  
+      const data = await response.json();
+      console.log('Booking confirmed successful:', data);
+      return data;
+    } catch (error) {
+      console.error('Error booking:', error.message);
+      throw error;
+    }
+  }  
+
+  async changeBookingStatusToOngoing(id,token) {
+    try {
+      const response = await fetch(`${this.baseUrl}/api/booking/ongoing?bookingId=${id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body:null
+      });
+  
+      console.log('Response from server:', response);
+  
+      if (!response.ok) {
+        console.error('Server returned error:', response.status, response.statusText);
+        throw new Error('Failed to change booking status');
+      }
+  
+      const data = await response.json();
+      console.log('Status changed successful:', data);
+      return data;
+    } catch (error) {
+      console.error('Error booking:', error.message);
+      throw error;
+    }
+  }
+
+  //completed
+  async changeBookingStatusToCompleted(id,token) {
+    try {
+      const response = await fetch(`${this.baseUrl}/api/booking/complete?bookingId=${id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+       body:null 
+      });
+  
+      console.log('Response from server:', response);
+  
+      if (!response.ok) {
+        console.error('Server returned error:', response.status, response.statusText);
+        throw new Error('Failed to change status');
+      }
+  
+      const data = await response.json();
+      console.log('Booking status changed successful:', data);
+      return data;
+    } catch (error) {
+      console.error('Error booking:', error.message);
+      throw error;
+    }
+  }
   }
   
   export default new BookingService();

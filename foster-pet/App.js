@@ -17,7 +17,7 @@ import UserAccount from "./screens/UserAccount";
 import MyBookingScreen from "./screens/MyBookingScreen";
 import AgentHome from "./screens/KennelHome";
 import AgentChat from "./screens/AgentChat";
-import AgentApprovals from "./screens/KennelBookingScreen";
+import KennelBookingScreen from "./screens/KennelBookingScreen";
 import AgentWallet from "./screens/AgentWallet";
 import PetsScreen from "./screens/PetsScreen";
 import PetProfileScreen from "./screens/PetProfileScreen";
@@ -146,8 +146,8 @@ export default function App() {
         />
 
         <Stack.Screen
-          name="AgentApprovals"
-          component={AgentApprovals}
+          name="KennelBookingScreen"
+          component={KennelBookingScreen}
           options={{
             headerShown: false,
           }}

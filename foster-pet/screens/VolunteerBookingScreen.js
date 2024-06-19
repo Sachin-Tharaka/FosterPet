@@ -8,13 +8,11 @@ const VolunteerBookingScreen = ({ route, navigation }) => {
   const { volunteerId } = route.params || { volunteerId: "" };
   const [bookingData, setBookingData] = useState([]);
 
-  
-
   useEffect(() => {
     const getToken = async () => {
       const token = await AsyncStorage.getItem("token");
       if (token) {
-        getBookingBYVolunteerId(volunteerId, token);
+        getBookingByVolunteerId(volunteerId, token);
       } else {
         console.log("Please login");
         navigation.navigate("Login");
@@ -23,7 +21,7 @@ const VolunteerBookingScreen = ({ route, navigation }) => {
     getToken();
   }, [navigation]);
 
-  const getBookingBYVolunteerId = async (id, token) => {
+  const getBookingByVolunteerId = async (id, token) => {
     try {
       const data = await BookingService.getBookingByVolunteerId(id, token);
       console.log("booking data:", data);
@@ -34,17 +32,64 @@ const VolunteerBookingScreen = ({ route, navigation }) => {
   };
 
   const handleOwnerProfileClick = (ownerId) => {
-    navigation.navigate("CustomerProfile", { customerId:ownerId });
+    navigation.navigate("CustomerProfile", { customerId: ownerId });
   };
 
   const handlePetProfileClick = (petId) => {
     navigation.navigate("CustomerPetProfileScreen", { petID: petId });
   };
 
+  const handleChangeStatusToConfirm = async (bookingId) => {
+    try {
+      const token = await AsyncStorage.getItem("token");
+      if (token) {
+        await BookingService.confirmBooking(bookingId, token);
+        getBookingByVolunteerId(volunteerId, token); // Refresh the booking data
+      }
+    } catch (error) {
+      console.error("Error updating status:", error.message);
+    }
+  };
+
+  const handleChangeStatusToReject = async (bookingId) => {
+    try {
+      const token = await AsyncStorage.getItem("token");
+      if (token) {
+        await BookingService.rejectBooking(bookingId, token);
+        getBookingByVolunteerId(volunteerId, token); // Refresh the booking data
+      }
+    } catch (error) {
+      console.error("Error updating status:", error.message);
+    }
+  };
+
+  const handleChangeStatusToOngoing = async (bookingId) => {
+    try {
+      const token = await AsyncStorage.getItem("token");
+      if (token) {
+        await BookingService.changeBookingStatusToOngoing(bookingId, token);
+        getBookingByVolunteerId(volunteerId, token); // Refresh the booking data
+      }
+    } catch (error) {
+      console.error("Error updating status:", error.message);
+    }
+  };
+
+  const handleChangeStatusToCompleted = async (bookingId) => {
+    try {
+      const token = await AsyncStorage.getItem("token");
+      if (token) {
+        await BookingService.changeBookingStatusToCompleted(bookingId, token);
+        getBookingByVolunteerId(volunteerId, token); // Refresh the booking data
+      }
+    } catch (error) {
+      console.error("Error updating status:", error.message);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <ScrollView style={styles.content}>
-        
         <Text style={styles.header}>Bookings</Text>
         {bookingData.map((booking) => (
           <View key={booking.bookingID} style={styles.itemContainer}>
@@ -66,12 +111,42 @@ const VolunteerBookingScreen = ({ route, navigation }) => {
               >
                 <Text style={styles.buttonTextWhite}>View Pet Profile</Text>
               </TouchableOpacity>
+              {booking.status === 'PENDING' && (
+                <>
+                  <TouchableOpacity
+                    style={styles.buttonSmallGreen}
+                    onPress={() => handleChangeStatusToConfirm(booking.bookingID)}
+                  >
+                    <Text style={styles.buttonTextWhite}>Confirm</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.buttonSmallRed}
+                    onPress={() => handleChangeStatusToReject(booking.bookingID)}
+                  >
+                    <Text style={styles.buttonTextWhite}>Reject</Text>
+                  </TouchableOpacity>
+                </>
+              )}
+              {booking.status === 'CONFIRM' && (
+                <TouchableOpacity
+                  style={styles.buttonSmallOrange}
+                  onPress={() => handleChangeStatusToOngoing(booking.bookingID)}
+                >
+                  <Text style={styles.buttonTextWhite}>Change to Ongoing</Text>
+                </TouchableOpacity>
+              )}
+              {booking.status === 'ONGOING' && (
+                <TouchableOpacity
+                  style={styles.buttonSmallPurple}
+                  onPress={() => handleChangeStatusToCompleted(booking.bookingID)}
+                >
+                  <Text style={styles.buttonTextWhite}>Change to Completed</Text>
+                </TouchableOpacity>
+              )}
             </View>
           </View>
         ))}
       </ScrollView>
-      
-      
     </View>
   );
 };
@@ -110,6 +185,30 @@ const styles = StyleSheet.create({
   },
   buttonSmallBlue: {
     backgroundColor: '#007BFF',
+    padding: 8,
+    borderRadius: 5,
+    marginBottom: 5,
+  },
+  buttonSmallGreen: {
+    backgroundColor: '#28A745',
+    padding: 8,
+    borderRadius: 5,
+    marginBottom: 5,
+  },
+  buttonSmallRed: {
+    backgroundColor: '#DC3545',
+    padding: 8,
+    borderRadius: 5,
+    marginBottom: 5,
+  },
+  buttonSmallOrange: {
+    backgroundColor: '#FFC107',
+    padding: 8,
+    borderRadius: 5,
+    marginBottom: 5,
+  },
+  buttonSmallPurple: {
+    backgroundColor: '#6F42C1',
     padding: 8,
     borderRadius: 5,
     marginBottom: 5,

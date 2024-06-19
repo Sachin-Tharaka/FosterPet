@@ -27,23 +27,23 @@ const MyBookingScreen = ({ navigation }) => {
   const getBookingByUserId = async (id, token) => {
     try {
       const data = await BookingService.getBookingByUserId(id, token);
-      //setBookings(data); // Set the bookings state with fetched data
+      setBookings(data); // Set the bookings state with fetched data
     } catch (error) {
       console.error("Error fetching bookings:", error.message);
     }
   };
 
   //get booking by user id
-const getAllBooking = async ( token) => {
-  try {
-  const data = await BookingService.getBooking( token);
-  console.log("booking data:", data);
-  setBookings(data);
-  } catch (error) {
-  // Handle error
-  console.error("Error:", error.message);
-  }
-  };
+// const getAllBooking = async ( token) => {
+//   try {
+//   const data = await BookingService.getBooking( token);
+//   console.log("booking data:", data);
+//   setBookings(data);
+//   } catch (error) {
+//   // Handle error
+//   console.error("Error:", error.message);
+//   }
+//   };
 
   // Function to handle cancelling a booking
   const cancelBooking = async (bookingId) => {
