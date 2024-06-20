@@ -86,6 +86,7 @@ const ChangeDetails = ({ navigation }) => {
       formData.append('userCity', userCity);
       formData.append('userZip', userZip);
       formData.append('profileImage',profileImage);
+      
 
       
 

@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TextInput, Button, ScrollView, Image, Touchable
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import KennelService from '../services/KennelService';
 import * as ImagePicker from 'expo-image-picker';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const AddNewKennelScreen = ({ navigation }) => {
   const [kennelName, setKennelName] = useState('');
@@ -14,16 +15,17 @@ const AddNewKennelScreen = ({ navigation }) => {
   const [latitude, setLatitude] = useState('');
   const [images, setImages] = useState([]);
   const [error, setError] = useState('');
+  const [selectedLocation, setSelectedLocation] = useState({});
 
   const addNewKennel = async () => {
     console.log('adding new kennel....');
-    const kennelLongitude = parseFloat(longitude);
-    const kennelLatitude = parseFloat(latitude);
+    const kennelLongitude = longitude;
+    const kennelLatitude = latitude;
 
-    if (isNaN(kennelLongitude) || isNaN(kennelLatitude)) {
-      setError('Longitude and Latitude must be numbers');
-      return;
-    }
+    // if (isNaN(kennelLongitude) || isNaN(kennelLatitude)) {
+    //   setError('Longitude and Latitude must be numbers');
+    //   return;
+    // }
 
     if (!kennelName || !kennelAddress1 || !kennelAddress2 || !kennelCity || !kennelZip || !longitude || !latitude || images.length === 0) {
       setError('All fields are required, including at least one image');
@@ -91,6 +93,14 @@ const AddNewKennelScreen = ({ navigation }) => {
     setImages(updatedImages);
   };
 
+  const goToChangeLocation = async() => {
+    navigation.navigate('LocationSetterScreen', { setLocation: setSelectedLocation });
+    console.log(selectedLocation);
+    setLatitude( selectedLocation.latitude);
+    setLongitude(selectedLocation.longitude);
+    
+  };
+
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -101,9 +111,28 @@ const AddNewKennelScreen = ({ navigation }) => {
         <TextInput style={styles.input} placeholder=" Address Line 2" value={kennelAddress2} onChangeText={setKennelAddress2} />
         <TextInput style={styles.input} placeholder="City" value={kennelCity} onChangeText={setKennelCity} />
         <TextInput style={styles.input} placeholder="Zip" value={kennelZip} onChangeText={setKennelZip} />
-        <TextInput style={styles.input} placeholder="Longitude" value={longitude} onChangeText={setLongitude} keyboardType="numeric" />
-        <TextInput style={styles.input} placeholder="Latitude" value={latitude} onChangeText={setLatitude} keyboardType="numeric" />
-       
+        <View style={styles.locationContainer}>
+        <View style={styles.locationDetails}>
+          <View style={styles.locationIcon}>
+            <Icon name='map-marker' size={32} color='#333' />
+          </View>
+          <TouchableOpacity
+            style={styles.locationText}
+            onPress={goToChangeLocation}
+          >
+            <Text style={styles.address}>{selectedLocation.label || 'Set Location'}</Text>
+            <Text style={styles.addressDetails}>
+              {selectedLocation.latitude && selectedLocation.longitude
+                ? `${selectedLocation.latitude}, ${selectedLocation.longitude}`
+                : ''}
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <TouchableOpacity style={styles.changeButton} onPress={goToChangeLocation}>
+          <Text style={styles.changeButtonText}>Select location</Text>
+        </TouchableOpacity>
+        
+      </View>
         <Button title="Choose Images" onPress={pickImages} />
         <View style={styles.imageContainer}>
           {images.map((image, index) => (
@@ -170,6 +199,47 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 12,
   },
+  locationContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+    backgroundColor: '#f2f2f2',
+    padding: 10,
+    borderRadius: 5,
+  },
+  locationDetails: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  locationIcon: {
+    marginRight: 10,
+  },
+  locationText: {
+    flex: 1,
+  },
+  address: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  addressDetails: {
+    fontSize: 14,
+    color: '#888',
+  },
+  changeButton: {
+    padding: 10,
+    backgroundColor: 'blue',
+    borderRadius: 5,
+    alignItems:'center',
+    justifyContent:'center'
+  },
+  changeButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    alignItems:'center'
+  },
+  
+ 
 });
 
 export default AddNewKennelScreen;

@@ -4,8 +4,6 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
-  Modal,
-  FlatList,
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -30,7 +28,6 @@ const BookingCardScreen = ({ route, navigation }) => {
   const [numPets, setNumPets] = useState(1);
   const [pets, setPets] = useState([]);
   const [error, setError] = useState("");
-  const [showPetModal, setShowPetModal] = useState(false);
 
   useEffect(() => {
     const getToken = async () => {
@@ -114,19 +111,13 @@ const BookingCardScreen = ({ route, navigation }) => {
     }
   };
 
-  const startDate = selectedStartDate
-    ? `${selectedStartDate.toISOString().split("T")[0]} ${startTime
-        .toISOString()
-        .split("T")[1]
-        .slice(0, 5)}`
-    : "";
+  const startDate = new Date(
+    selectedStartDate.setHours(startTime.getHours(), startTime.getMinutes())
+  ).toISOString();
 
-  const endDate = selectedEndDate
-    ? `${selectedEndDate.toISOString().split("T")[0]} ${endTime
-        .toISOString()
-        .split("T")[1]
-        .slice(0, 5)}`
-    : "";
+  const endDate = new Date(
+    selectedEndDate.setHours(endTime.getHours(), endTime.getMinutes())
+  ).toISOString();
 
   const backToHome = () => {
     navigation.navigate("BookingHouse");
@@ -290,24 +281,23 @@ const styles = StyleSheet.create({
     backgroundColor: "black",
     padding: 10,
     borderRadius: 5,
-    marginTop: 40,
-    width: "90%",
-    alignItems: "center",
-    justifyContent: "center",
+    marginTop: 20,
   },
   buttonText: {
     color: "white",
-    fontWeight: "bold",
-    textAlign: "center",
   },
   setterButton: {
-    backgroundColor: "#E0E0E0",
     padding: 10,
+    backgroundColor: "#E0E0E0",
     borderRadius: 5,
-    marginVertical: 5,
-    width: "90%",
+    marginVertical: 10,
+    width: "100%",
     alignItems: "center",
-    justifyContent: "center",
+  },
+  showerText: {
+    fontSize: 16,
+    color: "black",
+    marginVertical: 10,
   },
   counterContainer: {
     flexDirection: "row",
@@ -316,22 +306,16 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   counterButton: {
-    backgroundColor: "#e0e0e0",
-    paddingTop: 8,
-    paddingBottom: 8,
-    paddingLeft: 14,
-    paddingRight: 14,
-    marginHorizontal: 10,
+    backgroundColor: "#E0E0E0",
+    padding: 10,
     borderRadius: 5,
+    marginHorizontal: 10,
   },
-
-  showerText: {
-    marginVertical: 10,
-  },
-
   iconContainer: {
-    width: "90%",
-    marginBottom: 30,
+    position: "absolute",
+    top: 10,
+    left: 10,
+    padding: 10,
   },
 });
 

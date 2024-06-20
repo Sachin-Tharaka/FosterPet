@@ -76,21 +76,14 @@ const NotificationScreen = ({ navigation }) => {
       <ScrollView style={styles.list}>
         {notifications.map((notification) => (
           <View key={notification.id} style={styles.entry}>
-            <Image
-              source={{ uri: "https://picsum.photos/400/600?image=1" }}
-              style={styles.image}
-            />
+           
             <View style={styles.infoContainer}>
+            <Text style={styles.sender}>{notification.senderName}</Text>
               <Text style={styles.heading}>{notification.heading}</Text>
               <Text style={styles.message}>{notification.message}</Text>
-              <View style={{ flexDirection: "row" }}>
-                ★★★★
-                {/* {renderStars(notification.stars)} */}
-              </View>
+              
             </View>
-            <TouchableOpacity onPress={() => console.log("Close notification")}>
-              <Text style={{ fontSize: 18, color: "#888" }}>✕</Text>
-            </TouchableOpacity>
+            
           </View>
         ))}
       </ScrollView>
@@ -139,8 +132,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
   },
-  heading: {
+  sender:{
     fontSize: 18,
+    fontWeight: "bold",
+  },
+  heading: {
+    fontSize: 14,
     fontWeight: "bold",
   },
   message: {

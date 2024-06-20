@@ -66,6 +66,10 @@ const UserAccount = ({ navigation }) => {
     navigation.navigate("ChangeDetails");
   };
 
+  const notifications = () => {
+    navigation.navigate("NotificationScreen");
+  };
+
   const goToVolunteerScreen = async () =>  {
     console.log("Click on button... ");
     const token = await AsyncStorage.getItem("token");
@@ -128,6 +132,9 @@ const UserAccount = ({ navigation }) => {
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={switchAccounts}>
             <Text style={styles.buttonText}>Switch Accounts</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={notifications}>
+            <Text style={styles.buttonText}>Notifications</Text>
           </TouchableOpacity>
           <View>
             <Text>Other Agent UIs</Text>
