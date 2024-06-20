@@ -41,9 +41,10 @@ async getUserById(id,token) {
         body: userData, // ensure userData is serialized to JSON
       });
   
-      console.log('Response from server:', response);
+   
   
       if (!response.ok) {
+        console.log('Response from server:',response.status, response.statusText);
         const errorMessage = await response.text();
         throw new Error(errorMessage);
       }
