@@ -58,7 +58,7 @@ const BookingCardScreen = ({ route, navigation }) => {
   };
 
   const handleBooking = async () => {
-    setError(" ");
+    setError("");
     if (!petID) {
       setError("Pet is required.");
       return;
@@ -75,41 +75,37 @@ const BookingCardScreen = ({ route, navigation }) => {
       setError("End time is required.");
       return;
     }
-
+  
     try {
       const token = await AsyncStorage.getItem("token");
       const ownerID = await AsyncStorage.getItem("userId");
-
-      console.log(
-        "petid: ",
+  
+      const startDate = new Date(
+        selectedStartDate.setHours(startTime.getHours(), startTime.getMinutes())
+      ).toISOString();
+  
+      const endDate = new Date(
+        selectedEndDate.setHours(endTime.getHours(), endTime.getMinutes())
+      ).toISOString();
+  
+      const data = {
         petID,
-        "ownerid: ",
-        ownerID,
-        "kennelid: ",
-        kennelID,
-        "volunteerid: ",
-        volunteerID,
-        "start date: ",
-        startDate,
-        "end date: ",
-        endDate,
-        token
-      );
-      const responseData = await BookingService.booking(
-        petID,
-        ownerID,
-        kennelID,
-        volunteerID,
+        kennelID:kennelID || null,
+        volunteerID: volunteerID || null, 
         startDate,
         endDate,
-        token
-      );
+      };
+      console.log("Booking data: ", data);
+  
+      const responseData = await BookingService.booking(data, token);
       console.log("Booking completed:", responseData);
+      navigation.navigate("MyBookingScreen");
     } catch (error) {
       console.error("Booking failed:", error.message);
       setError("Booking failed");
     }
   };
+  
 
   const startDate = new Date(
     selectedStartDate.setHours(startTime.getHours(), startTime.getMinutes())

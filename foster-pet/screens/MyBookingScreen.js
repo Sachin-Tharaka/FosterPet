@@ -11,11 +11,9 @@ const MyBookingScreen = ({ navigation }) => {
       const token = await AsyncStorage.getItem("token");
       const userId = await AsyncStorage.getItem("userId");
       if (token) {
-        // Token exists
-        getBookingByUserId(userId, token);
-        getAllBooking(token);
+        
+        getBookingByUserId(userId,token);
       } else {
-        // Token doesn't exist, navigate to Login screen
         console.log("Please login");
         navigation.navigate("Login");
       }
@@ -23,68 +21,50 @@ const MyBookingScreen = ({ navigation }) => {
     getToken();
   }, [navigation]);
 
+  
+
   // Function to fetch bookings by user ID
   const getBookingByUserId = async (id, token) => {
     try {
       const data = await BookingService.getBookingByUserId(id, token);
+      console.log(data);
       setBookings(data); // Set the bookings state with fetched data
     } catch (error) {
       console.error("Error fetching bookings:", error.message);
     }
   };
 
-  //get booking by user id
-// const getAllBooking = async ( token) => {
-//   try {
-//   const data = await BookingService.getBooking( token);
-//   console.log("booking data:", data);
-//   setBookings(data);
-//   } catch (error) {
-//   // Handle error
-//   console.error("Error:", error.message);
-//   }
-//   };
-
-  // Function to handle cancelling a booking
   const cancelBooking = async (bookingId) => {
     const token = await AsyncStorage.getItem("token");
+    const userId = await AsyncStorage.getItem("userId");
     try {
-      const response = await BookingService.cancelBooking(bookingId,token);
+      const response = await BookingService.cancelBooking(bookingId, token);
       console.log("Booking cancelled:", response);
-      // After cancelling, want to fetch updated bookings list
-      getBookingByUserId(userId, token); // Refresh bookings after cancellation
+      getBookingByUserId(userId,token);
     } catch (error) {
       console.error("Error cancelling booking:", error.message);
     }
   };
 
-  // Function to navigate to Pet Profile screen
   const handlePetProfilePress = (petId) => {
-    
     navigation.navigate("PetProfileScreen", { petID: petId });
   };
 
-  // Function to navigate to Kennel Profile screen
   const handleKennelProfilePress = (kennelId) => {
-    
-    navigation.navigate("FosterProfile", {
-      kennelId: kennelId,
-    });
+    navigation.navigate("FosterProfile", { kennelId: kennelId });
   };
 
-  // Function to navigate to Volunteer Profile screen
   const handleVolunteerProfilePress = (volunteerId) => {
-    
-    navigation.navigate("VolunteerProfileScreen", {
-      volunteerId: volunteerId,
-    });
+    navigation.navigate("VolunteerProfileScreen", { volunteerId: volunteerId });
   };
 
-  // Render buttons based on booking details
+  const handleAddReviewPress = (bookingId, kennelId, volunteerId) => {
+    navigation.navigate("AddReviewScreen", { bookingId, kennelId, volunteerId });
+  };
+
   const renderButtons = (booking) => {
     const buttons = [];
 
-    // Button for Pet Profile
     buttons.push(
       <TouchableOpacity
         key="petProfile"
@@ -95,7 +75,6 @@ const MyBookingScreen = ({ navigation }) => {
       </TouchableOpacity>
     );
 
-    // Button for Kennel Profile if kennelID exists
     if (booking.kennelID) {
       buttons.push(
         <TouchableOpacity
@@ -108,7 +87,6 @@ const MyBookingScreen = ({ navigation }) => {
       );
     }
 
-    // Button for Volunteer Profile if volunteerID exists
     if (booking.volunteerID) {
       buttons.push(
         <TouchableOpacity
@@ -121,7 +99,6 @@ const MyBookingScreen = ({ navigation }) => {
       );
     }
 
-    // Button to cancel booking if status is "PENDING"
     if (booking.status === "PENDING") {
       buttons.push(
         <TouchableOpacity
@@ -130,6 +107,18 @@ const MyBookingScreen = ({ navigation }) => {
           onPress={() => cancelBooking(booking.bookingID)}
         >
           <Text style={styles.buttonText}>Cancel Booking</Text>
+        </TouchableOpacity>
+      );
+    }
+
+    if (booking.status === "COMPLETED") {
+      buttons.push(
+        <TouchableOpacity
+          key="addReview"
+          style={styles.button}
+          onPress={() => handleAddReviewPress(booking.bookingID, booking.kennelID, booking.volunteerID)}
+        >
+          <Text style={styles.buttonText}>Add Review</Text>
         </TouchableOpacity>
       );
     }

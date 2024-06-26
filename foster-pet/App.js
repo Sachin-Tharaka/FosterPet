@@ -43,6 +43,8 @@ import VolunteerBookingScreen from "./screens/VolunteerBookingScreen";
 import KennelReviewsForUserScreen from "./screens/KennelReviewsForUserScreen";
 import VolunteerProfileScreen from "./screens/VolunteerProfileScreen";
 import VolunteerReviewForUser from "./screens/VolunteerReviewForUser";
+import AddChargingReatesScreen from "./screens/AddChargingRatesScreen";
+import AddReviewScreen from "./screens/AddReviewScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -362,6 +364,22 @@ export default function App() {
          <Stack.Screen
           name="VolunteerReviewForUser"
           component={VolunteerReviewForUser}
+          options={{
+            headerShown: false,
+          }}
+        />
+
+<Stack.Screen
+          name="AddKennelChargingRatesScreen"
+          component={AddChargingReatesScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+
+<Stack.Screen
+          name="AddReviewScreen"
+          component={AddReviewScreen}
           options={{
             headerShown: false,
           }}

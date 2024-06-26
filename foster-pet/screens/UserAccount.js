@@ -80,7 +80,7 @@ const UserAccount = ({ navigation }) => {
       console.log("data "+data);
       if(data!=null){
         console.log("volunteer screen ");
-        navigation.navigate("VolunteerScreen",{volunteerId:data.volunteerId});
+        navigation.navigate("VolunteerScreen");
         
       }else{
         console.log("be a volunteer screen ");

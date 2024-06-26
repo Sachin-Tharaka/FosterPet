@@ -28,33 +28,32 @@ async getUserById(id,token) {
   }
 
   //update user
-  async updateUser(userData, token) {
-    console.log('User data:', userData);
-  
+  async updateUser(formData, token) {
+    console.log('User data:', formData);
+
     try {
-      const response = await fetch(`${this.baseUrl}/api/user/update`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json', // assuming userData is JSON
-        },
-        body: userData, // ensure userData is serialized to JSON
-      });
-  
-   
-  
-      if (!response.ok) {
-        console.log('Response from server:',response.status, response.statusText);
-        const errorMessage = await response.text();
-        throw new Error(errorMessage);
-      }
-  
-      const data = await response.json();
-      console.log('User Profile updated successfully:', data);
+        const response = await fetch(`${this.baseUrl}/api/user/update`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            },
+            body: formData,
+        });
+
+        if (!response.ok) {
+            console.log('Response from server:', response.status, response.statusText);
+            const errorMessage = await response.text();
+            throw new Error(errorMessage);
+        }
+
+        const data = await response.json();
+        console.log('User Profile updated successfully:', data);
+        return data;
     } catch (error) {
-      console.error('Error saving user:', error.message);
+        console.error('Error saving user:', error.message);
+        throw error;
     }
-  }
+}
   
   
 

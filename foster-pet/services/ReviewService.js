@@ -57,7 +57,8 @@ async getReviewsByVolunteerId(id, token) {
   }
   
 //post a review 
-async postReview(data,token) {
+async postReview(data, token) {
+  console.log("review: ", data);
   try {
     const response = await fetch(`${this.baseUrl}/api/review`, {
       method: 'POST',
@@ -69,13 +70,15 @@ async postReview(data,token) {
     });
 
     if (!response.ok) {
-      throw new Error('Error');
+      console.error('Server returned error:', response.status, response.statusText);
+      throw new Error(`Error: ${response.status} ${response.statusText}`);
     }
 
-    const data = await response.json();
-    console.warn("response ",data);
-    return data; 
+    const responseData = await response.json();
+    console.warn("response ", responseData);
+    return responseData;
   } catch (error) {
+    console.error("Error:", error.message);
     throw error;
   }
 }

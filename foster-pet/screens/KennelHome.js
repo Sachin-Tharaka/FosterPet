@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, FlatList, Image } from 'react-native';
-import { FontAwesome } from '@expo/vector-icons';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image } from 'react-native';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import KennelService from '../services/KennelService';
 
@@ -25,23 +24,16 @@ const KennelHome = ({ route, navigation }) => {
     getToken();
   }, []);
 
-  const toggleNavbar = () => {
-    setIsCollapsed(!isCollapsed);
-  };
-
-  //get kennel by id
+  // get kennel by id
   const getKennelById = async (id, token) => {
-    // call get kennel by id function
     try {
       const data = await KennelService.getKennelById(id, token);
       console.log("kennel data:", data);
       setKennelData(data);
     } catch (error) {
-      // Handle error
       console.error("Error:", error.message);
     }
   };
-
 
   const updateData = () => {
     console.log('navigate to update kennel screen');
@@ -58,12 +50,14 @@ const KennelHome = ({ route, navigation }) => {
     navigation.navigate("KennelBookingScreen",{kennelId:kennelID});
   }
 
+  const addchargingRates=()=>{
+    console.log('navigate to charing rates screen');
+    navigation.navigate("AddKennelChargingRatesScreen",{kennelId:kennelID});
+  }
 
   return (
     <View style={styles.container}>
       <ScrollView style={styles.content}>
-        
-
         <Text style={styles.header}>Home</Text>
 
         <View style={styles.user_header}>
@@ -86,7 +80,13 @@ const KennelHome = ({ route, navigation }) => {
           <Text>Owner Name: {kennelData.ownerName}</Text>
           <Text>Owner Email: {kennelData.ownerEmail}</Text>
           <Text>Owner Phone: {kennelData.ownerPhone}</Text>
-          <Text>Payment Rates: {kennelData.paymentRates}</Text>
+
+          <View style={styles.paymentRatesContainer}>
+            <Text style={styles.paymentRatesTitle}>Payment Rates:</Text>
+            {kennelData.paymentRates && kennelData.paymentRates.map((rate, index) => (
+              <Text key={index} style={styles.paymentRate}>{rate.animalType}: {rate.rate}</Text>
+            ))}
+          </View>
         </View>
 
         <ScrollView horizontal style={styles.imagesContainer}>
@@ -99,9 +99,7 @@ const KennelHome = ({ route, navigation }) => {
 
         <View style={styles.buttonsContainer}>
           <TouchableOpacity style={styles.button}>
-
             <Text style={styles.buttonText} onPress={updateData}>Change Details</Text>
-
           </TouchableOpacity>
           <TouchableOpacity style={styles.button}>
             <Text style={styles.buttonText}>Notifications</Text>
@@ -112,10 +110,11 @@ const KennelHome = ({ route, navigation }) => {
           <TouchableOpacity style={styles.button}>
             <Text style={styles.buttonText} onPress={viewReviews}>Reviews</Text>
           </TouchableOpacity>
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.buttonText} onPress={addchargingRates}>Add Charging Rates</Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
-
-      
     </View>
   );
 };
@@ -128,14 +127,6 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     padding: 20,
-  },
-  itemContainer: {
-    flexDirection: 'row',
-    padding: 10,
-    backgroundColor: '#FFFFFF',
-    marginBottom: 10,
-    borderRadius: 5,
-    alignItems: 'center',
   },
   title: {
     fontSize: 24,
@@ -156,27 +147,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 20,
   },
-  profilePic: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    marginRight: 10,
-  },
-  detailContainer: {
-    flex: 1,
-  },
-  name: {
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
-  role: {
-    fontSize: 14,
-    color: '#666',
-  },
-  detail: {
-    fontSize: 12,
-    color: '#999',
-  },
   buttonsContainer: {
     display: 'flex',
     flexDirection: 'column',
@@ -192,61 +162,16 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginBottom: 10,
   },
-  buttonContainer: {
-    flexDirection: 'column',
-    alignItems: 'flex-end',
-  },
-  buttonSmall: {
-    backgroundColor: '#E0E0E0',
-    padding: 8,
-    borderRadius: 5,
-    marginBottom: 5,
-  },
-  buttonSmallBlue: {
-    backgroundColor: '#007BFF',
-    padding: 8,
-    borderRadius: 5,
-  },
   buttonText: {
     fontSize: 12,
     color: 'white',
     fontWeight: 'bold',
   },
-  buttonTextWhite: {
-    fontSize: 12,
-    color: '#FFF',
-  },
   header: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
-    marginTop: 50, // Add margin to avoid overlap with the menu icon
-  },
-  sidebar: {
-    position: 'absolute',
-    width: 200,
-    height: '100%',
-    backgroundColor: '#2C3E50',
-    paddingTop: 20,
-    left: 0,
-    top: 0,
-  },
-  navItem: {
-    padding: 10,
-    color: 'white',
-    fontWeight: 'bold',
-  },
-  menuIcon: {
-    position: 'absolute',
-    top: 20,
-    left: 20,
-    zIndex: 2,
-  },
-  closeIcon: {
-    position: 'absolute',
-    top: 20,
-    right: 20,
-    zIndex: 2,
+    marginTop: 50,
   },
   imagesContainer: {
     marginVertical: 20,
@@ -256,6 +181,18 @@ const styles = StyleSheet.create({
     height: 150,
     borderRadius: 10,
     marginRight: 10,
+  },
+  paymentRatesContainer: {
+    marginTop: 20,
+    alignItems: 'center',
+  },
+  paymentRatesTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  paymentRate: {
+    fontSize: 16,
+    color: 'gray',
   },
 });
 
