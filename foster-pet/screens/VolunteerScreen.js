@@ -10,16 +10,18 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import VounteerService from "../services/VounteerService";
 
-const VolunteerScreen = ({ route, navigation }) => {
-  const { volunteerId } = route.params || { volunteerId: "" };
+const VolunteerScreen = ({  navigation }) => {
+  const [volunteerId,setVolunteerId]=useState("");
   const [volunteer, setVolunteer] = useState([]);
 
   useEffect(() => {
     const getToken = async () => {
       const token = await AsyncStorage.getItem("token");
+      const userId = await AsyncStorage.getItem("userId");
       if (token) {
         // Token exists, fetch pet data
-        getVolunteerById(volunteerId, token);
+        getVolunteerByUserId(userId,token)
+        //getVolunteerById(volunteerId, token);
       } else {
         // Token doesn't exist, navigate to Login screen
         console.log("Please login");
@@ -34,6 +36,18 @@ const VolunteerScreen = ({ route, navigation }) => {
     // call get pets by userid function
     try {
       const data = await VounteerService.getVolunteerDataById(id, token);
+      console.log("volunteer data:", data);
+      setVolunteer(data);
+    } catch (error) {
+      // Handle error
+      console.error("Error:", error.message);
+    }
+  };
+
+  const getVolunteerByUserId = async (id, token) => {
+    // call get pets by userid function
+    try {
+      const data = await VounteerService.getVolunteerByUserId(id, token);
       console.log("volunteer data:", data);
       setVolunteer(data);
     } catch (error) {

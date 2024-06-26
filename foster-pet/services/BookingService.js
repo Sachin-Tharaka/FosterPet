@@ -7,7 +7,8 @@ class BookingService {
   
 
     //booking function
-    async booking(petID,ownerID, kennelID, volunteerID, startDate, endDate, token) {
+    async booking(data, token) {
+      console.log("Booking data: ", data);
       try {
         const response = await fetch(`${this.baseUrl}/api/booking`, {
           method: 'POST',
@@ -15,26 +16,52 @@ class BookingService {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
           },
-          body: JSON.stringify({
-            petID,
-           // ownerID,
-            kennelID,
-            volunteerID,
-            startDate,
-            endDate,
-          }),
+          body: JSON.stringify(data),
         });
-    
+  
         console.log('Response from server:', response);
-    
+  
         if (!response.ok) {
           console.error('Server returned error:', response.status, response.statusText);
+          const errorText = await response.text();
+          console.error('Server error message:', errorText); 
           throw new Error('Failed to complete booking');
         }
-    
-        const data = await response.json();
-        console.log('Booking successful:', data);
-        return data;
+  
+        const responseData = await response.json();
+        console.log('Booking successful:', responseData);
+        return responseData;
+      } catch (error) {
+        console.error('Error booking:', error.message);
+        throw error;
+      }
+    }
+
+    //update booking
+    async booking(data, token) {
+      console.log("Booking data: ", data);
+      try {
+        const response = await fetch(`${this.baseUrl}/api/booking/update`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+          body: JSON.stringify(data),
+        });
+  
+        console.log('Response from server:', response);
+  
+        if (!response.ok) {
+          console.error('Server returned error:', response.status, response.statusText);
+          const errorText = await response.text();
+          console.error('Server error message:', errorText); 
+          throw new Error('Failed to complete booking');
+        }
+  
+        const responseData = await response.json();
+        console.log('Booking successful:', responseData);
+        return responseData;
       } catch (error) {
         console.error('Error booking:', error.message);
         throw error;
@@ -163,7 +190,7 @@ class BookingService {
         }
     
         const data = await response.json();
-        console.log('Cancellation successful:', data);
+        console.log('Cancelled:', data);
         return data;
       } catch (error) {
         console.error('Error canceling booking:', error.message);

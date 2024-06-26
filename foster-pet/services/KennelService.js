@@ -133,6 +133,41 @@ async addNewKennel(kennelData, token) {
     console.error('Error saving kennel:', error.message);
     throw error;
   }
+
+
+}
+
+
+//add rates
+async addRates(data, token) {
+  console.log('rates data:', data);
+  console.log(token);
+  try {
+    const response = await fetch(`${this.baseUrl}/api/kennel/update-rates`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data)
+    });
+
+    if (!response.ok) {
+      // If response status is not OK, handle the error
+      console.error('Server returned error:', response.status, response.statusText);
+      const errorMessage = await response.text();
+      throw new Error(errorMessage);
+    }
+
+    // If response status is OK, return the JSON response
+    const responseData = await response.json();
+    console.log('Rates saved successfully:', responseData);
+    return responseData;
+  } catch (error) {
+    // Handle any errors that occurred during the fetch
+    console.error('Error saving rates:', error.message);
+    throw error;
+  }
 }
 
 
