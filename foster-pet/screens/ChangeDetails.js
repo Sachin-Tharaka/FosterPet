@@ -112,6 +112,8 @@ const ChangeDetails = ({ navigation }) => {
         await UserService.updateUser(formData, token);
         Alert.alert("Success", "Your details have been updated.");
         navigation.goBack();
+
+        
       } catch (error) {
         Alert.alert("Error", error.message);
       }

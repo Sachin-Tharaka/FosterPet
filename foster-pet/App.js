@@ -47,6 +47,7 @@ import AddChargingReatesScreen from "./screens/AddChargingRatesScreen";
 import AddReviewScreen from "./screens/AddReviewScreen";
 import AddPetTypesToVolunteerProfileScreen from "./screens/AddPetTypesToVolunteerProfileScreen";
 
+
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -386,6 +387,7 @@ export default function App() {
           }}
         />
 
+
 <Stack.Screen
           name="AddPetTypesToVolunteerProfileScreen"
           component={AddPetTypesToVolunteerProfileScreen}
@@ -393,6 +395,7 @@ export default function App() {
             headerShown: false,
           }}
         />
+
 
 
 
