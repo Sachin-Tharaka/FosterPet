@@ -131,7 +131,7 @@ const KennelBookingScreen = ({ route, navigation }) => {
                   </TouchableOpacity>
                 </>
               )}
-              {booking.status === 'CONFIRM' && (
+              {booking.status === 'CONFIRMED' && (
                 <TouchableOpacity
                   style={styles.buttonSmallOrange}
                   onPress={() => handleChangeStatusToOngoing(booking.bookingID)}

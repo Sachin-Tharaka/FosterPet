@@ -171,6 +171,38 @@ fetch(`${this.baseUrl}/api/volunteer/update`, {
 });
 }
 
+//add rates
+async addRates(data, token) {
+  console.log('rates data:', data);
+  console.log(token);
+  try {
+    const response = await fetch(`${this.baseUrl}/api/volunteer/update-rates`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data)
+    });
+
+    if (!response.ok) {
+      // If response status is not OK, handle the error
+      console.error('Server returned error:', response.status, response.statusText);
+      const errorMessage = await response.text();
+      throw new Error(errorMessage);
+    }
+
+    // If response status is OK, return the JSON response
+    const responseData = await response.json();
+    console.log('Rates saved successfully:', responseData);
+    return responseData;
+  } catch (error) {
+    // Handle any errors that occurred during the fetch
+    console.error('Error saving rates:', error.message);
+    throw error;
+  }
+}
+
 //get all volunteers
 async getAllVolunteers(token) {
   try {
@@ -196,6 +228,34 @@ async getAllVolunteers(token) {
   }
 }
 
+//delete volunteer
+async delete(id,token) {
+  console.log("Deleting account");
+  try {
+    const response = await fetch(`${this.baseUrl}/api/volunteer/delete?volunteerId=${id}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      
+    });
+
+    console.log('Response from server:', response);
+
+    if (!response.ok) {
+      console.error('Server returned error:', response.status, response.statusText);
+      throw new Error('Failed');
+    }
+
+    const data = await response.json();
+    
+    return data;
+  } catch (error) {
+    console.error('Error:', error.message);
+    throw error;
+  }
+}
   }
   
   export default new VoulnteerService();

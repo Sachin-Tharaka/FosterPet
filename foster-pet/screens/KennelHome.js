@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, Alert } from 'react-native';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import KennelService from '../services/KennelService';
 
@@ -8,15 +8,12 @@ const KennelHome = ({ route, navigation }) => {
   const [kennelData, setKennelData] = useState([]);
 
   useEffect(() => {
-    console.log("kennel id ", kennelID);
+    console.log("Kennel ID: ", kennelID);
     const getToken = async () => {
       const token = await AsyncStorage.getItem("token");
-      const userId = await AsyncStorage.getItem("userId");
       if (token) {
-        // Token exists, fetch kennels and user data
         getKennelById(kennelID, token);
       } else {
-        // Token doesn't exist, navigate to Login screen
         console.log("Please login");
         navigation.navigate("Login");
       }
@@ -24,11 +21,10 @@ const KennelHome = ({ route, navigation }) => {
     getToken();
   }, []);
 
-  // get kennel by id
   const getKennelById = async (id, token) => {
     try {
       const data = await KennelService.getKennelById(id, token);
-      console.log("kennel data:", data);
+      console.log("Kennel data:", data);
       setKennelData(data);
     } catch (error) {
       console.error("Error:", error.message);
@@ -36,24 +32,53 @@ const KennelHome = ({ route, navigation }) => {
   };
 
   const updateData = () => {
-    console.log('navigate to update kennel screen');
-    navigation.navigate("UpdateKennelDataScreen",{kennelId:kennelID});
+    console.log('Navigate to update kennel screen');
+    navigation.navigate("UpdateKennelDataScreen", { kennelId: kennelID });
   };
 
   const viewReviews = () => {
-    console.log('navigate to reviews screen');
-    navigation.navigate("KennelReviewScreen",{kennelId:kennelID});
+    console.log('Navigate to reviews screen');
+    navigation.navigate("KennelReviewScreen", { kennelId: kennelID });
   };
 
-  const viewBooking=()=>{
-    console.log('navigate to booking screen');
-    navigation.navigate("KennelBookingScreen",{kennelId:kennelID});
-  }
+  const viewBooking = () => {
+    console.log('Navigate to booking screen');
+    navigation.navigate("KennelBookingScreen", { kennelId: kennelID });
+  };
 
-  const addchargingRates=()=>{
-    console.log('navigate to charing rates screen');
-    navigation.navigate("AddKennelChargingRatesScreen",{kennelId:kennelID});
-  }
+  const addChargingRates = () => {
+    console.log('Navigate to charging rates screen');
+    navigation.navigate("AddKennelChargingRatesScreen", { kennelId: kennelID });
+  };
+
+  const handleDeleteKennel = () => {
+    Alert.alert(
+      "Delete Kennel",
+      "Are you sure you want to delete this kennel?",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        {
+          text: "Yes", onPress: () => deleteKennel()
+        }
+      ],
+      { cancelable: false }
+    );
+  };
+
+  const deleteKennel = async () => {
+    try {
+      const token = await AsyncStorage.getItem("token");
+      const response = await KennelService.delete(kennelID, token);
+      console.log("Kennel deleted:", response);
+      navigation.navigate("MyKennelsScreen"); 
+    } catch (error) {
+      console.error("Error deleting kennel:", error.message);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -63,10 +88,9 @@ const KennelHome = ({ route, navigation }) => {
         <View style={styles.user_header}>
           <Image
             source={{
-              uri:
-                kennelData.images && kennelData.images.length > 0
-                  ? kennelData.images[0]
-                  : '',
+              uri: kennelData.images && kennelData.images.length > 0
+                ? kennelData.images[0]
+                : '',
             }}
             style={styles.logo}
           />
@@ -98,20 +122,23 @@ const KennelHome = ({ route, navigation }) => {
         </ScrollView>
 
         <View style={styles.buttonsContainer}>
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText} onPress={updateData}>Change Details</Text>
+          <TouchableOpacity style={styles.button} onPress={updateData}>
+            <Text style={styles.buttonText}>Change Details</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button}>
             <Text style={styles.buttonText}>Notifications</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText} onPress={viewBooking}>Booking</Text>
+          <TouchableOpacity style={styles.button} onPress={viewBooking}>
+            <Text style={styles.buttonText}>Booking</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText} onPress={viewReviews}>Reviews</Text>
+          <TouchableOpacity style={styles.button} onPress={viewReviews}>
+            <Text style={styles.buttonText}>Reviews</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText} onPress={addchargingRates}>Add Charging Rates</Text>
+          <TouchableOpacity style={styles.button} onPress={addChargingRates}>
+            <Text style={styles.buttonText}>Add Charging Rates</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={handleDeleteKennel}>
+            <Text style={styles.buttonText}>Delete Kennel</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
