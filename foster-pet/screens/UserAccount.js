@@ -6,12 +6,12 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
+  Alert
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Navbar from "../components/Navbar";
 import UserService from "../services/UserService";
 import defaultProfileImage from "../assets/ProfilePicture.png"; 
-import VounteerService from "../services/VounteerService";
 
 const UserAccount = ({ navigation }) => {
   const [userData, setUserData] = useState({});
@@ -52,13 +52,7 @@ const UserAccount = ({ navigation }) => {
     navigation.navigate("SwitchAccounts");
   };
 
-  const goToKennels = () => {
-    console.log('navigate to my kennel screen');
-    navigation.navigate("MyKennelsScreen");
-  };
-
   const goToPetsUI = () => {
-    console.log("navigate to pet screen");
     navigation.navigate("PetsScreen");
   };
 
@@ -69,36 +63,45 @@ const UserAccount = ({ navigation }) => {
   const notifications = () => {
     navigation.navigate("NotificationScreen");
   };
-
-  const goToVolunteerScreen = async () =>  {
-    console.log("Click on button... ");
-    const token = await AsyncStorage.getItem("token");
-    const userId = await AsyncStorage.getItem("userId");
-
-    try{
-      const data = await VounteerService.getVolunteerByUserId(userId,token);
-      console.log("data "+data);
-      if(data!=null){
-        console.log("volunteer screen ");
-        navigation.navigate("VolunteerScreen");
-        
-      }else{
-        console.log("be a volunteer screen ");
-        navigation.navigate("BeVolunteerScreen");
-      }
-    }catch{
-      console.log("be a volunteer screen ");
-      navigation.navigate("BeVolunteerScreen");
-    }
-
+  const goToKennels = () => {
+    navigation.navigate("MyKennelsScreen");
   };
-  
-    
-    
-   
-  
+  const goToVolunteerScreen = async () => {
+    navigation.navigate("VolunteerScreen");
+  };
 
-  
+  const deleteUserAccount = async () => {
+    Alert.alert(
+      "Delete Account",
+      "Are you sure you want to delete your account? This action cannot be undone.",
+      [
+        {
+          text: "Cancel",
+          style: "cancel"
+        },
+        {
+          text: "Delete",
+          onPress: async () => {
+            const token = await AsyncStorage.getItem("token");
+            const userId = await AsyncStorage.getItem("userId");
+            try {
+              const response=await UserService.delete(userId, token);
+              console.log("User account deleted successfully",response);
+              // Clear AsyncStorage or perform any logout actions here if needed
+              await AsyncStorage.removeItem("token");
+              await AsyncStorage.removeItem("userId");
+              navigation.navigate("Signup"); 
+            } catch (error) {
+              console.error("Error deleting user account:", error.message);
+              Alert.alert("Error", "Failed to delete user account. Please try again later.");
+            }
+          },
+          style: "destructive"
+        }
+      ],
+      { cancelable: false }
+    );
+  };
 
   return (
     <View style={styles.outerContainer}>
@@ -120,7 +123,6 @@ const UserAccount = ({ navigation }) => {
         </View>
 
         <View style={styles.buttonsContainer}>
-        
           <TouchableOpacity style={styles.button} onPress={changeDetails}>
             <Text style={styles.buttonText}>Change Details</Text>
           </TouchableOpacity>
@@ -136,14 +138,14 @@ const UserAccount = ({ navigation }) => {
           <TouchableOpacity style={styles.button} onPress={notifications}>
             <Text style={styles.buttonText}>Notifications</Text>
           </TouchableOpacity>
-          <View>
-            <Text>Other Agent UIs</Text>
-          </View>
           <TouchableOpacity style={styles.button} onPress={goToKennels}>
             <Text style={styles.buttonText}>My Kennels (Remove later)</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={goToVolunteerScreen}>
             <Text style={styles.buttonText}>Volunteer</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.button, { backgroundColor: "red" }]} onPress={deleteUserAccount}>
+            <Text style={styles.buttonText}>Delete Account</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

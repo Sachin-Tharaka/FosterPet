@@ -56,7 +56,33 @@ const ChangeDetails = ({ navigation }) => {
     }
   };
 
+  const validateEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+  };
+
   const handleSubmit = async () => {
+    if (!firstName) {
+      Alert.alert("Error", "First Name cannot be null.");
+      return;
+    }
+    if (!lastName) {
+      Alert.alert("Error", "Last Name cannot be null.");
+      return;
+    }
+    if (!email) {
+      Alert.alert("Error", "Email cannot be null.");
+      return;
+    }
+    if (!validateEmail(email)) {
+      Alert.alert("Error", "Please enter a valid email.");
+      return;
+    }
+    if (!password) {
+      Alert.alert("Error", "Password cannot be null.");
+      return;
+    }
+
     const token = await AsyncStorage.getItem("token");
     const userId = await AsyncStorage.getItem("userId");
     if (token && userId) {
@@ -86,8 +112,6 @@ const ChangeDetails = ({ navigation }) => {
         await UserService.updateUser(formData, token);
         Alert.alert("Success", "Your details have been updated.");
         navigation.goBack();
-
-        
       } catch (error) {
         Alert.alert("Error", error.message);
       }
@@ -141,6 +165,7 @@ const ChangeDetails = ({ navigation }) => {
         value={password}
         onChangeText={setPassword}
         style={styles.input}
+        secureTextEntry
       />
       <TextInput
         placeholder="Address 1"

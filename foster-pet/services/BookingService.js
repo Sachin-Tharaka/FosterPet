@@ -38,7 +38,7 @@ class BookingService {
     }
 
     //update booking
-    async booking(data, token) {
+    async updateBooking(data, token) {
       console.log("Booking data: ", data);
       try {
         const response = await fetch(`${this.baseUrl}/api/booking/update`, {
@@ -219,7 +219,7 @@ class BookingService {
         }
     
         const data = await response.json();
-        console.log('Booking rejected successful:', data);
+        console.log('Booking rejected:', data);
         return data;
       } catch (error) {
         console.error('Error booking:', error.message);

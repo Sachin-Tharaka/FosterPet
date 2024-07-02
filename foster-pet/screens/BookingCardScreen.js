@@ -1,16 +1,13 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-} from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Picker } from "@react-native-picker/picker";
 import Icon from "react-native-vector-icons/FontAwesome";
 import PetsService from "../services/PetsService";
 import BookingService from "../services/BookingService";
+import VolunteerService from "../services/VounteerService"; 
+import KennelService from "../services/KennelService"; 
 
 const BookingCardScreen = ({ route, navigation }) => {
   const { kennelID } = route.params || { kennelID: "" };
@@ -25,9 +22,10 @@ const BookingCardScreen = ({ route, navigation }) => {
   const [showStartTimePicker, setShowStartTimePicker] = useState(false);
   const [showEndDatePicker, setShowEndDatePicker] = useState(false);
   const [showEndTimePicker, setShowEndTimePicker] = useState(false);
-  const [numPets, setNumPets] = useState(1);
   const [pets, setPets] = useState([]);
   const [error, setError] = useState("");
+  const [volunteer, setVolunteer] = useState(null);
+  const [kennel, setKennel] = useState(null);
 
   useEffect(() => {
     const getToken = async () => {
@@ -36,6 +34,12 @@ const BookingCardScreen = ({ route, navigation }) => {
         const ownerID = await AsyncStorage.getItem("userId");
         if (token) {
           getPetsByOwnerId(ownerID, token);
+          if (volunteerID) {
+            getVolunteerById(volunteerID, token);
+          }
+          if (kennelID) {
+            getKennelById(kennelID, token);
+          }
         } else {
           console.log("Please login");
           navigation.navigate("Login");
@@ -47,7 +51,6 @@ const BookingCardScreen = ({ route, navigation }) => {
     getToken();
   }, []);
 
-  //get pet by owner id
   const getPetsByOwnerId = async (id, token) => {
     try {
       const data = await PetsService.getPetsByOwnerId(id, token);
@@ -57,46 +60,99 @@ const BookingCardScreen = ({ route, navigation }) => {
     }
   };
 
+  const getVolunteerById = async (id, token) => {
+    try {
+      const data = await VolunteerService.getVolunteerById(id, token);
+      setVolunteer(data);
+    } catch (error) {
+      console.error("Error fetching volunteer data:", error.message);
+    }
+  };
+
+  const getKennelById = async (id, token) => {
+    try {
+      const data = await KennelService.getKennelById(id, token);
+      setKennel(data);
+    } catch (error) {
+      console.error("Error fetching kennel data:", error.message);
+    }
+  };
+
+  const isPetTypeAvailable = (petType) => {
+    console.log("pet type:",petType);
+    if (volunteer) {
+      console.log("volunteer",volunteer.paymentRates);
+      const volunteerPetTypes = volunteer.paymentRates.map((rate) => rate.animalType);
+      
+      if (volunteerPetTypes.includes(petType)) {
+        return true;
+      }
+    }
+    if (kennel) {
+      console.log("kennel",kennel.paymentRates);
+      const kennelPetTypes = kennel.paymentRates.map((rate) => rate.animalType);;
+     
+      if (kennelPetTypes.includes(petType)) {
+        return true;
+      }
+    }
+    return false;
+  };
+
   const handleBooking = async () => {
     setError("");
-    if (!petID) {
+    const selectedPet = pets.find((pet) => pet.petID === petID);
+    if (!selectedPet) {
       setError("Pet is required.");
       return;
-    } else if (!selectedStartDate) {
+    }
+    const petType = selectedPet.petType;
+    if (!isPetTypeAvailable(petType)) {
+      setError("Selected pet type is not available for the kennel or volunteer.");
+      return;
+    }
+    if (!selectedStartDate) {
       setError("Start date is required.");
       return;
-    } else if (!startTime) {
+    }
+    if (!startTime) {
       setError("Start time is required.");
       return;
-    } else if (!selectedEndDate) {
+    }
+    if (!selectedEndDate) {
       setError("End date is required.");
       return;
-    } else if (!endTime) {
+    }
+    if (!endTime) {
       setError("End time is required.");
       return;
     }
-  
+
     try {
       const token = await AsyncStorage.getItem("token");
-      const ownerID = await AsyncStorage.getItem("userId");
-  
+
       const startDate = new Date(
         selectedStartDate.setHours(startTime.getHours(), startTime.getMinutes())
       ).toISOString();
-  
+
       const endDate = new Date(
         selectedEndDate.setHours(endTime.getHours(), endTime.getMinutes())
       ).toISOString();
-  
-      const data = {
+
+      const data = kennelID ? {
         petID,
-        kennelID:kennelID || null,
-        volunteerID: volunteerID || null, 
+        kennelID,
+        volunteerID: volunteerID || null,
+        startDate,
+        endDate,
+      } : {
+        petID,
+        volunteerID: volunteerID || null,
         startDate,
         endDate,
       };
       console.log("Booking data: ", data);
-  
+
       const responseData = await BookingService.booking(data, token);
       console.log("Booking completed:", responseData);
       navigation.navigate("MyBookingScreen");
@@ -105,15 +161,6 @@ const BookingCardScreen = ({ route, navigation }) => {
       setError("Booking failed");
     }
   };
-  
-
-  const startDate = new Date(
-    selectedStartDate.setHours(startTime.getHours(), startTime.getMinutes())
-  ).toISOString();
-
-  const endDate = new Date(
-    selectedEndDate.setHours(endTime.getHours(), endTime.getMinutes())
-  ).toISOString();
 
   const backToHome = () => {
     navigation.navigate("BookingHouse");
@@ -179,7 +226,9 @@ const BookingCardScreen = ({ route, navigation }) => {
         />
       )}
 
-      <Text style={styles.showerText}>Start Date and Time: {startDate}</Text>
+      <Text style={styles.showerText}>
+        Start Date and Time: {selectedStartDate.toLocaleDateString()} {startTime.toLocaleTimeString()}
+      </Text>
 
       <TouchableOpacity
         onPress={() => setShowEndDatePicker(true)}
@@ -222,26 +271,13 @@ const BookingCardScreen = ({ route, navigation }) => {
           }}
         />
       )}
-      <Text style={styles.showerText}>End Date and Time: {endDate}</Text>
-      <View style={styles.counterContainer}>
-        <Text>Number of Pets: </Text>
-        <TouchableOpacity
-          onPress={() => setNumPets(Math.max(1, numPets - 1))}
-          style={styles.counterButton}
-        >
-          <Text>-</Text>
-        </TouchableOpacity>
-        <Text> {numPets} </Text>
-        <TouchableOpacity
-          onPress={() => setNumPets(numPets + 1)}
-          style={styles.counterButton}
-        >
-          <Text>+</Text>
-        </TouchableOpacity>
-      </View>
 
-      <TouchableOpacity onPress={handleBooking} style={styles.button}>
-        <Text style={styles.buttonText}>Place Booking</Text>
+      <Text style={styles.showerText}>
+        End Date and Time: {selectedEndDate.toLocaleDateString()} {endTime.toLocaleTimeString()}
+      </Text>
+
+      <TouchableOpacity onPress={handleBooking} style={styles.bookingButton}>
+        <Text style={styles.bookingButtonText}>Book</Text>
       </TouchableOpacity>
     </View>
   );
@@ -251,67 +287,51 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 20,
+    padding: 16,
   },
   text: {
     fontSize: 24,
     fontWeight: "bold",
-    color: "#333",
+    textAlign: "center",
     marginBottom: 20,
-  },
-  error: {
-    fontSize: 16,
-    color: "red",
-    marginBottom: 10,
-  },
-  picker: {
-    width: "90%",
-    marginVertical: 10,
-    height: 40,
-    padding: 10,
-    backgroundColor: "#E0E0E0",
-  },
-  button: {
-    backgroundColor: "black",
-    padding: 10,
-    borderRadius: 5,
-    marginTop: 20,
-  },
-  buttonText: {
-    color: "white",
-  },
-  setterButton: {
-    padding: 10,
-    backgroundColor: "#E0E0E0",
-    borderRadius: 5,
-    marginVertical: 10,
-    width: "100%",
-    alignItems: "center",
-  },
-  showerText: {
-    fontSize: 16,
-    color: "black",
-    marginVertical: 10,
-  },
-  counterContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 20,
-  },
-  counterButton: {
-    backgroundColor: "#E0E0E0",
-    padding: 10,
-    borderRadius: 5,
-    marginHorizontal: 10,
   },
   iconContainer: {
     position: "absolute",
-    top: 10,
-    left: 10,
-    padding: 10,
+    top: 16,
+    left: 16,
+    zIndex: 10,
+  },
+  picker: {
+    height: 50,
+    width: "100%",
+    marginBottom: 16,
+  },
+  setterButton: {
+    backgroundColor: "#ddd",
+    padding: 12,
+    marginBottom: 16,
+    alignItems: "center",
+  },
+  showerText: {
+    marginBottom: 16,
+    fontSize: 16,
+    textAlign: "center",
+  },
+  bookingButton: {
+    backgroundColor: "#007bff",
+    padding: 16,
+    alignItems: "center",
+    borderRadius: 8,
+  },
+  bookingButtonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  error: {
+    color: "red",
+    marginBottom: 16,
+    textAlign: "center",
   },
 });
 

@@ -89,6 +89,14 @@ const VolunteerProfileScreen = ({ route, navigation }) => {
             : "Address not available"}
         </Text>
         </View>
+        {volunteer.paymentRates && (
+            <View>
+              <Text>Animal Types:</Text>
+              {volunteer.paymentRates.map((rate, index) => (
+                <Text key={index}>{rate.animalType}</Text>
+              ))}
+            </View>
+          )}
       </View>
 
       <ScrollView>

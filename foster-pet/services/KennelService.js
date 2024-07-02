@@ -214,6 +214,34 @@ async updateKennel(data,token) {
 
   }
 
+  //delete kennel
+  async delete(id,token) {
+    try {
+      const response = await fetch(`${this.baseUrl}/api/kennel/delete?kennelId=${id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        
+      });
+  
+      console.log('Response from server:', response);
+  
+      if (!response.ok) {
+        console.error('Server returned error:', response.status, response.statusText);
+        throw new Error('Failed');
+      }
+  
+      const data = await response.json();
+      
+      return data;
+    } catch (error) {
+      console.error('Error :', error.message);
+      throw error;
+    }
+  }
+
 }
   export default new KennelService();
   
